@@ -37,11 +37,11 @@
 }
 
 .main-div a {
-    font-size: 17px;
+    font-size: 20px;
     color: white;
-    text-decoration: none;
     transition: all 0.3s ease 0s;
     white-space: nowrap;
+    letter-spacing: 1px;
 }
 
 .main-div li a:hover {

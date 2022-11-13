@@ -5,7 +5,28 @@
 }
 
 body {
-    /* min-height: 500px; */
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+}
+
+button {
+    font-size: 15px;
+    padding: 9px 25px;
+    background-color: #0a3755;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    color: white;
+}
+
+button:hover {
+    background-color: #be7303;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
 }

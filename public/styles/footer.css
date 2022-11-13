@@ -11,3 +11,7 @@ footer {
     align-items: center;
     text-align: center;
 }
+
+.footer-div h1 {
+    color: white
+}
