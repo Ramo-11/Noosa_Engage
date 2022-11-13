@@ -1,0 +1,11 @@
+* {
+    margin: 0;
+    font-family: Sans-Serif;
+    font-weight: normal;
+}
+
+body {
+    /* min-height: 500px; */
+    display: flex;
+    flex-direction: column;
+}

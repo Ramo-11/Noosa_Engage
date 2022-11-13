@@ -1,0 +1,22 @@
+.picture-div {
+    position: relative;
+    min-height: 15rem;
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(106,59,5,1) 51%, rgba(255,158,0,1) 100%);
+}
+
+.picture-div h1 {
+    text-align: center;
+    line-height: 15rem;
+    color: white;
+    font-size: 80px;
+    font-weight: bold;
+    letter-spacing: 5px;
+}
+
+hr {
+    margin: 20px 0;
+    margin-left: 20%;
+    width: 60%;
+    text-align: center;
+    border: 0.3spx solid rgb(108, 108, 108);
+}

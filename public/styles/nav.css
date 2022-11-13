@@ -1,0 +1,49 @@
+.main-div nav {
+    height: 70px;
+    padding: 5px 50px;
+    background-color: #0a3755;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-div img {
+    width: 80px;
+    height: 80px
+}
+
+.logo-div h1 {
+    color: white;
+    font-weight: normal;
+}
+
+.main-div ul {
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+}
+
+.main-div li {
+    list-style: none;
+}
+
+.main-div a {
+    font-size: 17px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease 0s;
+    white-space: nowrap;
+}
+
+.main-div li a:hover {
+    color: #aeaeae;
+}
