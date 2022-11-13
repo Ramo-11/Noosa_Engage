@@ -25,6 +25,7 @@
 }
 
 .main-div ul {
+    height: 100%;
     padding: 0 10px;
     display: flex;
     justify-content: space-between;
@@ -37,6 +38,7 @@
 }
 
 .main-div a {
+    padding: 10px 0;
     font-size: 20px;
     color: white;
     transition: all 0.3s ease 0s;
@@ -45,5 +47,5 @@
 }
 
 .main-div li a:hover {
-    color: #aeaeae;
+    color: rgba(255,158,0,1);
 }
