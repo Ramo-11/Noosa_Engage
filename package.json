@@ -1,0 +1,28 @@
+{
+  "name": "noosa_engage",
+  "version": "1.0.0",
+  "description": "website for noosa engage",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm run dev",
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ramo-11/Noosa_web.git"
+  },
+  "author": "Omar Abdelalim",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "npm": "^9.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
