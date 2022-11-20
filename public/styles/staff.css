@@ -1,0 +1,61 @@
+.main-content {
+    margin-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.tutor {
+    min-width: 800px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px
+}
+
+.tutor img {
+    width: 400px;
+    height: 400px;
+}
+
+.tutor-info {
+    min-width: 500px;
+}
+
+.tutor-info hr {
+    border: 3px solid #f6f6f6;
+}
+
+.tutor-info h1 {
+    margin: 20px 0;
+    font-size: 45px;
+    color: #0A3755;
+}
+
+.tutor-info h2 {
+    margin: 18px 0;
+}
+
+.tutor-info h3 {
+    margin: 13px 0;;
+}
+
+.tutor-info ul:not(:last-child) li {
+    list-style: square;
+}
+
+.omar-social-media {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+}
+
+.tutor-info ul a {
+    font-size: 30px;
+    color: black
+}
+
+.tutor-info ul a:hover {
+    color: #be7303;
+}
