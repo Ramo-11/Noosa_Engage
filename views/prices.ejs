@@ -2,13 +2,39 @@
     <head>
         <title>Prices</title>
         <link rel="stylesheet" href="/styles/general.css">
+        <link rel="stylesheet" href="/styles/prices.css">
         <link rel="shortcut icon" href="/images/Logo-white.png">
     </head>
 
     <body>
         <%- include("./partials/nav.ejs") %>
         <div class="main-content">
-            
+            <div class="title-div">
+                <h1>Prices</h1>
+            </div>
+            <div class="prices-divs">
+                <div class="intro-session">
+                    <img src="/images/first_session.jpg" alt="Photo of first session">
+                    <div class="description">
+                        <h1>First introductory Session</h1>
+                        <h2>First session is free</h2>
+                    </div>
+                </div>
+                <div class="high-school">
+                    <img src="/images/high_school.png" alt="Photo of high school">
+                    <div class="description">
+                        <h1>High School</h1>
+                        <h2>$35 a session (1 Hour)</h2>
+                    </div>
+                </div>
+                <div class="college-level">
+                    <img src="/images/college.jpg" alt="Photo of college">
+                    <div class="description">
+                        <h1>College Level Courses</h1>
+                        <h2>$40 a session (1 Hour)</h2>
+                    </div>
+                </div>
+            </div>
         </div>
         <%- include("./partials/footer.ejs") %>
     </body>

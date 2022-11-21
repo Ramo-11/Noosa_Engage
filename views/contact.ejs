@@ -2,14 +2,83 @@
     <head>
         <title>Contact us</title>
         <link rel="stylesheet" href="/styles/general.css">
+        <link rel="stylesheet" href="/styles/contact.css">
         <link rel="shortcut icon" href="/images/Logo-white.png">
     </head>
 
     <body>
         <%- include("./partials/nav.ejs") %>
         <div class="main-content">
-            
-        </div>
+            <div class="title-div">
+                <h1>Get in touch</h1>
+            </div>
+            <div class="contact-form">
+                <h1>Contact us</h1>
+                <p class="submitFlag" id="submitFlag" hidden></p>
+                <div class="submitter-name">
+                    <input type="text" id="name" class="input" placeholder="Full Name" maxlength="50">
+                </div>
+                <div class="submitter-email">
+                    <input type="text" id="email" class="input" placeholder="Email" maxlength="50">
+                </div>
+                <div class="submitter-subject">
+                    <input type="text" id="subject" class="input" placeholder="Subject" maxlength="50"><br><br>
+                </div>
+                <div>
+                    <textarea type="text" class="input" id="description" placeholder="Talk about your request"></textarea>
+                </div>
+                <button class="submitButton" id="submitButton" onclick="submitContactPage()">Submit</button>
+            </div>
         <%- include("./partials/footer.ejs") %>
+        <script>
+            async function submitContactPage() {
+                disableSubmitButton()
+                const fullName = document.getElementById("name").value
+                const email = document.getElementById("email").value
+                const subject = document.getElementById("subject").value
+                const description = document.getElementById("description").value
+        
+                const result = await fetch("/api/sendemail", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify ({
+                        fullName,
+                        email,
+                        subject,
+                        description
+                    })
+                })
+    
+                const reqResult = await result
+                const message = await result.json()
+    
+                document.getElementById("submitFlag").innerHTML = message["message"]
+                document.getElementById("submitFlag").style.display = "block"
+                
+                if (result.status === 200) {
+                    document.getElementById("submitFlag").style.color = "#0a3755"
+                    document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
+                }
+                else {
+                    document.getElementById("submitFlag").style.color = "#D8000C"
+                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                }
+    
+                await sleep(3000)
+                location.reload(true);
+    
+                function sleep(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                }
+    
+                function disableSubmitButton() {
+                    document.getElementById("submitButton").disabled = true
+                    document.getElementById("submitButton").style.backgroundColor = "#b7dffa"
+                    document.getElementById("submitButton").style.cursor = "default"
+                }
+            }
+        </script>
     </body>
 </html>

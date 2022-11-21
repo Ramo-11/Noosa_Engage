@@ -1,0 +1,47 @@
+.main-content {
+    margin-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.prices-divs {
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+}
+
+.prices-divs img {
+    width: 400px;
+    height: 400px;
+}
+
+.prices-divs hr {
+    border: 3px solid #f6f6f6;
+}
+
+.prices-divs h1 {
+    color: #e8e9eb;
+    margin: 20px 0;
+    font-size: 45px;
+}
+
+.prices-divs h2 {
+    color: #e8e9eb;
+    /* margin: 18px 0; */
+}
+
+.intro-session, .high-school, .college-level {
+    box-shadow: -1px 1px 10px #000;
+    background-color: #0a3755;
+    display: flex;
+    justify-content: space-between;
+    gap: 100px;
+}
+
+.description {
+    margin-right: 50px;
+    min-width: 500px;
+}

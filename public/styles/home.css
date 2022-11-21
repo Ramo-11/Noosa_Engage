@@ -49,6 +49,7 @@
 }
 
 .classes-div {
+    max-width: 100rem;
     padding: 10px 50px;
     margin-bottom: 50px;
     display: flex;
