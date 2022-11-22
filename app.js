@@ -14,10 +14,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json())
 app.use(express.static("public"))
 app.use(cookieParser())
-app.set("view engine", "ejs")
 // ********** End Initialization **********
 
 app.use("/", router)
 
-app.listen(process.env.PORT)
-generalLogger.info("app is listening on port 3000")
+app.set("view engine", "ejs")
+
+app.listen(process.env.PORT, () => generalLogger.info(`server running on port: http://localhost:${process.env.PORT}`))
