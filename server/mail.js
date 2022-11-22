@@ -4,6 +4,8 @@ async function sendEmail(req, res) {
     const { fullName, email, subject, description } = req.body
 
     if (!fullName || !email || !subject || !description) {
+        generalLogger.error("Cannot send email")
+        generalLogger.debug("one or more field is missing")
         return res.status(400).send({ message: "Error: All fields must be completed" })
     }
 
@@ -24,9 +26,12 @@ async function sendEmail(req, res) {
 
     mailTransporter.sendMail(details, (error) => {
         if (!error) { 
-            return res.status(200).send({ message: "Message was sent successfully" })
+            generalLogger.info("Email was sent successfully")
+            return res.status(200).send({ message: "Email was sent successfully" })
         } else {
-            return res.status(400).send({ message: "Message was not sent" })
+            generalLogger.error("Cannot send email")
+            generalLogger.debug(error)
+            return res.status(400).send({ message: "Email was not sent" })
         }
     })
 }

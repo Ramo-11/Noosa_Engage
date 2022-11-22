@@ -4,7 +4,6 @@
   "description": "website for noosa engage",
   "main": "app.js",
   "scripts": {
-    "test": "npm run dev",
     "dev": "nodemon app.js",
     "start": "node app.js"
   },
@@ -15,15 +14,15 @@
   "author": "Omar Abdelalim",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.20.1",
+    "body-parser": "^1.19.2",
     "cookie-parser": "^1.4.6",
-    "dotenv": "^16.0.3",
-    "ejs": "^3.1.8",
-    "express": "^4.18.2",
-    "nodemailer": "^6.8.0",
-    "npm": "^9.1.1"
+    "dotenv": "^16.0.0",
+    "ejs": "^3.0.2",
+    "express": "^4.17.3",
+    "nodemailer": "^6.7.3",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.15"
   }
 }

@@ -3,6 +3,7 @@ const express = require("express")
 const router = require("./server/router")
 const cookieParser = require("cookie-parser")
 const bodyParser = require("body-parser")
+const { generalLogger } = require("./utils/generalLogger")
 // ********** End Imports **********
 
 // ********** Initialization **************
@@ -19,3 +20,4 @@ app.set("view engine", "ejs")
 app.use("/", router)
 
 app.listen(process.env.PORT)
+generalLogger.info("app is listening on port 3000")
