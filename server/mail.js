@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer")
+const { generalLogger } = require("../utils/generalLogger")
 
 async function sendEmail(req, res) {
     const { fullName, email, subject, description } = req.body
