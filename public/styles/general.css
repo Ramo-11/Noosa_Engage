@@ -11,6 +11,10 @@ body {
     min-width: 70rem;
 }
 
+footer {
+    align-self: flex-end;
+}
+
 .main-content {
     min-height: 70rem;
 }
