@@ -1,9 +1,18 @@
+.main-content {
+    margin-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+}
+
 .contact-form {
+    min-width: 30rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 50px;
-    margin: 20px 30% 50px 30%;
     padding: 50px;
     background: #fff;
     box-shadow: 2px 5px 20px rgba(119,119,119,0.5);
@@ -52,19 +61,4 @@ textarea {
 .disable-submit-flag {
     border: 1px solid #999999;
     background-color: #b1dfb6;
-}
-
-button {
-    font-size: 15px;
-    padding: 9px 25px;
-    background-color: rgba(11, 149, 11, 1);
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease 0s;
-    color: white;
-}
-
-button:hover {
-    background-color: darkseagreen;
 }
