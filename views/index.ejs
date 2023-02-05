@@ -5,6 +5,15 @@
         <link rel="stylesheet" href="/styles/home.css">
         <link rel="shortcut icon" href="/images/Logo-white.png">
     </head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XEW6Y9S2YM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-XEW6Y9S2YM');
+    </script>
     <body>
         <%- include("./partials/nav.ejs") %>
         <div class="main-content">
@@ -21,7 +30,7 @@
                         to enhancing students' knowledge in Math, Science, Computer Science,
                         and other subjects. We provide tutoring sessions for students in all levels.
                     </p>
-                    <button><a class="schedule" href="/schedule">Register Now</a></button>
+                    <button class="button_to_register"><a class="schedule" href="/schedule">Register Now</a></button>
                 </div>
                 
             </div>

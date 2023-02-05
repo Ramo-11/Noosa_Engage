@@ -5,7 +5,13 @@
         <link rel="stylesheet" href="/styles/prices.css">
         <link rel="shortcut icon" href="/images/Logo-white.png">
     </head>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
+        gtag('config', 'G-XEW6Y9S2YM');
+    </script>
     <body>
         <%- include("./partials/nav.ejs") %>
         <div class="main-content">
@@ -14,27 +20,37 @@
             </div>
             <div class="prices-divs">
                 <div class="intro-session">
-                    <img src="/images/first_session.jpg" alt="Photo of first session">
+                    <div class="picture_div">
+                        <img src="/images/intro.png" alt="Photo of first session">
+                    </div>
                     <div class="description">
-                        <h1>First introductory Session</h1>
-                        <h2>First session is free</h2>
+                        <h2>Intro Session</h2>
+                        <h2>Free</h2>
+                        <h3>30 minutes - 1 hour</h3>
                     </div>
                 </div>
                 <div class="high-school">
-                    <img src="/images/high_school.png" alt="Photo of high school">
+                    <div class="picture_div">
+                        <img src="/images/second.png" alt="Photo of high school">
+                    </div>
                     <div class="description">
-                        <h1>High School</h1>
-                        <h2>$35 a session (1 Hour)</h2>
+                        <h2>High School</h2>
+                        <h2>$50</h2>
+                        <h3>1 hour</h3>
                     </div>
                 </div>
                 <div class="college-level">
-                    <img src="/images/college.jpg" alt="Photo of college">
+                    <div class="picture_div">
+                        <img src="/images/third.png" alt="Photo of college">
+                    </div>
                     <div class="description">
-                        <h1>College Level Courses</h1>
-                        <h2>$40 a session (1 Hour)</h2>
+                        <h2>University</h2>
+                        <h2>$70</h2>
+                        <h3>1 hour</h3>
                     </div>
                 </div>
             </div>
+            <button class="button_to_register"><a class="schedule" href="/schedule">Register Now</a></button>
         </div>
         <%- include("./partials/footer.ejs") %>
     </body>
