@@ -21,7 +21,7 @@ async function sendEmail(req, res) {
     let details = {
         from: email,
         to: "noosa@noosaengage.com", 
-        subject: `Message from ${fullName}: subject: ${subject}`,
+        subject: `Message from ${fullName}, with email ${email}: subject: ${subject}`,
         text: description
     }
 
