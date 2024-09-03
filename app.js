@@ -4,11 +4,15 @@ const router = require("./server/router")
 const cookieParser = require("cookie-parser")
 const bodyParser = require("body-parser")
 const { generalLogger } = require("./utils/generalLogger")
+const connectDB = require('./server/connectDB'); // Adjust the path as needed
+
 // ********** End Imports **********
 
 // ********** Initialization **************
 const app = express()
-require("dotenv").config()
+require('dotenv').config();
+connectDB();
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json())
