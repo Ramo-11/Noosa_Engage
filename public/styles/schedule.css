@@ -1,14 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .main-content {
-    margin-bottom: 100px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
-    gap: 50px;
+    margin: 0;
+    padding: 0;
+}
+
+.title-div {
+    margin: 0;
+    padding: 0;
 }
 
 .schedule-form {
     min-width: 40rem;
+    margin-top: 10;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,44 +29,93 @@
     box-shadow: 2px 5px 20px rgba(119,119,119,0.5);
 }
 
+
+
+/* Ensure heading in the form has no extra margin */
 .schedule-form h1 {
     color: #0a3755;
     font-size: 30px;
 }
 
-.schedule-form input, .schedule-form textarea {
+
+/* Style for all input fields, textarea, and select */
+.schedule-form input, .schedule-form textarea, .schedule-form select {
     padding: 10px 15px;
     width: 100%;
     min-height: 50px;
     outline: none;
-    border: none;
+    border: none; /* Remove border */
     border-radius: 10px;
     font-size: 15px;
     color: #070707;
-    background-color: rgb(236, 236, 236);
+    background-color: #e0e0e0; /* Set background to gray */
+    box-sizing: border-box; /* Ensure padding is included in width */
 }
 
-.submitter-name input, .submitter-email input, .submitter-subject input, .schedule-form textarea {
-    margin-top: 2%;
+/* Flex container for Date and Time fields */
+.submitter-date-time {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Space between date and time fields */
 }
 
-.schedule-form textarea {
-    margin-bottom: 20px;
-    height: 200px;
+/* Ensure Date and Time fields are the same size */
+.submitter-date, .submitter-time {
+    flex: 1;
 }
 
+/* Style for Date field with calendar icon */
+.submitter-date {
+    position: relative;
+}
+
+.submitter-date input {
+    width: 100%;
+    padding-right: 40px; /* Space for the icon */
+}
+
+/* Style for the calendar icon */
+.submitter-date .calendar-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px; /* Adjust icon size if needed */
+    color: #999;
+    pointer-events: none; /* Icon should not block clicks */
+}
+
+/* Ensure Time field is slightly larger and aligned properly */
+.submitter-time select {
+    width: 100%;
+    font-size: 15px;
+    padding: 10px;
+    border: none; /* Remove border */
+    border-radius: 10px;
+    background-color: #e0e0e0; /* Gray background */
+    box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+/* Make Time field slightly larger */
+.submitter-time select {
+    width: calc(100% + 20px); /* Increase width slightly */
+    margin-left: -10px; /* Adjust margin to keep alignment */
+}
+
+/* Center the submit button */
 .submitButton {
     width: 50%;
     margin: -15px 0 10px 24%;
     font-size: 17px;
 }
 
+/* Style for the submit flag */
 .submitFlag {
     margin-top: -30px;
     margin-bottom: -30px;
     width: 80%;
-	padding: 10px;
-	border-radius: 3px 3px 3px 3px;
+    padding: 10px;
+    border-radius: 3px;
 }
 
 .disable-submit-flag {

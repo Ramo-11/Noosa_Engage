@@ -1,99 +1,129 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schedule an Appointment</title>
-    <link rel="stylesheet" href="/styles/general.css">
-    <link rel="stylesheet" href="/styles/schedule.css">
-    <link rel="shortcut icon" href="/images/Logo-white.png">
-</head>
-<body>
-    <%- include("./partials/nav.ejs") %>
-    <div class="main-content">
-        <div class="title-div">
-            <h1>Schedule an Appointment</h1>
-        </div>
-        <div class="schedule-form">
-            <h1>Appointment Details</h1>
-            <p class="submitFlag" id="submitFlag" hidden></p>
-            <div class="submitter-name">
-                <input type="text" id="name" class="input" placeholder="Full Name" maxlength="50">
-            </div>
-            <div class="submitter-email">
-                <input type="text" id="email" class="input" placeholder="Email" maxlength="50">
-            </div>
-            <div class="submitter-date">
-                <select id="date" class="input">
-                    <option value="" disabled selected>Select Date</option>
-                    <option value="2024-08-01">August 1, 2024</option>
-                    <option value="2024-08-02">August 2, 2024</option>
-                    <!-- Add more date options here -->
-                </select>
-            </div>
-            <div class="submitter-time">
-                <select id="time" class="input">
-                    <option value="" disabled selected>Select Time</option>
-                    <option value="09:00 AM">09:00 AM</option>
-                    <option value="10:00 AM">10:00 AM</option>
-                    <!-- Add more time options here -->
-                </select>
-            </div>
-            <button class="submitButton" id="submitButton" onclick="submitAppointment()">Submit</button>
-        </div>
-    </div>
-    <%- include("./partials/footer.ejs") %>
+<html>
+    <head>
+        <title>Schedule an Appointment</title>
+        <link rel="stylesheet" href="/styles/general.css">
+        <link rel="stylesheet" href="/styles/schedule.css">
+        <link rel="shortcut icon" href="/images/Logo-white.png">
+        <!-- Flatpickr CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    </head>
     <script>
-        async function submitAppointment() {
-            disableSubmitButton()
-            const fullName = document.getElementById("name").value
-            const email = document.getElementById("email").value
-            const date = document.getElementById("date").value
-            const time = document.getElementById("time").value
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-            const result = await fetch("/api/scheduleappointment", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify ({
-                    fullName,
-                    email,
-                    date,
-                    time
-                })
-            })
-
-            const message = await result.json()
-
-            document.getElementById("submitFlag").innerHTML = message["message"]
-            document.getElementById("submitFlag").style.display = "block"
-
-            if (result.status === 200) {
-                document.getElementById("submitFlag").style.color = "#0a3755"
-                document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
-            } else {
-                document.getElementById("submitFlag").style.color = "#D8000C"
-                document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
-            }
-
-            if (result.status === 200) {
-                await sleep(3000)
-                window.location.href = "/";
-            } else {
-                location.reload(true);
-            }
-
-            function sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
-
-            function disableSubmitButton() {
-                document.getElementById("submitButton").disabled = true
-                document.getElementById("submitButton").style.backgroundColor = "#b7dffa"
-                document.getElementById("submitButton").style.cursor = "default"
-            }
-        }
+        gtag('config', 'G-XEW6Y9S2YM');
     </script>
-</body>
+    <body>
+        <%- include("./partials/nav.ejs") %>
+        <div class="main-content">
+            <div class="title-div">
+                <h1>Schedule an Appointment</h1>
+            </div>
+            <div class="schedule-form">
+                <h1>Appointment Details</h1>
+                <p class="submitFlag" id="submitFlag" hidden></p>
+                <div class="submitter-name">
+                    <input type="text" id="name" class="input" placeholder="Full Name" maxlength="50">
+                </div>
+                <div class="submitter-email">
+                    <input type="text" id="email" class="input" placeholder="Email" maxlength="50">
+                </div>
+                <div class="submitter-date-time">
+                    <div class="submitter-date">
+                        <input type="date" id="date" class="input" placeholder="Date" onchange="updateTimes()">
+                        <span class="calendar-icon">&#128197;</span> <!-- Unicode for calendar icon -->
+                    </div>
+                    <div class="submitter-time">
+                        <select id="time" class="input">
+                            <option value="" disabled selected>Select Time</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="submitButton" id="submitButton" onclick="submitAppointment()">Submit</button>
+            </div>
+        </div>
+        <%- include("./partials/footer.ejs") %>
+        
+        <!-- Flatpickr JS -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                flatpickr("#date", {
+                    enableTime: false,
+                    dateFormat: "Y-m-d",
+                    onChange: function(selectedDates, dateStr) {
+                        updateTimes(dateStr);
+                    }
+                });
+            });
+
+            async function updateTimes(date) {
+                const timeSelect = document.getElementById("time");
+                timeSelect.innerHTML = '<option value="" disabled selected>Select Time</option>'; // Clear previous options
+
+                if (date) {
+                    try {
+                        const response = await fetch(`/api/getAvailableTimesForDate?date=${encodeURIComponent(date)}`);
+                        const times = await response.json();
+                        
+                        times.forEach(time => {
+                            const option = document.createElement("option");
+                            option.value = time;
+                            option.textContent = time;
+                            timeSelect.appendChild(option);
+                        });
+                    } catch (error) {
+                        console.error("Error fetching times:", error);
+                    }
+                }
+            }
+            async function submitAppointment() {
+                disableSubmitButton();
+                const fullName = document.getElementById("name").value;
+                const email = document.getElementById("email").value;
+                const date = document.getElementById("date").value;
+                const time = document.getElementById("time").value;
+
+                const result = await fetch("/api/scheduleappointment", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        fullName,
+                        email,
+                        date,
+                        time
+                    })
+                });
+
+                const message = await result.json();
+
+                document.getElementById("submitFlag").innerHTML = message["message"];
+                document.getElementById("submitFlag").style.display = "block";
+
+                if (result.status === 200) {
+                    document.getElementById("submitFlag").style.color = "#0a3755";
+                    document.getElementById("submitFlag").style.backgroundColor = "#b7dffa";
+                    await sleep(2000);
+                    window.location.href = "/";
+                } else {
+                    document.getElementById("submitFlag").style.color = "#D8000C";
+                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA";
+                    await sleep(2000);
+                    location.reload(true);
+                }
+
+                function sleep(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                }
+
+                function disableSubmitButton() {
+                    document.getElementById("submitButton").disabled = true;
+                    document.getElementById("submitButton").style.backgroundColor = "#b7dffa";
+                    document.getElementById("submitButton").style.cursor = "default";
+                }        }
+        </script>
+    </body>
 </html>
