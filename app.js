@@ -11,7 +11,6 @@ const connectDB = require('./server/connectDB'); // Adjust the path as needed
 // ********** Initialization **************
 const app = express()
 require('dotenv').config();
-connectDB();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

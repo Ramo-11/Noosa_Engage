@@ -1,71 +1,64 @@
-/* General styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
 .main-content {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
+    margin-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+}
+
+.schedule-form {
+    min-width: 40rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 50px;
+    padding: 50px;
     background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 5px 20px rgba(119,119,119,0.5);
 }
 
-.title-div {
-    text-align: center;
-    margin-bottom: 10px; /* Reduced margin bottom */
-    padding: 10px; /* Reduced padding */
+.schedule-form h1 {
+    color: #0a3755;
+    font-size: 30px;
 }
 
-.title-div h1 {
-    font-size: 18px; /* Smaller size for the title */
-    color: #333;
-    margin: 0; /* Remove default margin */
-}
-
-/* Form styles */
-form {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: bold;
-    font-size: 14px; /* Adjust label font size */
-}
-
-input, select, textarea {
+.schedule-form input, .schedule-form textarea {
+    padding: 10px 15px;
     width: 100%;
-    padding: 8px;
-    margin-bottom: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px; /* Adjust input font size */
-}
-
-button {
-    padding: 8px 12px;
-    font-size: 14px; /* Adjust button font size */
-    background-color: #007bff;
-    color: #fff;
+    min-height: 50px;
+    outline: none;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #070707;
+    background-color: rgb(236, 236, 236);
 }
 
-button:hover {
-    background-color: #0056b3;
+.submitter-name input, .submitter-email input, .submitter-subject input, .schedule-form textarea {
+    margin-top: 2%;
 }
 
-.response-message {
-    margin-top: 20px; /* Space above the message */
-    text-align: center; /* Center-align the text */
-    font-size: 1.5em; /* Increase font size */
-    font-weight: bold; /* Make text bold */
+.schedule-form textarea {
+    margin-bottom: 20px;
+    height: 200px;
+}
+
+.submitButton {
+    width: 50%;
+    margin: -15px 0 10px 24%;
+    font-size: 17px;
+}
+
+.submitFlag {
+    margin-top: -30px;
+    margin-bottom: -30px;
+    width: 80%;
+	padding: 10px;
+	border-radius: 3px 3px 3px 3px;
+}
+
+.disable-submit-flag {
+    border: 1px solid #999999;
+    background-color: #b1dfb6;
 }

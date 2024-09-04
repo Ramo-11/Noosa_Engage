@@ -1,147 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Schedule</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule an Appointment</title>
     <link rel="stylesheet" href="/styles/general.css">
     <link rel="stylesheet" href="/styles/schedule.css">
     <link rel="shortcut icon" href="/images/Logo-white.png">
 </head>
 <body>
     <%- include("./partials/nav.ejs") %>
-
     <div class="main-content">
         <div class="title-div">
             <h1>Schedule an Appointment</h1>
         </div>
-
-        <form id="appointment-form">
-            <label for="fullName">Full Name:</label>
-            <input type="text" id="fullName" name="fullName" required><br><br>
-
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required><br><br>
-
-            <label for="date">Date:</label>
-            <select id="date" name="date" required>
-                <!-- Options will be populated here -->
-            </select><br><br>
-
-            <label for="time">Time:</label>
-            <select id="time" name="time" required>
-                <!-- Options will be populated based on selected date -->
-            </select><br><br>
-
-            <button type="submit">Schedule Appointment</button>
-        </form>
-
-        <div id="response-message"></div> <!-- Message display area -->
+        <div class="schedule-form">
+            <h1>Appointment Details</h1>
+            <p class="submitFlag" id="submitFlag" hidden></p>
+            <div class="submitter-name">
+                <input type="text" id="name" class="input" placeholder="Full Name" maxlength="50">
+            </div>
+            <div class="submitter-email">
+                <input type="text" id="email" class="input" placeholder="Email" maxlength="50">
+            </div>
+            <div class="submitter-date">
+                <select id="date" class="input">
+                    <option value="" disabled selected>Select Date</option>
+                    <option value="2024-08-01">August 1, 2024</option>
+                    <option value="2024-08-02">August 2, 2024</option>
+                    <!-- Add more date options here -->
+                </select>
+            </div>
+            <div class="submitter-time">
+                <select id="time" class="input">
+                    <option value="" disabled selected>Select Time</option>
+                    <option value="09:00 AM">09:00 AM</option>
+                    <option value="10:00 AM">10:00 AM</option>
+                    <!-- Add more time options here -->
+                </select>
+            </div>
+            <button class="submitButton" id="submitButton" onclick="submitAppointment()">Submit</button>
+        </div>
     </div>
-
     <%- include("./partials/footer.ejs") %>
-
     <script>
-        document.addEventListener('DOMContentLoaded', async function() {
-            const dateSelect = document.getElementById('date');
-            const timeSelect = document.getElementById('time');
+        async function submitAppointment() {
+            disableSubmitButton()
+            const fullName = document.getElementById("name").value
+            const email = document.getElementById("email").value
+            const date = document.getElementById("date").value
+            const time = document.getElementById("time").value
 
-            // Fetch available slots from the server
-            async function fetchAvailableSlots() {
-                try {
-                    const response = await fetch('/api/available-slots');
-                    const slots = await response.json();
-                    return slots;
-                } catch (error) {
-                    console.error('Error fetching available slots:', error);
-                    return [];
-                }
+            const result = await fetch("/api/scheduleappointment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify ({
+                    fullName,
+                    email,
+                    date,
+                    time
+                })
+            })
+
+            const message = await result.json()
+
+            document.getElementById("submitFlag").innerHTML = message["message"]
+            document.getElementById("submitFlag").style.display = "block"
+
+            if (result.status === 200) {
+                document.getElementById("submitFlag").style.color = "#0a3755"
+                document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
+            } else {
+                document.getElementById("submitFlag").style.color = "#D8000C"
+                document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
             }
 
-            async function fetchAvailableTimes(date) {
-                try {
-                    const response = await fetch(`/api/available-times/${date}`);
-                    const times = await response.json();
-                    return times;
-                } catch (error) {
-                    console.error('Error fetching available times:', error);
-                    return [];
-                }
+            if (result.status === 200) {
+                await sleep(3000)
+                window.location.href = "/";
+            } else {
+                location.reload(true);
             }
 
-            // Populate the date dropdown
-            function populateDateDropdown(dates) {
-                dateSelect.innerHTML = ''; // Clear existing options
-                dates.forEach(date => {
-                    const option = document.createElement('option');
-                    option.value = date; // Assuming the date is in the format 'YYYY-MM-DD'
-                    option.textContent = new Date(date).toDateString(); // Display as a readable date
-                    dateSelect.appendChild(option);
-                });
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
             }
 
-            // Populate the time dropdown
-            function populateTimeDropdown(times) {
-                timeSelect.innerHTML = ''; // Clear existing options
-                times.forEach(time => {
-                    const option = document.createElement('option');
-                    option.value = time; // Time string
-                    option.textContent = time; // Display as the time
-                    timeSelect.appendChild(option);
-                    console.log("Here");
-                });
+            function disableSubmitButton() {
+                document.getElementById("submitButton").disabled = true
+                document.getElementById("submitButton").style.backgroundColor = "#b7dffa"
+                document.getElementById("submitButton").style.cursor = "default"
             }
-
-            const availableSlots = await fetchAvailableSlots();
-            const dates = [...new Set(availableSlots.map(slot => slot.Date))]; // Extract unique dates
-            populateDateDropdown(dates);
-
-            // Handle date selection
-            dateSelect.addEventListener('change', async function() {
-                const selectedDate = dateSelect.value;
-                if (selectedDate) {
-                    const times = await fetchAvailableTimes(selectedDate);
-                    populateTimeDropdown(times);
-                } else {
-                    timeSelect.innerHTML = ''; // Clear time dropdown if no date is selected
-                }
-            });
-
-            // Handle form submission
-            const form = document.getElementById('appointment-form');
-            form.addEventListener('submit', async function(event) {
-                event.preventDefault(); // Prevent default form submission
-
-                const formData = new FormData(form);
-                const data = {};
-                formData.forEach((value, key) => {
-                    data[key] = value;
-                });
-
-                try {
-                    const response = await fetch('/api/scheduleappointment', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(data)
-                    });
-
-                    const result = await response.json();
-                    const messageElement = document.getElementById('response-message');
-                    if (response.ok) {
-                        messageElement.textContent = result.message;
-                        messageElement.style.color = 'green';
-                        setTimeout(() => {
-                            window.location.href = '/'; // Redirect to index page after 3 seconds
-                        }, 3000);
-                    } else {
-                        messageElement.textContent = result.message;
-                        messageElement.style.color = 'red';
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                }
-            });
-        });
+        }
     </script>
 </body>
 </html>

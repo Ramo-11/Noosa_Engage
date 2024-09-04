@@ -30,7 +30,7 @@ async function sendAppointmentEmail(req, res) {
     mailTransporter.sendMail(details, (error) => {
         if (!error) { 
             generalLogger.info("Email was sent successfully")
-            return res.status(200).send({ message: "Email was sent successfully" })
+            return res.status(200).send({ message: "Appointment was scheduled" })
         } else {
             generalLogger.error("Cannot send email")
             generalLogger.debug(error)
