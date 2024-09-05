@@ -2,7 +2,7 @@ const express = require("express")
 const route = express.Router()
 const sendEmail = require("./mail")
 const sendAppointmentEmail = require("./appointmentEmail");
-const { getAvailableTimes, getAvailableTimesForDate } = require("../availableTimesHandler/availableTimesLoader"); // Import the function
+const { getAvailableTimes, getAvailableTimesForTutorAndDate } = require("../availableTimesHandler/availableTimesLoader"); // Import the function
 
 
 // *********** GET requests **********
@@ -17,13 +17,13 @@ route.get("/schedule", async (req, res) => {
     }
 });
 
-route.get("/api/getAvailableTimesForDate", async (req, res) => {
-    const { date } = req.query; // Assume date is passed as a query parameter
+route.get("/api/getAvailableTimesForTutorAndDate", async (req, res) => {
+    const { tutor, date } = req.query; // Both tutor and date should be passed as query parameters
     try {
-        const times = await getAvailableTimesForDate(date); // Fetch available times for the specific date
+        const times = await getAvailableTimesForTutorAndDate(tutor, date); // Fetch available times
         res.json(times);
     } catch (error) {
-        console.error("Error getting available times for date:", error);
+        console.error("Error getting available times for tutor and date:", error);
         res.status(500).send("Internal Server Error");
     }
 });

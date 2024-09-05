@@ -4,38 +4,51 @@ const path = require('path');
 // Path to the availableTimes.json file
 const availableTimesPath = path.join(__dirname, 'availableTimes.json');
 
-// Function to get the start and end dates for a given month
-const getMonthRange = (date) => {
-    const start = new Date(date.getFullYear(), date.getMonth(), 1);
-    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+// Define times for each day of the week for both Mostafa and Omar
+const weeklyTimesMostafa = {
+    1: ["17:00", "18:00"], // Monday
+    2: ["17:00", "18:00"], // Tuesday
+    3: ["19:00", "21:00"], // Wednesday
+    4: ["16:00", "17:00"], // Thursday
+    5: ["17:00", "19:00"], // Friday
+    6: ["15:00", "17:00"], // Saturday
+    0: ["14:00", "16:00"]  // Sunday
+};
+
+const weeklyTimesOmar = {
+    1: ["15:00", "16:00"], // Monday
+    2: ["15:00", "17:00"], // Tuesday
+    3: ["19:00", "22:00", "23:00"], // Wednesday
+    4: ["16:00", "18:00"], // Thursday
+    5: ["14:00", "16:00"], // Friday
+    6: ["12:00", "14:00"], // Saturday
+    0: ["10:00", "12:00"]  // Sunday
+};
+
+// Function to get the start and end dates for the current year (ending Dec 31, 2024)
+const getYearRange = () => {
+    const start = new Date();
+    const end = new Date(2024, 11, 31); // December 31, 2024
     return { start, end };
 };
 
-// Function to generate times for a single day
-const generateTimesForDay = (date) => {
-    const times = [];
-    let currentTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 16, 0); // 4:00 PM
-
-    while (currentTime.getHours() < 22) { // 10:00 PM
-        times.push(currentTime.toTimeString().substring(0, 5)); // Format HH:MM
-        currentTime.setHours(currentTime.getHours() + 1); // Increment by 1 hour
-    }
-
-    return times;
-};
-
-// Function to generate available times for the entire year
+// Function to generate available times for the entire year for both Mostafa and Omar
 const generateYearlyTimes = () => {
-    const now = new Date();
-    const availableTimes = {};
+    const { start, end } = getYearRange();
+    const availableTimes = {
+        Mostafa: {},
+        Omar: {}
+    };
 
-    for (let month = 0; month < 12; month++) {
-        const { start, end } = getMonthRange(new Date(now.getFullYear(), month, 1));
+    for (let day = new Date(start); day <= end; day.setDate(day.getDate() + 1)) {
+        const dayOfWeek = day.getDay();
+        const dateStr = day.toISOString().split('T')[0]; // Format YYYY-MM-DD
         
-        for (let day = start; day <= end; day.setDate(day.getDate() + 1)) {
-            const dateStr = day.toISOString().split('T')[0]; // Format YYYY-MM-DD
-            availableTimes[dateStr] = generateTimesForDay(day);
-        }
+        // Assign times for Mostafa
+        availableTimes.Mostafa[dateStr] = weeklyTimesMostafa[dayOfWeek] || [];
+        
+        // Assign times for Omar
+        availableTimes.Omar[dateStr] = weeklyTimesOmar[dayOfWeek] || [];
     }
 
     return availableTimes;
