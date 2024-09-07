@@ -4,8 +4,8 @@ const path = require('path');
 // Path to the availableTimes.json file
 const availableTimesPath = path.join(__dirname, 'availableTimes.json');
 
-// Define times for each day of the week for both Mostafa and Omar
-const weeklyTimesMostafa = {
+// Define times for each day of the week for Mostafa Abdulaleem and Omar Abdelalim
+const weeklyTimesMostafaAbdulaleem = {
     1: ["17:00", "18:00"], // Monday
     2: ["17:00", "18:00"], // Tuesday
     3: ["19:00", "21:00"], // Wednesday
@@ -15,7 +15,7 @@ const weeklyTimesMostafa = {
     0: ["14:00", "16:00"]  // Sunday
 };
 
-const weeklyTimesOmar = {
+const weeklyTimesOmarAbdelalim = {
     1: ["15:00", "16:00"], // Monday
     2: ["15:00", "17:00"], // Tuesday
     3: ["19:00", "22:00", "23:00"], // Wednesday
@@ -32,23 +32,23 @@ const getYearRange = () => {
     return { start, end };
 };
 
-// Function to generate available times for the entire year for both Mostafa and Omar
+// Function to generate available times for the entire year for Mostafa Abdulaleem and Omar Abdelalim
 const generateYearlyTimes = () => {
     const { start, end } = getYearRange();
     const availableTimes = {
-        Mostafa: {},
-        Omar: {}
+        "Mostafa Abdulaleem": {},
+        "Omar Abdelalim": {}
     };
 
     for (let day = new Date(start); day <= end; day.setDate(day.getDate() + 1)) {
         const dayOfWeek = day.getDay();
         const dateStr = day.toISOString().split('T')[0]; // Format YYYY-MM-DD
         
-        // Assign times for Mostafa
-        availableTimes.Mostafa[dateStr] = weeklyTimesMostafa[dayOfWeek] || [];
+        // Assign times for Mostafa Abdulaleem
+        availableTimes["Mostafa Abdulaleem"][dateStr] = weeklyTimesMostafaAbdulaleem[dayOfWeek] || [];
         
-        // Assign times for Omar
-        availableTimes.Omar[dateStr] = weeklyTimesOmar[dayOfWeek] || [];
+        // Assign times for Omar Abdelalim
+        availableTimes["Omar Abdelalim"][dateStr] = weeklyTimesOmarAbdelalim[dayOfWeek] || [];
     }
 
     return availableTimes;
