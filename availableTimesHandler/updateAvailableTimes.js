@@ -4,7 +4,7 @@ const path = require('path');
 // Path to the availableTimes.json file
 const availableTimesPath = path.join(__dirname, 'availableTimes.json');
 
-// Define times for each day of the week for Mostafa Abdulaleem and Omar Abdelalim
+// Define times for each day of the week for Mostafa Abdulaleem and Omar Abdelalim (in 24-hour format)
 const weeklyTimesMostafaAbdulaleem = {
     1: ["17:00", "18:00"], // Monday
     2: ["17:00", "18:00"], // Tuesday
@@ -23,6 +23,21 @@ const weeklyTimesOmarAbdelalim = {
     5: ["14:00", "16:00"], // Friday
     6: ["12:00", "14:00"], // Saturday
     0: ["10:00", "12:00"]  // Sunday
+};
+
+// Function to convert 24-hour time to 12-hour AM/PM format
+const convertTo12HourFormat = (time24) => {
+    let [hours, minutes] = time24.split(':').map(Number);
+    let period = 'AM';
+
+    if (hours >= 12) {
+        period = 'PM';
+        hours = hours > 12 ? hours - 12 : hours; // Convert to 12-hour format
+    } else if (hours === 0) {
+        hours = 12; // Midnight case
+    }
+
+    return `${hours}:${minutes.toString().padStart(2, '0')} ${period}`;
 };
 
 // Function to get the start and end dates for the current year (ending Dec 31, 2024)
@@ -44,11 +59,9 @@ const generateYearlyTimes = () => {
         const dayOfWeek = day.getDay();
         const dateStr = day.toISOString().split('T')[0]; // Format YYYY-MM-DD
         
-        // Assign times for Mostafa Abdulaleem
-        availableTimes["Mostafa Abdulaleem"][dateStr] = weeklyTimesMostafaAbdulaleem[dayOfWeek] || [];
+        availableTimes["Mostafa Abdulaleem"][dateStr] = (weeklyTimesMostafaAbdulaleem[dayOfWeek] || []).map(time => convertTo12HourFormat(time));
         
-        // Assign times for Omar Abdelalim
-        availableTimes["Omar Abdelalim"][dateStr] = weeklyTimesOmarAbdelalim[dayOfWeek] || [];
+        availableTimes["Omar Abdelalim"][dateStr] = (weeklyTimesOmarAbdelalim[dayOfWeek] || []).map(time => convertTo12HourFormat(time));
     }
 
     return availableTimes;
