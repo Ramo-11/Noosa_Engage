@@ -22,10 +22,27 @@ const getAvailableTimes = () => {
     });
 };
 
+// Function to get available dates for a specific tutor
+const getAvailableDatesForTutor = async (tutor) => {
+    try {
+        const availableTimes = await getAvailableTimes();
+        
+        // Check if tutor exists in the availableTimes data
+        if (availableTimes && availableTimes[tutor]) {
+            // Get all the dates (keys) for the specified tutor
+            return Object.keys(availableTimes[tutor]);
+        } else {
+            throw new Error(`No dates available for tutor ${tutor}`);
+        }
+    } catch (error) {
+        console.error("Error getting available dates for tutor:", error);
+        throw error;
+    }
+};
+
 // Function to get available times for a specific tutor and date
 const getAvailableTimesForTutorAndDate = async (tutor, date) => {
     try {
-        console.log(tutor);
         const availableTimes = await getAvailableTimes();
         
         // Check if tutor exists in the availableTimes data
@@ -43,15 +60,28 @@ const getAvailableTimesForTutorAndDate = async (tutor, date) => {
     }
 };
 const getAvailableTimesRouteHandler = async (req, res) => {
-    const { tutor, date } = req.query; // Both tutor and date should be passed as query parameters
+    const { tutor, date } = req.query;
     try {
-        const times = await getAvailableTimesForTutorAndDate(tutor, date); // Fetch available times
+        const times = await getAvailableTimesForTutorAndDate(tutor, date);
         res.json(times);
     } catch (error) {
         console.error("Error getting available times for tutor and date:", error);
         res.status(500).send("Internal Server Error");
     }
 };
+
+// Route handler to get available dates for a specific tutor
+const getAvailableDatesRouteHandler = async (req, res) => {
+    const { tutor } = req.query;
+    try {
+        const dates = await getAvailableDatesForTutor(tutor);
+        res.json(dates);
+    } catch (error) {
+        console.error("Error getting available dates for tutor:", error);
+        res.status(500).send("Internal Server Error");
+    }
+};
+
 const renderSchedulePageHandler = async (req, res) => {
     try {
         const availableTimes = await getAvailableTimes(); // Fetch all available times
@@ -63,8 +93,7 @@ const renderSchedulePageHandler = async (req, res) => {
 };
 
 module.exports = {
-    getAvailableTimes,
-    getAvailableTimesForTutorAndDate,
     getAvailableTimesRouteHandler,
-    renderSchedulePageHandler
+    renderSchedulePageHandler,
+    getAvailableDatesRouteHandler
 };

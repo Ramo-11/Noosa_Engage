@@ -6,13 +6,11 @@ const availableTimesPath = path.join(__dirname, 'availableTimes.json');
 
 // Define times for each day of the week for Mostafa Abdulaleem and Omar Abdelalim (in 24-hour format)
 const weeklyTimesMostafaAbdulaleem = {
-    1: ["17:00", "18:00"], // Monday
-    2: ["17:00", "18:00"], // Tuesday
+    1: ["17:00"], // Monday
     3: ["19:00", "21:00"], // Wednesday
     4: ["16:00", "17:00"], // Thursday
     5: ["17:00", "19:00"], // Friday
-    6: ["15:00", "17:00"], // Saturday
-    0: ["14:00", "16:00"]  // Sunday
+    // No availability on Saturday and Sunday
 };
 
 const weeklyTimesOmarAbdelalim = {
@@ -21,8 +19,7 @@ const weeklyTimesOmarAbdelalim = {
     3: ["19:00", "22:00", "23:00"], // Wednesday
     4: ["16:00", "18:00"], // Thursday
     5: ["14:00", "16:00"], // Friday
-    6: ["12:00", "14:00"], // Saturday
-    0: ["10:00", "12:00"]  // Sunday
+    // No availability on Saturday and Sunday
 };
 
 // Function to convert 24-hour time to 12-hour AM/PM format
@@ -59,15 +56,19 @@ const generateYearlyTimes = () => {
         const dayOfWeek = day.getDay();
         const dateStr = day.toISOString().split('T')[0]; // Format YYYY-MM-DD
         
-        availableTimes["Mostafa Abdulaleem"][dateStr] = (weeklyTimesMostafaAbdulaleem[dayOfWeek] || []).map(time => convertTo12HourFormat(time));
-        
-        availableTimes["Omar Abdelalim"][dateStr] = (weeklyTimesOmarAbdelalim[dayOfWeek] || []).map(time => convertTo12HourFormat(time));
+        // Only add available times for days that have availability
+        if (weeklyTimesMostafaAbdulaleem[dayOfWeek]) {
+            availableTimes["Mostafa Abdulaleem"][dateStr] = (weeklyTimesMostafaAbdulaleem[dayOfWeek] || []).map(time => convertTo12HourFormat(time));
+        }
+        if (weeklyTimesOmarAbdelalim[dayOfWeek]) {
+            availableTimes["Omar Abdelalim"][dateStr] = (weeklyTimesOmarAbdelalim[dayOfWeek] || []).map(time => convertTo12HourFormat(time));
+        }
     }
 
     return availableTimes;
 };
 
-// Function to update availableTimes.json
+// Function to update availableTimes.json (overwrite if exists, create if not)
 const updateAvailableTimesFile = () => {
     const availableTimes = generateYearlyTimes();
 
