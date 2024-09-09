@@ -5,7 +5,7 @@ const availableTimesPath = path.join(__dirname, 'availableTimes.json');
 
 const weeklyTimesMostafaAbdulaleem = {
     1: ["17:00"],
-    3: ["19:00", "21:00"],
+    3: ["19:00"],
     4: ["16:00", "17:00"],
     5: ["17:00", "19:00"],
 };

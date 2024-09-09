@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon app.js",
     "start": "node app.js",
-    "updateTimes": "node availableTimesHandler/updateAvailableTimes.js"
+    "updateTimes": "node server/availableTimesHandler/updateAvailableTimes.js"
   },
   "repository": {
     "type": "git",
