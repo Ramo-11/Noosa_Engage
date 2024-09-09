@@ -3,7 +3,7 @@ const { generalLogger } = require('../utils/generalLogger');
 const validateEmail = require('../utils/emailValidator');
 
 async function sendAppointmentEmail(req, res) {
-    const { fullName, email, date, time, tutor, termsChecked } = req.body;
+    const { fullName, email, date, time, tutor } = req.body;
 
     if (!fullName || !email || !date || !time || !tutor) {
         generalLogger.error("Error scheduling appointment: one or more fields are missing");
@@ -13,10 +13,6 @@ async function sendAppointmentEmail(req, res) {
     if (!validateEmail(email)) {
         generalLogger.error("Error scheduling appointment: Invalid email address");
         return res.status(400).send({ message: "Error: Invalid email address" });
-    }
-    if (!termsChecked) {
-        generalLogger.error("Error scheduling appointment: Terms not accepted");
-        return res.status(400).send({ message: "Error: Please accept the terms and conditions" });
     }
 
 

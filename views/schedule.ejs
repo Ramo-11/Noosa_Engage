@@ -40,12 +40,6 @@
                     </select>
                 </div>
             </div>
-            <div class="terms-container">
-                <input type="checkbox" id="termsCheckbox">
-                <label for="termsCheckbox">
-                    I have read the <a href="/termsAndConditions" target="_blank" style="color: rgb(0, 0, 3); text-decoration: underline;">Terms and policies</a>
-                </label>                
-            </div>
             <button class="submitButton" id="submitButton" onclick="submitAppointment()">Submit</button>
         </div>
     </div>
@@ -166,9 +160,8 @@
             const date = document.getElementById("date").value;
             const time = document.getElementById("time").value;
             const tutor = document.getElementById("tutor").value;
-            const termsChecked = document.getElementById("termsCheckbox").checked; // Use .checked property to get boolean value
 
-            console.log('Submitting Appointment:', { fullName, email, date, time, tutor, termsChecked });
+            console.log('Submitting Appointment:', { fullName, email, date, time, tutor});
 
             const result = await fetch("/api/scheduleAppointment", {
                 method: "POST",
@@ -180,8 +173,7 @@
                     email,
                     date,
                     time,
-                    tutor,
-                    termsChecked
+                    tutor
                 })
             });
 
