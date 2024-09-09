@@ -11,6 +11,8 @@ route.get('/schedule', renderSchedulePageHandler);
 route.get("/staff", (req, res) => res.render("staff"))
 route.get("/prices", (req, res) => res.render("prices"))
 route.get("/contact", (req, res) => res.render("contact"))
+route.get("/termsandconditions", (req, res) => res.render("termsandconditions"))
+
 
 route.get('/api/getAvailableTimesForTutorAndDate', getAvailableTimesRouteHandler);
 route.get('/api/getAvailableDatesForTutor', getAvailableDatesRouteHandler);

@@ -2,13 +2,20 @@ const nodemailer = require('nodemailer');
 const { generalLogger } = require('../utils/generalLogger'); // Update the path if necessary
 
 async function sendAppointmentEmail(req, res) {
-    const { fullName, email, date, time, tutor } = req.body;
+    const { fullName, email, date, time, tutor, termsChecked } = req.body;
 
     if (!fullName || !email || !date || !time || !tutor) {
         generalLogger.error("Cannot send email");
         generalLogger.debug("One or more fields are missing");
         return res.status(400).send({ message: "Error: All fields must be completed" });
     }
+
+    if (!termsChecked) {
+        generalLogger.error("Cannot send email");
+        generalLogger.debug("Terms not accepted");
+        return res.status(400).send({ message: "Error: Please accept the terms and conditions" });
+    }
+
 
     let mailTransporter = nodemailer.createTransport({
         service: "gmail",

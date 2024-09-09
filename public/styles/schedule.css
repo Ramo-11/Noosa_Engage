@@ -132,3 +132,22 @@
     margin-top: 10px;
     display: block; /* Ensure it takes up space */
 }
+.terms-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.terms-container input[type="checkbox"] {
+    width: 16px; /* Adjust the width of the checkbox */
+    height: 16px; /* Adjust the height of the checkbox */
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.terms-container label {
+    font-size: 14px;
+    color: #333;
+    line-height: 16px; /* Adjust line height to align with the checkbox */
+}
