@@ -4,8 +4,7 @@ const router = require("./server/router")
 const cookieParser = require("cookie-parser")
 const bodyParser = require("body-parser")
 const { generalLogger } = require("./utils/generalLogger")
-const connectDB = require('./server/connectDB'); // Adjust the path as needed
-
+const connectDB = require('./server/connectDB');
 // ********** End Imports **********
 
 // ********** Initialization **************

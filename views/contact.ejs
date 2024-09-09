@@ -45,7 +45,7 @@
                 const subject = document.getElementById("subject").value
                 const description = document.getElementById("description").value
         
-                const result = await fetch("/api/sendemail", {
+                const result = await fetch("/api/sendEmail", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

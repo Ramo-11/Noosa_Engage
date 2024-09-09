@@ -1,18 +1,21 @@
 const nodemailer = require('nodemailer');
-const { generalLogger } = require('../utils/generalLogger'); // Update the path if necessary
+const { generalLogger } = require('../utils/generalLogger');
+const validateEmail = require('../utils/emailValidator');
 
 async function sendAppointmentEmail(req, res) {
     const { fullName, email, date, time, tutor, termsChecked } = req.body;
 
     if (!fullName || !email || !date || !time || !tutor) {
-        generalLogger.error("Cannot send email");
-        generalLogger.debug("One or more fields are missing");
+        generalLogger.error("Error scheduling appointment: one or more fields are missing");
         return res.status(400).send({ message: "Error: All fields must be completed" });
     }
 
+    if (!validateEmail(email)) {
+        generalLogger.error("Error scheduling appointment: Invalid email address");
+        return res.status(400).send({ message: "Error: Invalid email address" });
+    }
     if (!termsChecked) {
-        generalLogger.error("Cannot send email");
-        generalLogger.debug("Terms not accepted");
+        generalLogger.error("Error scheduling appointment: Terms not accepted");
         return res.status(400).send({ message: "Error: Please accept the terms and conditions" });
     }
 
@@ -26,8 +29,8 @@ async function sendAppointmentEmail(req, res) {
     })
 
     const phoneNumbers = {
-        "Mostafa Abdulaleem": "574-347-1217", // Phone number for Mostafa
-        "Omar Abdelalim": "574-406-4727"     // Phone number for Omar
+        "Mostafa Abdulaleem": "574-347-1217",
+        "Omar Abdelalim": "574-406-4727"
     };
     
     let description = `
@@ -41,9 +44,9 @@ async function sendAppointmentEmail(req, res) {
     `;
 
     let details = {
-        from: "noosa@noosaengage.com",   // The sender's email address
-        to: email,                            // The recipient's email address
-        subject: `Appointment Confirmation: ${date} at ${time}`, // Added a subject for clarity
+        from: "noosa@noosaengage.com", 
+        to: email,
+        subject: `Appointment Confirmation: ${date} at ${time}`,
         html: description
     }
 
@@ -52,8 +55,7 @@ async function sendAppointmentEmail(req, res) {
             generalLogger.info("Email was sent successfully")
             return res.status(200).send({ message: "Appointment was scheduled" })
         } else {
-            generalLogger.error("Cannot send email")
-            generalLogger.debug(error)
+            generalLogger.error("Cannot send email: ", error)
             return res.status(400).send({ message: "Email was not sent" })
         }
     })
