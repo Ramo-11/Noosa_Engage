@@ -3,4 +3,3 @@ package-lock.json
 .vscode
 logs
 .env
-server/availableTimesHandler/availableTimes.json
