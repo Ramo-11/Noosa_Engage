@@ -40,16 +40,20 @@
                     </select>
                 </div>
             </div>
-            <button class="submitButton" id="submitButton" onclick="submitAppointment()">Submit</button>
+            <button class="submitButton" id="submitButton">Submit</button>
         </div>
     </div>
     <%- include("./partials/footer.ejs") %>
 
     <script type="module">
         import availableTimes from '/js/availableTimes.js';
+
         let datePicker;
 
         document.addEventListener('DOMContentLoaded', function() {
+            const tutorSelect = document.getElementById("tutor");
+            tutorSelect.addEventListener("change", onTutorChange);
+
             datePicker = flatpickr("#date", {
                 enableTime: false,
                 dateFormat: "Y-m-d",
@@ -58,8 +62,6 @@
                     updateTimes(dateStr);
                 }
             });
-
-            document.getElementById("tutor").addEventListener('change', onTutorChange);
         });
 
         function onTutorChange() {
@@ -159,6 +161,8 @@
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
         }
+
+        document.getElementById("submitButton").addEventListener("click", submitAppointment);
     </script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </body>
