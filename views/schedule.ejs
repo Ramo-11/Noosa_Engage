@@ -23,7 +23,7 @@
                 <input type="email" id="email" class="input" placeholder="Email" maxlength="50">
             </div>
             <div class="submitter-tutor">
-                <select id="tutor" class="input" onchange="onTutorChange()">
+                <select id="tutor" class="input">
                     <option value="" disabled selected>Select Tutor</option>
                     <option value="Mostafa Abdulaleem">Mostafa Abdulaleem</option>
                     <option value="Omar Abdelalim">Omar Abdelalim</option>
@@ -45,8 +45,8 @@
     </div>
     <%- include("./partials/footer.ejs") %>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
+    <script type="module">
+        import availableTimes from '/js/availableTimes.js';
         let datePicker;
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -56,12 +56,13 @@
                 disable: [],
                 onChange: function(selectedDates, dateStr) {
                     updateTimes(dateStr);
-                    validateDate(dateStr);
                 }
             });
+
+            document.getElementById("tutor").addEventListener('change', onTutorChange);
         });
 
-        async function onTutorChange() {
+        function onTutorChange() {
             const tutor = document.getElementById("tutor").value;
 
             const dateContainer = document.getElementById("dateContainer");
@@ -72,85 +73,48 @@
             document.getElementById("time").innerHTML = '<option value="" disabled selected>Select Time</option>';
             timeContainer.style.display = 'none';
 
-            document.getElementById("submitFlag").hidden = true;
-
             if (tutor) {
-                try {
-                    const response = await fetch(`/api/getAvailableDatesForTutor?tutor=${encodeURIComponent(tutor)}`);
-                    const availableDates = await response.json();
-                    updateDatePicker(availableDates);
-                } catch (error) {
-                    console.error("Error fetching available dates:", error);
-                }
+                updateDatePicker(tutor);
             }
         }
 
-        function updateDatePicker(availableDates) {
-            const formattedDates = availableDates.map(date => date.toString());
+        function updateDatePicker(tutor) {
+            const availableDates = Object.keys(availableTimes[tutor]);
 
             if (datePicker) {
                 datePicker.set('disable', [
                     function(date) {
                         const dateStr = date.toISOString().split('T')[0];
-                        return !formattedDates.includes(dateStr);
+                        return !availableDates.includes(dateStr);
                     }
                 ]);
                 datePicker.redraw();
             }
         }
 
-        async function updateTimes(date) {
+        function updateTimes(date) {
             const timeSelect = document.getElementById("time");
-            timeSelect.innerHTML = '<option value="" disabled selected>Select Time</option>'; // Clear previous options
+            timeSelect.innerHTML = '<option value="" disabled selected>Select Time</option>';
 
-            const timeContainer = document.getElementById("timeContainer");
             const tutor = document.getElementById("tutor").value;
-            const submitFlag = document.getElementById("submitFlag");
+            const timeContainer = document.getElementById("timeContainer");
 
             if (tutor && date) {
-                try {
-                    const response = await fetch(`/api/getAvailableTimesForTutorAndDate?tutor=${encodeURIComponent(tutor)}&date=${encodeURIComponent(date)}`);
-                    const times = await response.json();
+                const times = availableTimes[tutor][date] || [];
 
-                    if (times.length === 0) {
-                        timeContainer.style.display = 'none';
-                    } else {
-                        submitFlag.style.display = "none";
-                        times.forEach(time => {
-                            const option = document.createElement("option");
-                            option.value = time;
-                            option.textContent = time;
-                            timeSelect.appendChild(option);
-                        });
-                        timeContainer.style.display = 'block';
-                    }
-                } catch (error) {
-                    console.error("Error fetching times:", error);
-                    submitFlag.textContent = `Error fetching available times. Please try again.`;
-                    submitFlag.style.display = "block";
+                if (times.length === 0) {
+                    timeContainer.style.display = 'none';
+                } else {
+                    times.forEach(time => {
+                        const option = document.createElement("option");
+                        option.value = time;
+                        option.textContent = time;
+                        timeSelect.appendChild(option);
+                    });
+                    timeContainer.style.display = 'block';
                 }
             } else {
                 timeContainer.style.display = 'none';
-                submitFlag.style.display = "none";
-            }
-        }
-
-
-        async function validateDate(date) {
-            const tutor = document.getElementById("tutor").value;
-            const submitFlag = document.getElementById("submitFlag");
-            submitFlag.hidden = true; // Hide error message initially
-
-            if (tutor && date) {
-                try {
-                    // Fetch available times for the selected date
-                    const response = await fetch(`/api/getAvailableTimesForTutorAndDate?tutor=${encodeURIComponent(tutor)}&date=${encodeURIComponent(date)}`);
-                    const times = await response.json();
-                } catch (error) {
-                    console.error("Error validating date:", error);
-                    submitFlag.textContent = "An error occurred while validating the date.";
-                    submitFlag.hidden = false;
-                }
             }
         }
 
@@ -160,8 +124,6 @@
             const date = document.getElementById("date").value;
             const time = document.getElementById("time").value;
             const tutor = document.getElementById("tutor").value;
-
-            console.log('Submitting Appointment:', { fullName, email, date, time, tutor});
 
             const result = await fetch("/api/scheduleAppointment", {
                 method: "POST",
@@ -198,5 +160,6 @@
             }
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </body>
 </html>
