@@ -1,20 +1,12 @@
-<! html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Schedule an Appointment</title>
     <link rel="stylesheet" href="/styles/general.css">
     <link rel="stylesheet" href="/styles/schedule.css">
     <link rel="shortcut icon" href="/images/Logo-white.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-XEW6Y9S2YM');
-</script>
 <body>
     <%- include("./partials/nav.ejs") %>
     <div class="main-content">
@@ -22,126 +14,178 @@
             <h1>Schedule an Appointment</h1>
         </div>
         <div class="schedule-form">
-            <input type="text" id="name" class="input" placeholder="Full Name" maxlength="50">
-            <input type="email" id="email" class="input" placeholder="Email" maxlength="50">
-            <select id="tutor" class="input">
-                <option value="" disabled selected>Select Tutor</option>
-                <option value="Mostafa Abdulaleem">Mostafa Abdulaleem</option>
-                <option value="Omar Abdelalim">Omar Abdelalim</option>
-            </select>
-            <div id="dateContainer" style="display: none;">
-                <input type="text" id="date" class="input" placeholder="Date">
-                <span class="calendar-icon">&#128197;</span>
+            <h1>Appointment Details</h1>
+            <p class="submitFlag" id="submitFlag" hidden></p>
+            <div class="submitter-name">
+                <input type="text" id="name" class="input" placeholder="Full Name" maxlength="50">
             </div>
-            <div id="timeContainer" style="display: none;">
-                <select id="time" class="input">
-                    <option value="" disabled selected>Select Time</option>
+            <div class="submitter-email">
+                <input type="email" id="email" class="input" placeholder="Email" maxlength="50">
+            </div>
+            <div class="submitter-tutor">
+                <select id="tutor" class="input">
+                    <option value="" disabled selected>Select Tutor</option>
+                    <option value="Mostafa Abdulaleem">Mostafa Abdulaleem</option>
+                    <option value="Omar Abdelalim">Omar Abdelalim</option>
                 </select>
             </div>
-            <button class="submitButton" id="submitButton" onclick="submitAppointment()">Submit</button>
-            <p class="submitFlag" id="submitFlag" hidden></p>
+            <div class="submitter-date-time">
+                <div class="submitter-date" id="dateContainer" style="display: none;">
+                    <input type="text" id="date" class="input" placeholder="Date">
+                    <span class="calendar-icon">&#128197;</span>
+                </div>
+                <div class="submitter-time" id="timeContainer" style="display: none;">
+                    <select id="time" class="input">
+                        <option value="" disabled selected>Select Time</option>
+                    </select>
+                </div>
+            </div>
+            <button class="submitButton" id="submitButton">Submit</button>
         </div>
     </div>
     <%- include("./partials/footer.ejs") %>
+
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script type="module">
-        import availableTimes from '/js/availableTimes.js';
+        import availableTimes from './js/availabletimes.js';
+        console.log(availableTimes);
+        let datePicker;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const tutorSelect = document.getElementById("tutor");
-            tutorSelect.addEventListener("change", onTutorChange);
-
-            flatpickr("#date", {
+        document.addEventListener('DOMContentLoaded', function() {
+            datePicker = flatpickr("#date", {
                 enableTime: false,
                 dateFormat: "Y-m-d",
-                onChange: (selectedDates, dateStr) => updateTimes(dateStr)
+                disable: [],
+                onChange: function(selectedDates, dateStr) {
+                    updateTimes(dateStr);
+                    validateDate(dateStr);
+                }
             });
+
+            // Bind event listener for tutor change
+            const tutorSelect = document.getElementById("tutor");
+            tutorSelect.addEventListener('change', onTutorChange);
+
+            // Bind event listener for submit button
+            const submitButton = document.getElementById("submitButton");
+            submitButton.addEventListener('click', submitAppointment);
         });
 
         function onTutorChange() {
             const tutor = document.getElementById("tutor").value;
-            document.getElementById("dateContainer").style.display = tutor ? 'block' : 'none';
-            document.getElementById("timeContainer").style.display = 'none';
-            updateDatePicker(tutor);
+
+            const dateContainer = document.getElementById("dateContainer");
+            const timeContainer = document.getElementById("timeContainer");
+            dateContainer.style.display = tutor ? 'block' : 'none';
+
+            document.getElementById("date").value = '';
+            document.getElementById("time").innerHTML = '<option value="" disabled selected>Select Time</option>';
+            timeContainer.style.display = 'none';
+
+            document.getElementById("submitFlag").hidden = true;
+
+            if (tutor) {
+                const availableDates = Object.keys(availableTimes[tutor] || {});
+                updateDatePicker(availableDates);
+            }
         }
 
-        function updateDatePicker(tutor) {
-            const availableDates = Object.keys(availableTimes[tutor]);
-            flatpickr("#date", {
-                disable: [date => !availableDates.includes(date.toISOString().split('T')[0])]
-            });
+        function updateDatePicker(availableDates) {
+            const formattedDates = availableDates.map(date => date.toString());
+
+            if (datePicker) {
+                datePicker.set('disable', [
+                    function(date) {
+                        const dateStr = date.toISOString().split('T')[0];
+                        return !formattedDates.includes(dateStr);
+                    }
+                ]);
+                datePicker.redraw();
+            }
         }
 
         function updateTimes(date) {
             const timeSelect = document.getElementById("time");
-            timeSelect.innerHTML = '<option value="" disabled selected>Select Time</option>';
-            const tutor = document.getElementById("tutor").value;
+            timeSelect.innerHTML = '<option value="" disabled selected>Select Time</option>'; // Clear previous options
+
             const timeContainer = document.getElementById("timeContainer");
+            const tutor = document.getElementById("tutor").value;
+            const submitFlag = document.getElementById("submitFlag");
 
             if (tutor && date) {
-                const times = availableTimes[tutor][date] || [];
-                times.forEach(time => {
-                    const option = document.createElement("option");
-                    option.value = time;
-                    option.textContent = time;
-                    timeSelect.appendChild(option);
-                });
-                timeContainer.style.display = times.length ? 'block' : 'none';
+                const availableTimesForDate = availableTimes[tutor]?.[date] || [];
+
+                if (availableTimesForDate.length === 0) {
+                    timeContainer.style.display = 'none';
+                } else {
+                    submitFlag.style.display = "none";
+                    availableTimesForDate.forEach(time => {
+                        const option = document.createElement("option");
+                        option.value = time;
+                        option.textContent = time;
+                        timeSelect.appendChild(option);
+                    });
+                    timeContainer.style.display = 'block';
+                }
             } else {
                 timeContainer.style.display = 'none';
+                submitFlag.style.display = "none";
+            }
+        }
+
+        function validateDate(date) {
+            const tutor = document.getElementById("tutor").value;
+            const submitFlag = document.getElementById("submitFlag");
+            submitFlag.hidden = true; // Hide error message initially
+
+            if (tutor && date) {
+                const availableTimesForDate = availableTimes[tutor]?.[date] || [];
+                // Validate availableTimesForDate as needed
             }
         }
 
         async function submitAppointment() {
-            disableSubmitButton()
             const fullName = document.getElementById("name").value;
             const email = document.getElementById("email").value;
             const date = document.getElementById("date").value;
             const time = document.getElementById("time").value;
             const tutor = document.getElementById("tutor").value;
 
-            try {
-                const result = await fetch("/api/scheduleAppointment", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        fullName,
-                        email,
-                        date,
-                        time,
-                        tutor
-                    })
-                });
+            console.log('Submitting Appointment:', { fullName, email, date, time, tutor});
 
-                const reqResult = await result
-                const message = await result.json();
-                document.getElementById("submitFlag").innerHTML = message["message"]
-                document.getElementById("submitFlag").style.display = "block"
+            const result = await fetch("/api/scheduleAppointment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    fullName,
+                    email,
+                    date,
+                    time,
+                    tutor
+                })
+            });
 
-                if (result.status === 200) {
-                    document.getElementById("submitFlag").style.color = "#0a3755"
-                    document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
-                    await sleep(1000);
-                    window.location.href = "/";
-                } else {
-                    document.getElementById("submitFlag").style.color = "#D8000C"
-                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
-                    await sleep(2000);
-                }
-            } catch (error) {
-                console.error('Error submitting appointment:', error);
+            const message = await result.json();
+            const submitFlag = document.getElementById("submitFlag");
+            submitFlag.innerHTML = message["message"];
+            submitFlag.style.display = "block";
+
+            if (result.status === 200) {
+                submitFlag.style.color = "#0a3755";
+                submitFlag.style.backgroundColor = "#b7dffa";
+                await sleep(1000);
+                window.location.href = "/";
+            } else {
+                submitFlag.style.color = "#D8000C";
+                submitFlag.style.backgroundColor = "#FFBABA";
+                await sleep(2000);
             }
 
             function sleep(ms) {
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
-            function disableSubmitButton() {
-                    document.getElementById("submitButton").disabled = true
-                    document.getElementById("submitButton").style.backgroundColor = "#b7dffa"
-                    document.getElementById("submitButton").style.cursor = "default"
-                }
         }
     </script>
 </body>
