@@ -58,3 +58,21 @@ a {
     font-weight: bold;
     letter-spacing: 5px;
 }
+
+@media (max-width: 768px) {
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        min-width: 20rem;
+    }
+    
+    .title-div {
+        min-height: 10rem; /* Adjust height for smaller screens */
+    }
+
+    .title-div h1 {
+        font-size: 40px; /* Adjust font size for smaller screens */
+        line-height: 10rem; /* Center text vertically */
+    }
+}
