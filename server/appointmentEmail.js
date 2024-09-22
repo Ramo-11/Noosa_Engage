@@ -35,7 +35,7 @@ async function sendAppointmentEmail(req, res) {
         <p>Best regards,</p>
         <p>Noosa Engage Team</p>
         <p><strong>Phone:</strong> ${phoneNumbers[tutor] || '+000000000'}<br>
-        <strong>Email:</strong> <a href="mailto:support@noosaengage.com">support@noosaengage.com</a><br>
+        <strong>Email:</strong> <a href="mailto:noosa@noosaengage.com">noosa@noosaengage.com</a><br>
         <strong>Website:</strong> <a href="https://www.noosaengage.com">www.noosaengage.com</a></p>
     `;
 
