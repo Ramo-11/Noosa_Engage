@@ -1,45 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Schedule an Appointment</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles/general.css">
     <link rel="stylesheet" href="/styles/schedule.css">
     <link rel="shortcut icon" href="/images/Logo-white.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <title>Schedule an Appointment</title>
 </head>
 <body>
     <%- include("./partials/nav.ejs") %>
     <div class="main-content">
         <div class="title-div">
-            <h1>Schedule an Appointment</h1>
+            <h1>Appointment</h1>
         </div>
         <div class="schedule-form">
             <h1>Appointment Details</h1>
             <p class="submitFlag" id="submitFlag" hidden></p>
             <div class="submitter-name">
-                <input type="text" id="name" class="input" placeholder="Full Name" maxlength="50">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" class="input" placeholder="" maxlength="50">
             </div>
             <div class="submitter-email">
-                <input type="email" id="email" class="input" placeholder="Email" maxlength="50">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="input" placeholder="" maxlength="50">
             </div>
+            
             <div class="submitter-tutor">
+                <label for="tutor">Select Tutor</label>
                 <select id="tutor" class="input">
-                    <option value="" disabled selected>Select Tutor</option>
+                    <option value="" disabled selected></option>
                     <option value="Mostafa Abdulaleem">Mostafa Abdulaleem</option>
                     <option value="Omar Abdelalim">Omar Abdelalim</option>
                 </select>
             </div>
+            
             <div class="submitter-date-time">
                 <div class="submitter-date" id="dateContainer" style="display: none;">
-                    <input type="text" id="date" class="input" placeholder="Date">
-                    <span class="calendar-icon">&#128197;</span>
+                    <label for="date">Date</label>
+                    <input type="text" id="date" class="input" placeholder="">
                 </div>
                 <div class="submitter-time" id="timeContainer" style="display: none;">
+                    <label for="time">Select Time</label>
                     <select id="time" class="input">
-                        <option value="" disabled selected>Select Time</option>
+                        <option value="" disabled selected></option>
                     </select>
                 </div>
             </div>
+            
             <button class="submitButton" id="submitButton">Submit</button>
         </div>
     </div>
@@ -48,7 +58,6 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script type="module">
         import availableTimes from './js/availableTimes.js';
-        console.log(availableTimes);
         let datePicker;
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -176,7 +185,7 @@
                 submitFlag.style.color = "#0a3755";
                 submitFlag.style.backgroundColor = "#b7dffa";
                 await sleep(1000);
-                window.location.href = "/";
+                location.reload(true);
             } else {
                 submitFlag.style.color = "#D8000C";
                 submitFlag.style.backgroundColor = "#FFBABA";

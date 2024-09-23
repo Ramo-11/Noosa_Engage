@@ -63,7 +63,7 @@
     color: #f37239
 }
 
-@media (max-width: 768px){
+@media (max-width: 430px){
     .navbar{
         opacity: 0.95;
     }
@@ -184,10 +184,4 @@
         transform: rotate(-45deg);
     }
 
-}
-
-@media (max-width: 500px){
-    .navbar-container input[type="checkbox"]:checked ~ .logo{
-        display: none;
-    }
 }
