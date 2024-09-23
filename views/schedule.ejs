@@ -88,7 +88,7 @@
             dateContainer.style.display = tutor ? 'block' : 'none';
 
             document.getElementById("date").value = '';
-            document.getElementById("time").innerHTML = '<option value="" disabled selected>Select Time</option>';
+            document.getElementById("time").innerHTML = '<option value="" disabled selected></option>';
             timeContainer.style.display = 'none';
 
             document.getElementById("submitFlag").hidden = true;
@@ -115,7 +115,7 @@
 
         function updateTimes(date) {
             const timeSelect = document.getElementById("time");
-            timeSelect.innerHTML = '<option value="" disabled selected>Select Time</option>'; // Clear previous options
+            timeSelect.innerHTML = '<option value="" disabled selected></option>'; // Clear previous options
 
             const timeContainer = document.getElementById("timeContainer");
             const tutor = document.getElementById("tutor").value;
