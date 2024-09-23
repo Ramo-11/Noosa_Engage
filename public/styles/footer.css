@@ -7,13 +7,14 @@ footer {
 .footer-div {
     height: 100%;
     display: flex;
+    flex-direction: row; /* Default layout for larger screens */
     justify-content: center;
     align-items: center;
     gap: 400px;
 }
 
 .footer-div h1 {
-    color: white
+    color: white;
 }
 
 .social-media {
@@ -28,4 +29,38 @@ footer {
 
 .social-media a:hover {
     color: #be7303;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer-div {
+        flex-direction: column; /* Stack items on top of each other for smaller screens */
+        gap: 20px; /* Reduced gap */
+        align-items: center; /* Center align for smaller screens */
+    }
+
+    .social-media {
+        flex-direction: row; /* Keep social media icons in a row */
+        justify-content: center; /* Center align social media icons */
+        gap: 20px; /* Reduced gap between icons */
+    }
+
+    .social-media a {
+        font-size: 50px; /* Smaller icons for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    footer {
+        height: auto; /* Allow footer to adjust height based on content */
+        padding: 1rem 0; /* Add some padding for better spacing */
+    }
+
+    .footer-div {
+        gap: 10px; /* Further reduced gap */
+    }
+
+    .social-media a {
+        font-size: 40px; /* Even smaller icons for very small screens */
+    }
 }
