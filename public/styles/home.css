@@ -145,3 +145,77 @@
     font-weight: bold;
 }
 
+@media (max-width: 430px) {
+    .main-content {
+        gap: 30px;
+    }
+
+    .intro-div {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center; 
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    .intro-div img {
+        max-width: 100%; /* Make the image responsive */
+    }
+
+    .text-div {
+        max-width: 100%; /* Allow the text to take up full width */
+        padding: 0 10px;
+    }
+
+    .text-div h1 {
+        font-size: 30px; /* Smaller font for smaller screens */
+    }
+
+    .text-div p {
+        font-size: 14px;
+        line-height: 1.3rem;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .classes-div {
+        max-width: 100%;
+        padding: 0;
+        gap: 20px; /* Reduced gap between items */
+        margin-bottom: 30px;
+    }
+
+    .classes-div > div {
+        width: 100%;
+        padding: 0 10px; /* Add padding to contain within screen */
+    }
+
+    .classes-div img {
+        width: 180px;
+        height: 160px; /* Smaller images for smaller screens */
+    }
+
+    .class-text h1 {
+        font-size: 16px; /* Adjust font size */
+    }
+
+    .class-text h3 {
+        font-size: 14px; /* Adjust font size */
+    }
+
+    .styled-header {
+        font-size: 1.8rem; /* Adjust header font size */
+        padding: 5px 10px; /* Smaller padding */
+        margin: 10px 0; /* Reduce margin */
+    }
+
+    .button_to_register {
+        width: 100%;
+        height: 40px;
+    }
+
+    .schedule {
+        font-size: 14px;
+        line-height: 36px; /* Adjust line height */
+    }
+}
