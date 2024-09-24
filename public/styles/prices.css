@@ -9,7 +9,7 @@
 
 .prices-divs {
     width: 90%;
-    min-height: 30rem;;
+    min-height: 30rem;
     margin-top: 150px;
     margin-bottom: 100px;
     display: flex;
@@ -63,10 +63,9 @@
 
 .button_to_register {
     width: 15rem;
-    height: 30rem;
+    height: 40px;
     margin-bottom: 200px;
     padding: 0;
-    height: 40px;
 }
 
 .schedule {
@@ -76,3 +75,62 @@
     text-align: center;
     line-height: 40px;
 }
+
+@media (max-width: 430px) {
+    .main-content {
+        margin-bottom: 50px; /* Adjusted margin for smaller screens */
+        gap: 20px; /* Reduced gap for better spacing */
+    }
+
+    .prices-divs {
+        flex-direction: column; /* Stack prices vertically */
+        gap: 20px; /* Adjusted gap for spacing */
+        width: 100%; /* Ensure full width */
+        justify-content: center; /* Center content horizontally */
+        align-items: center; /* Center content vertically */
+    }
+
+    .intro-session, .high-school, .college-other-level {
+        width: 70%; /* Adjust width for smaller screens */
+        max-height: none; /* Remove height limit for flexibility */
+        justify-content: center; /* Center content horizontally */
+        align-items: center; /* Center content vertically */
+    }
+
+    .picture_div {
+        height: auto; /* Allow height to adjust based on content */
+        display: flex; /* Use flexbox to center content */
+        justify-content: center; /* Center content horizontally */
+        align-items: center; /* Center content vertically */
+
+    }
+    
+    .picture_div img {
+        height: auto; /* Maintain aspect ratio */
+        max-height: 12rem; /* Limit height to keep aspect ratio */
+        width: auto; /* Allow width to adjust naturally */
+        max-width: 100%; /* Make sure the image does not exceed the width of the container */
+    }
+    .description {
+        gap: 10px; /* Reduce gap between description items */
+        padding: 10px; /* Add padding for better appearance */
+    }
+
+    .prices-divs h2 {
+        font-size: 24px; /* Adjust font size for headings */
+    }
+
+    .prices-divs h3 {
+        font-size: 12px; /* Adjust font size for subheadings */
+    }
+
+    .button_to_register {
+        width: 50%; /* Make button full width */
+        height: 40px; /* Set a fixed height */
+    }
+
+    .schedule {
+        line-height: 30px; /* Adjust line height for readability */
+    }
+}
+

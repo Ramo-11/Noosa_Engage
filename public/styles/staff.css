@@ -50,6 +50,11 @@
     justify-content: flex-start;
     gap: 30px;
 }
+.mostafa-social-media {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+}
 
 .tutor-info ul a {
     font-size: 30px;
@@ -58,4 +63,59 @@
 
 .tutor-info ul a:hover {
     color: #be7303;
+}
+
+@media (max-width: 430px) {
+    .main-content {
+        margin-bottom: 50px; /* Reduce margin at the bottom */
+        gap: 30px; /* Reduce gap between elements */
+    }
+
+    .tutor {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center; /* Center items horizontally */
+        min-width: 100%; /* Ensure full width */
+    }
+
+    .tutor img {
+        width: 100%; /* Make images responsive */
+        height: auto; /* Maintain aspect ratio */
+        max-width: 200px; /* Limit max width */
+    }
+
+    .tutor-info {
+        min-width: 100%; /* Ensure full width */
+        text-align: center; /* Center text */
+    }
+
+    .tutor-info h1 {
+        font-size: 30px; /* Adjust font size */
+    }
+
+    .tutor-info h2 {
+        font-size: 24px; /* Adjust font size */
+    }
+
+    .tutor-info h3 {
+        font-size: 20px; /* Adjust font size */
+    }
+    .omar-social-media {
+        justify-content: center; /* Center social media links */
+    }
+    .mostafa-social-media{
+        justify-content: center; /* Center social media links */
+    }
+
+    .tutor-info ul a {
+        font-size: 20px; /* Adjust font size */
+    }
+
+    ul li {
+        font-size: 14px; /* Make the font size smaller */
+        line-height: 1.5; /* Adjust line height for better spacing */
+        margin-bottom: 5px; /* Space between list items */
+        text-align: left; /* Ensure text aligns left */
+        padding-left: 10px;
+
+    }
 }
