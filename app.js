@@ -5,8 +5,11 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const { generalLogger } = require("./utils/generalLogger");
 const connectDB = require('./server/connectDB');
-const sessionMiddleware = require("./server/sessionConfig"); // Ensure path is correct
-const userStatusMiddleware = require("./server/userStatus"); // Import the middleware
+const sessionMiddleware = require("./server/sessionConfig");
+const userStatusMiddleware = require("./server/userStatus"); 
+const userMiddleware = require("./server/userMiddleware"); 
+
+
 
 
 // ********** End Imports **********
@@ -23,6 +26,7 @@ app.use(express.static("public"));
 app.use(cookieParser());
 app.use(sessionMiddleware); // Use session middleware
 app.use(userStatusMiddleware); // Use user status middleware
+app.use(userMiddleware);
 app.use("/", router);
 
 
