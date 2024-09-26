@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+</head>
+<body>
+
+    <h1>User Profile</h1>
+    
+    <div class="profile-container">
+        <div class="profile-picture">
+            <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" id="profileImg" style="width: 100px; height: 100px; border-radius: 50%;">
+        </div>
+        <div class="user-info">
+            <h2 id="userName">User Name</h2>
+            <p id="userEmail">Email: user@example.com</p>
+            <p id="userPhone">Phone: +1234567890</p>
+            <p id="userAddress">Address: 123 Example Street, City, Country</p>
+        </div>
+    </div>
+
+    <script>
+        // If you still want to use JavaScript to manipulate the DOM, you can use the data directly
+        const userData = {
+            firstName: "<%= user.firstName %>",
+            lastName: "<%= user.lastName %>",
+            email: "<%= user.email %>",
+            phoneNumber: "<%= user.phoneNumber %>",
+            address: "<%= user.address %>",
+            profilePicture: "<%= user.profilePicture %>" // Path to the profile picture
+        };
+
+        // Example of further manipulating the profile with JavaScript
+        document.getElementById("userName").innerText = `${userData.firstName} ${userData.lastName}`;
+        document.getElementById("userEmail").innerText = `Email: ${userData.email}`;
+        document.getElementById("userPhone").innerText = `Phone: ${userData.phoneNumber}`;
+        document.getElementById("userAddress").innerText = `Address: ${userData.address}`;
+        document.getElementById("profileImg").src = userData.profilePicture; // Set profile picture
+    </script>
+
+</body>
+</html>

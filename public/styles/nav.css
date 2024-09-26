@@ -1,66 +1,76 @@
 *,
 *::after,
-*::before{
+*::before {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
 }
 
-.html{
+.html {
     font-size: 62.5%;
 }
 
 .navbar input[type="checkbox"],
-.navbar .hamburger-lines{
+.navbar .hamburger-lines {
     display: none;
 }
 
 .logo-div img {
     width: 80px;
-    height: 80px
+    height: 80px;
 }
 
-
-.container{
-    max-width: 1200px;
+.container {
+    max-width: 100%;
     width: 100%;
     margin: auto;
 }
 
-.navbar{
+.navbar {
     width: 100%;
     background: #0d3754;
     height: 80px;
     z-index: 100;
 }
 
-.navbar-container{
+.navbar-container {
     display: flex;
-    justify-content: space-between;
-    height:80px;
+    justify-content: space-between; /* Space between items */
     align-items: center;
+    height: 80px;
 }
 
-.menu-items{
-    order: 2;
-    display: flex;
+.menu-items {
+    display: flex; /* Keep menu items in a row */
 }
 
-.menu-items li{
+.menu-items li {
     list-style: none;
     margin-left: 1.5rem;
     font-size: 1.3rem;
 }
 
-.navbar a{
+.profile-picture {
+    margin-left: -750px;
+    margin-right: 100px;
+}
+
+.profile-img {
+    width: 40px; /* Set width */
+    height: 40px; /* Set height */
+    border-radius: 50%; /* Make it circular */
+    object-fit: cover; /* Maintain aspect ratio */
+}
+
+.navbar a {
     color: #ffffff;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease-in-out;
 }
 
-.navbar a:hover{
-    color: #f37239
+.navbar a:hover {
+    color: #f37239;
 }
 
 @media (max-width: 430px){
@@ -103,6 +113,18 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+    }
+    .navbar-container .profile-picture {
+        display: block;
+        height: 40px;
+        width: 40px; 
+        position: absolute;
+        top: 20px;
+        right: -60px;
+        z-index: 2;
+        background: #0d3754;
+        display: flex;
+        justify-content: center;
     }
 
     .logo-div {
