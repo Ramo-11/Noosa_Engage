@@ -32,7 +32,11 @@
                 <% } %>
             </ul>
             <a href="/profile" class="profile-picture">
-                <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img">
+                <% if (user.profilePicture && user.profilePicture.data) { %>
+                    <img src="data:<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="Profile Picture" class="profile-img" style="width: 40px; height: 40px; border-radius: 50%;">
+                <% } else { %>
+                    <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img" style="width: 40px; height: 40px; border-radius: 50%;">
+                <% } %>
             </a>
         </div>
     </nav>

@@ -10,11 +10,9 @@ const getProfile = async (req, res) => {
 
     try {
         const user = await User.findById(req.session.userId);
-        console.log(user);
         if (!user) {
             return res.status(404).send("User not found"); // Handle user not found
         }
-        console.log(user);
 
         // Render the profile page with the user data
         res.render("profile", { user }); // Assuming you have a profile.ejs file
@@ -23,8 +21,6 @@ const getProfile = async (req, res) => {
         return res.status(500).send("Internal server error");
     }
 };
-
-
 
 const logout = (req, res) => {
 
@@ -85,9 +81,45 @@ async function loginUser(req, res) {
     }
 }
 
+const getUser = async (req) => {
+    // Check if there is a session and user ID
+    if (!req.session || !req.session.userId) {
+        // Return a default user object if not logged in
+        return {
+            isLoggedIn: false,
+            profilePicture: null, // Default value if no profile picture
+            // Add other default properties as needed
+        };
+    }
 
+    try {
+        const user = await User.findById(req.session.userId);
+        if (!user) {
+            return {
+                isLoggedIn: false,
+                profilePicture: null, // Default value if user is not found
+            };
+        }
+
+        // Return user data with logged-in status
+        return {
+            isLoggedIn: true,
+            profilePicture: user.profilePicture, // Include the user's profile picture
+            // Add other user properties as needed
+        };
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        return {
+            isLoggedIn: false,
+            profilePicture: null, // Default value in case of error
+        };
+    }
+};
+
+// Exporting the functions
 module.exports = {
     getProfile,
     logout,
     loginUser,
+    getUser, // Export the getUser function
 };

@@ -23,8 +23,8 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     profilePicture: {
-        type: String,  // URL or path to the picture
-        default: ""    // Empty string if no picture provided
+        data: Buffer,   // Store image as a binary Buffer
+        contentType: String // Store the content type (e.g., image/jpeg)
     },
     address: {
         type: String,
