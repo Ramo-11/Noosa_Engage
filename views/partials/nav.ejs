@@ -24,7 +24,16 @@
                 <li><a href="/schedule">Schedule</a></li>
                 <li><a href="/staff">Staff</a></li>
                 <li><a href="/contact">Contact us</a></li>
+                
+                <% if (userLoggedIn) { %>
+                    <li><a href="/logout">Log Out</a></li>
+                <% } else { %>
+                    <li><a href="/login">Log In</a></li>
+                <% } %>
             </ul>
+            <a href="/profile" class="profile-picture">
+                <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img">
+            </a>
         </div>
     </nav>
 </body>
