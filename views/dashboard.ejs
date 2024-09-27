@@ -13,8 +13,11 @@
         <div class="sidebar">
             <div class="profile-section">
                 <!-- Display the user's profile picture if available, otherwise show a placeholder -->
-                <img src="data:<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="Profile Picture" id="profileImg" style="width: 100px; height: 100px; border-radius: 50%;">
-                
+                <% if (user && user.profilePicture && user.profilePicture.data) { %>
+                    <img src="data:<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="Profile Picture" class="profile-img">
+                <% } else { %>
+                    <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img">
+                <% } %>                
                 <!-- Display user's name -->
                 <p class="user-email"><%= user.email %></p>
             </div>
