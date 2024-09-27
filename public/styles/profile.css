@@ -1,0 +1,164 @@
+/* General Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* Light background color */
+}
+
+/* Centering the Profile Container */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    background-color: white; /* White background for profile section */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    padding: 20px;
+    margin: 30px auto; /* Centering with automatic margins */
+    max-width: 600px; /* Max width for larger screens */
+}
+
+/* Title Styles */
+.title-div {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.title-div h1 {
+    font-size: 24px; /* Larger font size for the title */
+    color: #333; /* Darker text color */
+}
+
+/* Profile Picture Styles */
+.profile-picture {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-picture img {
+    width: 100px; /* Fixed size */
+    height: 100px;
+    border-radius: 50%; /* Circular image */
+    object-fit: cover; /* Ensure image covers the container */
+    border: 2px solid #007bff; /* Border color */
+}
+
+/* User Info Styles */
+.user-info {
+    text-align: center; /* Center text */
+}
+
+.user-info h2 {
+    font-size: 20px; /* Font size for user name */
+    color: #007bff; /* Blue color for the name */
+    margin-bottom: 10px; /* Space below the name */
+}
+
+.user-info p {
+    font-size: 16px; /* Font size for user info */
+    color: #555; /* Dark gray text color */
+}
+
+/* Edit Profile Styles */
+.edit-profile-container {
+    margin-top: 30px; /* Space above edit section */
+    background-color: #f9f9f9; /* Light gray background for edit form */
+    padding: 15px;
+    border-radius: 8px; /* Rounded corners */
+    width: 100%; /* Full width on small screens */
+}
+
+.edit-profile-container h3 {
+    text-align: center; /* Center title for edit section */
+    font-size: 20px; /* Font size for edit section title */
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column; /* Stack form elements */
+    gap: 15px; /* Space between elements */
+}
+
+/* Input and Button Styles */
+input[type="text"],
+input[type="tel"],
+input[type="file"] {
+    padding: 10px;
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 4px; /* Rounded corners */
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+button {
+    padding: 10px;
+    background-color: #007bff; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 15px; /* Less padding on small screens */
+    }
+
+    .title-div h1 {
+        font-size: 20px; /* Smaller title font */
+    }
+
+    .user-info h2 {
+        font-size: 18px; /* Smaller font for user name */
+    }
+
+    .user-info p {
+        font-size: 14px; /* Smaller font for user info */
+    }
+
+    .edit-profile-container h3 {
+        font-size: 18px; /* Smaller edit section title */
+    }
+
+    button {
+        font-size: 14px; /* Smaller button text */
+    }
+}
+
+/* Additional Styles for 430px and Below */
+@media (max-width: 430px) {
+    .profile-container {
+        margin: 15px; /* Less margin on very small screens */
+        padding: 10px; /* Less padding */
+    }
+
+    .title-div h1 {
+        font-size: 18px; /* Smaller title font */
+    }
+
+    .user-info h2 {
+        font-size: 16px; /* Smaller font for user name */
+    }
+
+    .user-info p {
+        font-size: 12px; /* Smaller font for user info */
+    }
+
+    .edit-profile-container h3 {
+        font-size: 16px; /* Smaller edit section title */
+    }
+
+    button {
+        font-size: 12px; /* Smaller button text */
+    }
+}

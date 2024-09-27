@@ -5,9 +5,9 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const { generalLogger } = require("./utils/generalLogger");
 const connectDB = require('./server/connectDB');
-const sessionMiddleware = require("./server/sessionConfig");
-const userStatusMiddleware = require("./server/userStatus"); 
-const userMiddleware = require("./server/userMiddleware"); 
+const sessionMiddleware = require("./server/middleWare/sessionConfig");
+const userStatusMiddleware = require("./server/middleWare/userStatus"); 
+const userMiddleware = require("./server/middleWare/userMiddleware"); 
 
 
 

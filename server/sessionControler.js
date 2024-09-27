@@ -22,6 +22,25 @@ const getProfile = async (req, res) => {
     }
 };
 
+const getDashboard = async (req, res) => {
+    if (!req.session || !req.session.userId) {
+        return res.redirect("/login"); // Redirect to login if not authenticated
+    }
+
+    try {
+        const user = await User.findById(req.session.userId).select('name email profilePicture'); // Select the fields you need
+        if (!user) {
+            return res.status(404).send("User not found"); // Handle user not found
+        }
+
+        console.log(user);
+        res.render("dashboard", { user, currntRoute: 'dashboard' });
+    } catch (err) {
+        console.error("Error fetching user profile:", err);
+        return res.status(500).send("Internal server error");
+    }
+};
+
 const logout = (req, res) => {
 
     // Check if userLoggedIn exists before destroying the session
@@ -121,5 +140,6 @@ module.exports = {
     getProfile,
     logout,
     loginUser,
-    getUser, // Export the getUser function
+    getUser,
+    getDashboard,
 };
