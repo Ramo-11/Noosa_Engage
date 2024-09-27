@@ -1,11 +1,11 @@
 const express = require("express")
 const route = express.Router()
-const sendEmail = require("./mail")
+const {sendEmail} = require("./mail");
 const sendAppointmentEmail = require("./appointmentEmail");
 const renderCoursePage = require("./courseController");
 const signupUser = require("./signupUser");
-const { getProfile, logout, loginUser, getDashboard } = require("./sessionControler"); // Ensure this path is correct
-const { upload, profilePictureHandler } = require('./profilePictureHandler'); // Import the multer and handler
+const { getProfile, logout, loginUser, getDashboard } = require("./sessionControler");
+const { upload, profilePictureHandler } = require('./profilePictureHandler');
 
 
 // *********** GET requests **********

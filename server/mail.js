@@ -37,4 +37,32 @@ async function sendEmail(req, res) {
     })
 }
 
-module.exports = sendEmail
+async function sendSignupEmail(user) {
+    const { email, firstName } = user;  // Extract user info
+
+    let mailTransporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "noosa@noosaengage.com",
+            pass: "cxpy yaqy zllx mrqn"
+        }
+    });
+
+    let details = {
+        from: "noosa@noosaengage.com",
+        to: email,  // Send to the user's email
+        subject: "Welcome to Noosa Engage",
+        text: `Hello ${firstName},\n\nThank you for signing up at Noosa Engage! We're excited to have you on board.\n\nBest regards,\nThe Noosa Engage Team`
+    };
+
+    mailTransporter.sendMail(details, (error) => {
+        if (!error) {
+            generalLogger.info(`Welcome email sent to ${email}`);
+        } else {
+            generalLogger.error("Failed to send welcome email");
+            generalLogger.debug(error);
+        }
+    });
+}
+
+module.exports  = { sendEmail, sendSignupEmail };
