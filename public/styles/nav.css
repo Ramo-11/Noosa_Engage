@@ -42,6 +42,7 @@
 
 .menu-items {
     display: flex; /* Keep menu items in a row */
+    margin-right: 160px;
 }
 
 .menu-items li {

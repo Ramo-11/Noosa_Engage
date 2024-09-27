@@ -3,7 +3,7 @@ const route = express.Router()
 const sendEmail = require("./mail")
 const sendAppointmentEmail = require("./appointmentEmail");
 const signupUser = require("./signupUser");
-const { getProfile, logout, loginUser, getUser } = require("./sessionControler"); // Ensure this path is correct
+const { getProfile, logout, loginUser, getDashboard } = require("./sessionControler"); // Ensure this path is correct
 const { upload, profilePictureHandler } = require('./profilePictureHandler'); // Import the multer and handler
 
 
@@ -16,6 +16,7 @@ route.get("/contact", (req, res) => res.render("contact"))
 route.get("/login", (req, res) => res.render("login"))
 route.get("/signup", (req, res) => res.render("signup"))
 route.get("/profile", getProfile);
+route.get("/dashboard", getDashboard);
 route.get('/logout', logout);
 
 

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/styles/dashboard.css">
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="profile-section">
+                <!-- Display the user's profile picture if available, otherwise show a placeholder -->
+                <img src="data:<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="Profile Picture" id="profileImg" style="width: 100px; height: 100px; border-radius: 50%;">
+                
+                <!-- Display user's name -->
+                <p class="user-email"><%= user.email %></p>
+            </div>
+
+            <ul class="menu-list">
+                <li><a href="/profile">Update Account</a></li>
+                <li><a href="/invoices">Invoices</a></li>
+                <li><a href="/settings">Settings</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <div class="content-box">
+                <h3>Recent Activity</h3>
+                <p>See your latest activities here.</p>
+            </div>
+            <div class="content-box">
+                <h3>Invoices</h3>
+                <p>View and manage your invoices.</p>
+            </div>
+            <div class="content-box">
+                <h3>Account Settings</h3>
+                <p>Update your account information.</p>
+            </div>
+            <div class="content-box">
+                <h3>Support</h3>
+                <p>Contact support for assistance.</p>
+            </div>
+        </div>
+    </div>
+    <%- include("./partials/footer.ejs") %>
+</body>
+</html>
