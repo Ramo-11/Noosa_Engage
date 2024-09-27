@@ -1,38 +1,58 @@
 <!DOCTYPE html>
-<!-- Coding By CodingNepal - codingnepalweb.com -->
 <html lang="en" dir="ltr">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title> 
+    <title>Login</title> 
     <link rel="stylesheet" href="/styles/general.css">
     <link rel="stylesheet" href="/styles/login.css">
-   </head>
+</head>
 <body>
-  <%- include("./partials/nav.ejs") %>
+    <%- include("./partials/nav.ejs") %>
+
     <div class="main-content">
         <div class="title-div">
             <h1>Log In</h1>
         </div>
-    <div class="wrapper">
-    <h1>Welcome Back</h1>
-    <form action="/api/login" method="POST">
-        <div class="input-box">
-          <input type="text" name="email" placeholder="Enter your email" required>
+        <div class="wrapper">
+            <h1>Welcome Back</h1>
+            
+            <!-- Error message section -->
+            <% if (typeof errorMessage !== "undefined") { %>
+                <div class="error-message">
+                    <p><%= errorMessage %></p>
+                </div>
+            <% } %>
+
+            <!-- Success message section -->
+            <% if (typeof successMessage !== "undefined") { %>
+                <div class="success-message">
+                    <p><%= successMessage %></p>
+                </div>
+                <script>
+                    setTimeout(function() {
+                        window.location.href = "/";
+                    }, 2000);  // 2-second delay before redirecting
+                </script>
+            <% } else { %>
+                <form action="/api/login" method="POST">
+                    <div class="input-box">
+                        <input type="text" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="password" placeholder="Password" required>
+                    </div>
+                    <div class="input-box button">
+                        <input type="submit" value="Log In">
+                    </div>
+                    <div class="text">
+                        <h3>Don't have an account? <a href="/signup">Sign up now</a></h3>
+                    </div>
+                </form>
+            <% } %>
         </div>
-        <div class="input-box">
-          <input type="password" name="password" placeholder="password" required>
-        </div>
-        <div class="input-box button">
-          <input type="submit" value="Log In">
-        </div>
-        <div class="text">
-            <h3>Do not have an account? <a href="/signup">Sign up now</a></h3>
-        </div>          
-    </form>
-    
     </div>
-  </div>
-  <%- include("./partials/footer.ejs") %>
+
+    <%- include("./partials/footer.ejs") %>
 </body>
 </html>

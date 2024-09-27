@@ -2,6 +2,8 @@
 const User = require("../models/User"); // Ensure the path to your User model is correct
 const bcrypt = require("bcrypt");
 const { generalLogger } = require("../utils/generalLogger");
+const { sendSignupEmail } = require("../server/mail");
+
 
 const getProfile = async (req, res) => {
     if (!req.session || !req.session.userId) {
@@ -73,32 +75,34 @@ async function loginUser(req, res) {
 
     if (!email || !password) {
         generalLogger.error("Error logging in: one or more fields are missing");
-        return res.status(400).send({ message: "Error: All fields must be completed" });
+        return res.status(400).render("login", { errorMessage: "All fields must be completed" });
     }
 
     try {
         const user = await User.findOne({ email });
         if (!user) {
             generalLogger.error("Error logging in: user not found");
-            return res.status(401).send({ message: "Error: Invalid email or password" });
+            return res.status(401).render("login", { errorMessage: "Invalid email or password" });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             generalLogger.error("Error logging in: incorrect password");
-            return res.status(401).send({ message: "Error: Invalid email or password" });
+            return res.status(401).render("login", { errorMessage: "Invalid email or password" });
         }
 
-        req.session.userLoggedIn = true; // Set userLoggedIn to true
-        req.session.userId = user._id; // Optionally, store the user ID
-    
+        // Set user session variables
+        req.session.userLoggedIn = true;
+        req.session.userId = user._id;
+
         generalLogger.info("User logged in successfully");
-        return res.redirect("/");
+        return res.status(200).render("login", { successMessage: "Login successful! Redirecting to homepage..." });
     } catch (error) {
         generalLogger.error("Error logging in: ", error);
-        return res.status(500).send({ message: "Internal server error" });
+        return res.status(500).render("login", { errorMessage: "Internal server error" });
     }
 }
+
 
 const getUser = async (req) => {
     // Check if there is a session and user ID
@@ -135,6 +139,48 @@ const getUser = async (req) => {
     }
 };
 
+async function signUpUser(req, res) {
+    const { firstName, lastName, email, password, confirmPassword } = req.body;
+
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+        generalLogger.error("Sign-up failed: Missing required fields");
+        return res.status(400).send({ message: "Error: All fields are required" });
+    }
+
+    if (password !== confirmPassword) {
+        generalLogger.error("Sign-up failed: Passwords do not match");
+        return res.status(400).send({ message: "Error: Passwords do not match" });
+    }
+
+    try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            generalLogger.error("Sign-up failed: Email already in use");
+            return res.status(400).send({ message: "Error: Email already in use" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = new User({
+            firstName,
+            lastName,
+            email,
+            password: hashedPassword
+        });
+
+        await newUser.save();
+        generalLogger.info(`New user registered: ${email}`);
+
+        sendSignupEmail(newUser);  // Send the welcome email after successful sign-up
+
+        // Redirect to login after successful registration
+        return res.redirect("/login");
+    } catch (error) {
+        generalLogger.error("Error registering user:", error);
+        return res.status(500).send({ message: "Error: Internal server error" });
+    }
+}
+
 // Exporting the functions
 module.exports = {
     getProfile,
@@ -142,4 +188,5 @@ module.exports = {
     loginUser,
     getUser,
     getDashboard,
+    signUpUser,
 };
