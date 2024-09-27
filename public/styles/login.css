@@ -12,6 +12,13 @@
     margin: 0;
     padding: 0;
 }
+
+.error-message {
+    color: #D8000C;
+    background-color: transparent;
+    margin-top: 50px;
+    display: block;
+}
 .wrapper {
     min-width: 40rem;
     margin-top: 5%;

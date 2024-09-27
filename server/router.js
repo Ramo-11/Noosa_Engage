@@ -2,8 +2,7 @@ const express = require("express")
 const route = express.Router()
 const {sendEmail} = require("./mail");
 const sendAppointmentEmail = require("./appointmentEmail");
-const signupUser = require("./signupUser");
-const { getProfile, logout, loginUser, getDashboard } = require("./sessionControler");
+const { getProfile, logout, loginUser, getDashboard, signUpUser } = require("./sessionControler");
 const { upload, profilePictureHandler } = require('./profilePictureHandler');
 
 
@@ -23,7 +22,7 @@ route.get('/logout', logout);
 // *********** POST requests **********
 route.post("/api/sendEmail", sendEmail)
 route.post("/api/scheduleAppointment", sendAppointmentEmail)
-route.post("/api/signup", signupUser);
+route.post("/api/signup", signUpUser);
 route.post("/api/login", loginUser);
 route.post('/profile/upload', upload.single('profilePicture'), profilePictureHandler);
 
