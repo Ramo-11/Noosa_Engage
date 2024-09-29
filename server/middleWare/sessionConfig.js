@@ -1,13 +1,14 @@
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 require("dotenv").config();
-if (process.env.NODE_ENV === "development") {
-    process.env.MONGO_URI = process.env.MONGODB_URI_DEV;
+if (process.env.NODE_ENV != "prodcution") {
+    process.env.MONGODB_URI = process.env.MONGODB_URI_DEV;
     process.env.DB_NAME = process.env.DB_NAME_DEV;
 } else {
-    process.env.MONGO_URI = process.env.MONGODB_URI_PROD;
+    process.env.MONGODB_URI = process.env.MONGODB_URI_PROD;
     process.env.DB_NAME = process.env.DB_NAME_PROD;
 }
+
 const sessionMiddleware = session({
     secret: process.env.SESSION_SECRET,
     resave: false,
