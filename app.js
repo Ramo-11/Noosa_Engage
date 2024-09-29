@@ -8,10 +8,6 @@ const connectDB = require('./server/connectDB');
 const sessionMiddleware = require("./server/middleWare/sessionConfig");
 const userStatusMiddleware = require("./server/middleWare/userStatus"); 
 const userMiddleware = require("./server/middleWare/userMiddleware"); 
-
-
-
-
 // ********** End Imports **********
 
 // ********** Initialization **************
