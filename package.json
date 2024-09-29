@@ -4,7 +4,7 @@
   "description": "website for noosa engage",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "cross-env NODE_ENV=development nodemon app.js",
     "start": "node app.js",
     "updateTimes": "node server/availableTimesHandler/updateAvailableTimes.js"
   },
