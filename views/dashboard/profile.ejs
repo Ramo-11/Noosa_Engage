@@ -33,30 +33,6 @@
         </div>
     </div>
 
-    <div class="edit-profile-container">
-        <h3>Edit Your Information</h3>
-        <form action="/profile/edit" method="POST">
-            <input type="hidden" name="userId" value="<%= user._id %>">
-
-            <label for="address">Address:</label>
-            <input type="text" name="address" id="address" value="<%= user.address %>" required>
-
-            <label for="phone">Phone Number:</label>
-            <input type="tel" name="phoneNumber" id="phone" value="<%= user.phoneNumber %>" required>
-
-            <label for="major">Major:</label>
-            <input type="text" name="major" id="major" value="<%= user.major || '' %>">
-
-            <label for="middleSchoolYear">Middle School Year:</label>
-            <input type="text" name="middleSchoolYear" id="middleSchoolYear" value="<%= user.middleSchoolYear || '' %>">
-
-            <label for="highSchoolYear">High School Year:</label>
-            <input type="text" name="highSchoolYear" id="highSchoolYear" value="<%= user.highSchoolYear || '' %>">
-
-            <button type="submit">Save Changes</button>
-        </form>
-    </div>
-
-    <%- include("./partials/footer.ejs") %>
+    <%- include("../partials/footer.ejs") %>
 </body>
 </html>

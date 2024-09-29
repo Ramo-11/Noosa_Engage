@@ -2,7 +2,7 @@ const express = require("express")
 const route = express.Router()
 const {sendEmail} = require("./mail");
 const sendAppointmentEmail = require("./appointmentEmail");
-const { getProfile, logout, loginUser, getDashboard, signUpUser } = require("./sessionControler");
+const { getProfile, logout, loginUser, getDashboard, signUpUser, getInvoicesForUser } = require("./sessionControler");
 const { upload, profilePictureHandler } = require('./profilePictureHandler');
 
 
@@ -14,9 +14,11 @@ route.get("/prices", (req, res) => res.render("prices"))
 route.get("/contact", (req, res) => res.render("contact"))
 route.get("/login", (req, res) => res.render("login"))
 route.get("/signup", (req, res) => res.render("signup"))
-route.get("/profile", getProfile);
+route.get("/dashboard/profile", getProfile);
 route.get("/dashboard", getDashboard);
 route.get('/logout', logout);
+route.get('/invoices', getInvoicesForUser); // Similar structure to the /dashboard route
+
 
 
 // *********** POST requests **********

@@ -3,6 +3,7 @@ const User = require("../models/User"); // Ensure the path to your User model is
 const bcrypt = require("bcrypt");
 const { generalLogger } = require("../utils/generalLogger");
 const { sendSignupEmail } = require("../server/mail");
+const Invoice = require('../models/invoice'); // Import the Invoice model
 
 
 const getProfile = async (req, res) => {
@@ -17,7 +18,7 @@ const getProfile = async (req, res) => {
         }
 
         // Render the profile page with the user data
-        res.render("profile", { user }); // Assuming you have a profile.ejs file
+        res.render("dashboard/profile", { user }); // Assuming you have a profile.ejs file
     } catch (err) {
         console.error("Error fetching user profile:", err);
         return res.status(500).send("Internal server error");
@@ -67,6 +68,18 @@ const logout = (req, res) => {
     console.log("User logged in status before destruction:", wasLoggedIn);
 };
 
+const getInvoicesForUser = async (req, res) => {
+    try {
+        const user = req.user; // Assuming user information is stored in req.user after login
+
+        const invoices = await Invoice.find({ customerName: user._id }).exec();
+
+        res.render('invoices', { user, invoices });
+    } catch (err) {
+        console.error("Error fetching invoices:", err);
+        res.status(500).send("Error retrieving invoices");
+    }
+};
 
 
 
@@ -82,13 +95,13 @@ async function loginUser(req, res) {
         const user = await User.findOne({ email });
         if (!user) {
             generalLogger.error("Error logging in: user not found");
-            return res.status(401).render("login", { errorMessage: "Invalid email or password" });
+            return res.status(401).render("login", { errorMessage: "Invalid email" });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             generalLogger.error("Error logging in: incorrect password");
-            return res.status(401).render("login", { errorMessage: "Invalid email or password" });
+            return res.status(401).render("login", { errorMessage: "Invalid password" });
         }
 
         // Set user session variables
@@ -142,25 +155,30 @@ const getUser = async (req) => {
 async function signUpUser(req, res) {
     const { firstName, lastName, email, password, confirmPassword } = req.body;
 
+    // Check for missing required fields
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
         generalLogger.error("Sign-up failed: Missing required fields");
-        return res.status(400).send({ message: "Error: All fields are required" });
+        return res.render('signup', { errorMessage: "Error: All fields are required" });
     }
 
+    // Check if passwords match
     if (password !== confirmPassword) {
         generalLogger.error("Sign-up failed: Passwords do not match");
-        return res.status(400).send({ message: "Error: Passwords do not match" });
+        return res.render('signup', { errorMessage: "Error: Passwords do not match" });
     }
 
     try {
+        // Check if user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             generalLogger.error("Sign-up failed: Email already in use");
-            return res.status(400).send({ message: "Error: Email already in use" });
+            return res.render('signup', { errorMessage: "Error: Email already in use" });
         }
 
+        // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Create new user
         const newUser = new User({
             firstName,
             lastName,
@@ -168,18 +186,21 @@ async function signUpUser(req, res) {
             password: hashedPassword
         });
 
+        // Save the user to the database
         await newUser.save();
         generalLogger.info(`New user registered: ${email}`);
 
-        sendSignupEmail(newUser);  // Send the welcome email after successful sign-up
+        // Send the welcome email after successful sign-up
+        sendSignupEmail(newUser);
 
         // Redirect to login after successful registration
         return res.redirect("/login");
     } catch (error) {
         generalLogger.error("Error registering user:", error);
-        return res.status(500).send({ message: "Error: Internal server error" });
+        return res.render('signup', { errorMessage: "Error: Internal server error" });
     }
 }
+
 
 // Exporting the functions
 module.exports = {
@@ -189,4 +210,5 @@ module.exports = {
     getUser,
     getDashboard,
     signUpUser,
+    getInvoicesForUser,
 };

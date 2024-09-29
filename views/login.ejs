@@ -15,7 +15,6 @@
             <h1>Log In</h1>
         </div>
         <div class="wrapper">
-            <h1>Welcome Back</h1>
             
             <!-- Error message section -->
             <% if (typeof errorMessage !== "undefined") { %>
@@ -31,10 +30,11 @@
                 </div>
                 <script>
                     setTimeout(function() {
-                        window.location.href = "/";
+                        window.location.href = "/dashboard";
                     }, 2000);  // 2-second delay before redirecting
                 </script>
             <% } else { %>
+                <h1>Welcome Back</h1>
                 <form action="/api/login" method="POST">
                     <div class="input-box">
                         <input type="text" name="email" placeholder="Enter your email" required>
