@@ -63,26 +63,6 @@ body {
     color: #555; /* Dark gray text color */
 }
 
-/* Edit Profile Styles */
-.edit-profile-container {
-    margin-top: 30px; /* Space above edit section */
-    background-color: #f9f9f9; /* Light gray background for edit form */
-    padding: 15px;
-    border-radius: 8px; /* Rounded corners */
-    width: 100%; /* Full width on small screens */
-}
-
-.edit-profile-container h3 {
-    text-align: center; /* Center title for edit section */
-    font-size: 20px; /* Font size for edit section title */
-}
-
-/* Form Styles */
-form {
-    display: flex;
-    flex-direction: column; /* Stack form elements */
-    gap: 15px; /* Space between elements */
-}
 
 /* Input and Button Styles */
 input[type="text"],

@@ -50,17 +50,50 @@
     margin-left: 1.5rem;
     font-size: 1.3rem;
 }
-
-.profile-picture {
-    margin-left: -750px;
+/* Profile picture container styles */
+.profile-picture-container {
+    margin-left: -1000px;
     margin-right: 100px;
+    position: relative; /* Positioning context for the dropdown */
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically within the container */
 }
 
+/* Dropdown styles */
+.dropdown {
+    display: none; /* Hidden by default */
+    position: absolute;
+    transform: translateX(-50%);
+    top: 50px;
+    background-color: #f37239;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    gap: 50px;
+    width: 150px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.dropdown.show {
+    display: block; /* Show dropdown when this class is added */
+}
+.dropdown ul {
+    padding: 5px; /* Remove default padding */
+    margin: 0; 
+    list-style-type: none; /* Remove bullet points */
+}
+
+.dropdown li {
+    margin: 10px 0; /* Adjust the vertical gap between items */
+}
+
+/* Profile image styles */
 .profile-img {
-    width: 40px; /* Set width */
-    height: 40px; /* Set height */
+    cursor: pointer; /* Change cursor to pointer for better UX */
+    width: 40px; /* Adjust width as needed */
+    height: 40px; /* Adjust height as needed */
     border-radius: 50%; /* Make it circular */
-    object-fit: cover; /* Maintain aspect ratio */
 }
 
 .navbar a {
@@ -71,7 +104,7 @@
 }
 
 .navbar a:hover {
-    color: #f37239;
+    color: #0d3754;
 }
 
 @media (max-width: 430px){
@@ -115,7 +148,7 @@
         flex-direction: column;
         justify-content: space-between;
     }
-    .navbar-container .profile-picture {
+    .navbar-container .profile-picture-container {
         display: block;
         height: 40px;
         width: 40px; 
@@ -128,6 +161,10 @@
         justify-content: center;
     }
 
+    .dropdown {
+     margin-left: 100px;
+    }
+    
     .logo-div {
         display: flex;
         justify-content: center; /* Centers the image horizontally */

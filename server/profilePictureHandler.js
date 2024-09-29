@@ -33,8 +33,9 @@ const profilePictureHandler = async (req, res) => {
     await user.save();
 
     // Send a response
-    res.json({ message: 'Profile picture uploaded successfully!' });
-  } catch (error) {
+    setTimeout(() => {
+        res.redirect("/dashboard/profile");
+    }, 2000);     } catch (error) {
     res.status(500).send('Internal Server Error');
   }
 };

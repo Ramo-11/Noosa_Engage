@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
         default: ""    // Empty string if no phone number provided
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false // Default to false for normal users
     }
 }, { timestamps: true });  // Automatically adds createdAt and updatedAt fields
 

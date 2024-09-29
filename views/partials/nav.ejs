@@ -24,23 +24,51 @@
                 <li><a href="/schedule">Schedule</a></li>
                 <li><a href="/staff">Staff</a></li>
                 <li><a href="/contact">Contact us</a></li>
-                
-                <% if (userLoggedIn) { %>
-                    <li><a href="/logout">Log Out</a></li>
-                <% } else { %>
-                    <li><a href="/login">Log In</a></li>
-                <% } %>
+
             </ul>
-            <% if (typeof currentRoute === 'undefined' || currentRoute !== '/dashboard') { %>
-                <a href="/dashboard" class="profile-picture">
-                    <% if (user && user.profilePicture && user.profilePicture.data) { %>
-                        <img src="data:<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="Profile Picture" class="profile-img">
-                    <% } else { %>
-                        <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img">
-                    <% } %>
-                </a>
-            <% } %>
+            <div class="profile-picture-container">
+                <% if (user && user.profilePicture && user.profilePicture.data) { %>
+                    <img src="data:<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="Profile Picture" class="profile-img" id="profile-pic">
+                <% } else { %>
+                    <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img" id="profile-pic">
+                <% } %>
+            
+                <div class="dropdown" id="dropdown-menu">
+                    <ul>
+                        <% if (userLoggedIn) { %>
+                            <% if (user.isAdmin) { %>
+                                <li><a href="/admin/dashboard">Admin Dashboard</a></li> <!-- Link for admin users -->
+                            <% } else { %>
+                                <li><a href="/dashboard">Dashboard</a></li> <!-- Link for normal users -->
+                            <% } %>
+                            <li><a href="/logout">Log Out</a></li>
+                        <% } else { %>
+                            <li><a href="/login">Log In</a></li>
+                            <li><a href="/signup">Sign Up</a></li>
+                        <% } %>
+                    </ul>
+                </div>                
+            </div>
         </div>
     </nav>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get elements
+            const profilePic = document.getElementById('profile-pic');
+            const dropdownMenu = document.getElementById('dropdown-menu');
+    
+            // Toggle dropdown on profile picture click
+            profilePic.addEventListener('click', function (event) {
+                dropdownMenu.classList.toggle('show'); // Toggle the 'show' class
+            });
+    
+            // Optional: Hide dropdown when clicking outside of it
+            document.addEventListener('click', function (event) {
+                if (!profilePic.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.classList.remove('show'); // Hide the dropdown if clicked outside
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -1,4 +1,3 @@
-// middleware/userStatus.js
 
 const userStatusMiddleware = (req, res, next) => {
     res.locals.userLoggedIn = req.session.userId ? true : false; // Check if the user is logged in
