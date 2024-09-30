@@ -16,51 +16,38 @@
     </div>
 
     <div class="profile-container">
-        <div class="profile-picture" style="position: relative;">
+        <div class="back-button-container">
+            <a href="/dashboard" class="back-button">←</a>
+        </div>
+        <div class="profile-picture">
             <% if (user.profilePicture && user.profilePicture.data) { %>
                 <img src="data:<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="Profile Picture" id="profileImg">
             <% } else { %>
                 <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" id="profileImg" style="width: 100px; height: 100px; border-radius: 50%;">
             <% } %>
-            
-            <!-- Edit Label -->
             <span id="editLabel" class="edit-label">Edit</span>
-        
-            <!-- Upload Profile Picture Form -->
             <form id="uploadForm" action="/api/profilepictureupload" method="POST" enctype="multipart/form-data" style="display: none;">
                 <input type="hidden" name="userId" value="<%= user._id %>">
                 <input type="file" name="profilePicture" id="profilePictureInput" style="display: none;" accept="image/*" required>
             </form>
         </div>
         
-        
-
-        <!-- Edit Profile Form -->
         <form id="editProfileForm" action="/api/editprofile" method="POST">
             <div class="user-info">
                 <button type="button" id="editButton" class="edit-btn">Edit</button>
                 <h2 id="userName"><%= user.firstName %> <%= user.lastName %></h2>
-                
-                <!-- Editable Fields -->
                 <label for="userEmail">Email:</label>
                 <input type="email" name="email" id="userEmail" value="<%= user.email %>" disabled>
-                
                 <label for="userPhone">Phone Number:</label>
                 <input type="tel" name="phoneNumber" id="userPhone" value="<%= user.phoneNumber %>" disabled>
-                
                 <label for="userAddress">Address:</label>
                 <input type="text" name="address" id="userAddress" value="<%= user.address %>" disabled>
-
-                <!-- Additional Fields -->
                 <label for="school">Current School:</label>
                 <input type="text" name="school" id="school" value="<%= user.school %>" disabled>
-                
                 <label for="grade">Grade Level:</label>
                 <input type="text" name="grade" id="grade" value="<%= user.grade %>" disabled>
-                
                 <label for="subjects">Subjects Needing Help In:</label>
                 <input type="text" name="subjects" id="subjects" value="<%= user.subjects %>" disabled>
-                
                 <label for="learningStyle">Preferred Learning Style:</label>
                 <select name="learningStyle" id="learningStyle" disabled>
                     <option value="visual" <%= user.learningStyle === 'visual' ? 'selected' : '' %>>Visual</option>
@@ -68,13 +55,10 @@
                     <option value="reading/writing" <%= user.learningStyle === 'reading/writing' ? 'selected' : '' %>>Reading/Writing</option>
                     <option value="kinesthetic" <%= user.learningStyle === 'kinesthetic' ? 'selected' : '' %>>Kinesthetic</option>
                 </select>
-                
                 <label for="goals">Academic Goals:</label>
                 <textarea name="goals" id="goals" rows="4" disabled><%= user.goals %></textarea>
-                
                 <label for="learningChallenges">Learning Challenges/Accommodations:</label>
                 <textarea name="learningChallenges" id="learningChallenges" rows="4" disabled><%= user.learningChallenges %></textarea>
-                
                 <button type="submit" id="saveButton" class="save-btn" disabled>Save Changes</button>
             </div>
         </form>
@@ -82,36 +66,29 @@
 
     <%- include("../partials/footer.ejs") %>
     <script>
-        let originalProfilePictureSrc = document.getElementById('profileImg').src; // Store the original image source
-        let originalValues = {}; // Store original input values
-    
-        // Store original values from inputs and textareas
+        let originalProfilePictureSrc = document.getElementById('profileImg').src;
+        let originalValues = {};
+
         document.querySelectorAll('#editProfileForm input, #editProfileForm textarea, #editProfileForm select').forEach(input => {
             originalValues[input.name] = input.value;
         });
-    
+
         document.getElementById('profilePictureInput').addEventListener('change', function() {
-            // Check if a file is selected
             if (this.files && this.files[0]) {
-                // Optionally, update the profile image preview if a new file is selected
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    document.getElementById('profileImg').src = e.target.result; // Update the image with the new file
+                    document.getElementById('profileImg').src = e.target.result;
                 }
                 reader.readAsDataURL(this.files[0]);
-
-                // Submit the upload form when a file is selected
                 document.getElementById('uploadForm').submit();
             }
         });
 
-        // Event listener for the edit label to trigger the file input
         document.getElementById('editLabel').addEventListener('click', function() {
-            document.getElementById('profilePictureInput').click(); // Trigger the file input click
+            document.getElementById('profilePictureInput').click();
         });
 
-        // Add event listener to the profile image for hover effect
-        const profilePictureContainer = document.querySelector('.profile-picture'); // Assuming this is the container for the image
+        const profilePictureContainer = document.querySelector('.profile-picture');
         const profilePicture = document.getElementById('profileImg');
         const editLabel = document.createElement('div');
         editLabel.id = 'editLabel';
@@ -119,57 +96,43 @@
         editLabel.style.position = 'absolute';
         editLabel.style.top = '50%';
         editLabel.style.left = '50%';
-        editLabel.style.transform = 'translate(-50%, -50%)'; // Center the label
+        editLabel.style.transform = 'translate(-50%, -50%)';
         editLabel.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
         editLabel.style.padding = '5px';
         editLabel.style.borderRadius = '5px';
-        editLabel.style.display = 'none'; // Hidden by default
-        editLabel.style.cursor = 'pointer'; // Show pointer cursor
-        profilePictureContainer.appendChild(editLabel); // Add edit label to the profile picture container
-    
-        // Show edit label on hover
+        editLabel.style.display = 'none';
+        editLabel.style.cursor = 'pointer';
+        profilePictureContainer.appendChild(editLabel);
+
         profilePictureContainer.addEventListener('mouseenter', function() {
             editLabel.style.display = 'block';
         });
         profilePictureContainer.addEventListener('mouseleave', function() {
             editLabel.style.display = 'none';
         });
-    
-        // Trigger file input on edit label click
+
         editLabel.addEventListener('click', function() {
-            document.getElementById('profilePictureInput').click(); // Trigger the file input click
+            document.getElementById('profilePictureInput').click();
         });
-    
-        // JavaScript to handle Edit button functionality
+
         document.getElementById('editButton').addEventListener('click', function() {
-            // Get all input and textarea elements except the name (h2 for first and last name)
             const inputs = document.querySelectorAll('#editProfileForm input:not([id="userName"]), #editProfileForm select, #editProfileForm textarea');
             const saveButton = document.getElementById('saveButton');
-    
-            // Toggle the disabled state of the fields and save button
             inputs.forEach(input => {
                 input.disabled = !input.disabled;
             });
-    
             saveButton.disabled = !saveButton.disabled;
-    
-            // Optionally, change the button text to 'Cancel Edit' or 'Edit'
             this.textContent = inputs[0].disabled ? 'Edit' : 'Cancel Edit';
-    
-            // If canceling edits, revert to the original input values
             if (inputs[0].disabled) {
                 inputs.forEach(input => {
-                    input.value = originalValues[input.name]; // Revert input and textarea values
+                    input.value = originalValues[input.name];
                 });
             } else {
-                // Store current values when editing starts
                 inputs.forEach(input => {
-                    originalValues[input.name] = input.value; // Update original values
+                    originalValues[input.name] = input.value;
                 });
             }
         });
     </script>
-    
-    
 </body>
 </html>
