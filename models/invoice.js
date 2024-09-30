@@ -35,6 +35,11 @@ const invoiceSchema = new mongoose.Schema({
         default: function() {
             return this.hours * this.quantity * 50;  // Auto-calculate total
         }
+    },
+    isPaid: {
+        type: Boolean,
+        required: true,
+        default: false  // Default value is false, meaning unpaid
     }
 }, { timestamps: true });  // Automatically adds createdAt and updatedAt fields
 

@@ -1,3 +1,4 @@
+/* Reset and Global Styles */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -16,38 +17,33 @@ body {
     width: 100%;
 }
 
+/* Sidebar Styles */
 .sidebar {
     width: 250px;
-    background: linear-gradient(135deg, #f37239, #f39c12, #f1c40f); /* Creates a gradient effect */
+    background: linear-gradient(135deg, #f37239, #f39c12, #f1c40f);
     color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a shadow for a subtle 3D effect */
-    transition: background 0.5s ease; /* Smooth transition for color changes */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.5s ease;
 }
 
 .sidebar:hover {
-    background: linear-gradient(135deg, #f39c12, #f37239, #e74c3c); /* Changes the gradient on hover */
+    background: linear-gradient(135deg, #f39c12, #f37239, #e74c3c);
 }
-
 
 .profile-section {
     text-align: center;
     margin-bottom: 30px;
 }
 
-.profile-picture {
+.profile-img {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     margin-bottom: 10px;
-}
-
-.user-name {
-    font-size: 1.2em;
-    font-weight: bold;
 }
 
 .menu-list {
@@ -73,11 +69,12 @@ body {
     background-color: #34495e;
 }
 
+/* Main Content Styles */
 .main-content {
     flex-grow: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    grid-gap: 20px;
+    display: flex; /* Changed to flex for vertical stacking */
+    flex-direction: column; /* Ensures content stacks vertically */
+    gap: 20px; /* Space between sections */
     padding: 40px;
 }
 
@@ -89,6 +86,7 @@ body {
     text-align: center;
 }
 
+/* Upcoming Appointments Section */
 .content-box h3 {
     font-size: 1.5em;
     margin-bottom: 10px;
@@ -99,13 +97,87 @@ body {
     color: #555;
 }
 
+/* Invoice Block Styling */
+.invoice-block {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    text-align: left;
+}
+
+.invoice-block h2 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+
+.invoice-block p {
+    font-size: 1em;
+    color: #555;
+    margin: 5px 0;
+}
+
+.invoice-block .view-details {
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1em;
+}
+
+.invoice-block .view-details:hover {
+    background-color: #d35400;
+}
+
+/* Paid / Not Paid Status Styling */
+.status {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.status.not-paid {
+    color: red;
+}
+
+.status.paid {
+    color: green;
+}
+
+/* Hover Effect */
+.invoice-block:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     .main-content {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        padding: 20px;
     }
 
     .sidebar {
         width: 200px;
+    }
+
+    .invoice-block {
+        padding: 15px;
+    }
+
+    .invoice-block h2 {
+        font-size: 1.2em;
+    }
+
+    .invoice-block p {
+        font-size: 0.9em;
+    }
+
+    .invoice-block .view-details {
+        font-size: 0.9em;
     }
 }
 
@@ -120,6 +192,21 @@ body {
 
     .main-content {
         padding: 20px;
-        grid-template-columns: 1fr;
+    }
+
+    .invoice-block {
+        padding: 10px;
+    }
+
+    .invoice-block h2 {
+        font-size: 1em;
+    }
+
+    .invoice-block p {
+        font-size: 0.8em;
+    }
+
+    .invoice-block .view-details {
+        font-size: 0.8em;
     }
 }
