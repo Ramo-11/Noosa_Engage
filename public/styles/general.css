@@ -61,6 +61,25 @@ a {
     letter-spacing: 5px;
 }
 
+
+.back-button-container {
+    margin-bottom: 20px; /* Add some space below the back button */
+}
+
+.back-button {
+    background-color: #f0f0f0; /* Light background color */
+    color: #333; /* Text color */
+    padding: 10px 15px; /* Space inside the button */
+    text-decoration: none; /* Remove underline */
+    border-radius: 5px; /* Rounded corners */
+    border: 1px solid #ccc; /* Optional: Add a border */
+    font-size: 16px; /* Adjust the font size */
+}
+
+.back-button:hover {
+    background-color: #e0e0e0; /* Slightly darker background on hover */
+}
+
 @media (max-width: 430px) {
     body {
         display: flex;

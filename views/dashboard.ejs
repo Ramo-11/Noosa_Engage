@@ -16,6 +16,7 @@
 </head>
 <body>
     <%- include("./partials/nav.ejs") %>
+    
     <div class="dashboard-container">
         <!-- Sidebar -->
         <div class="sidebar">
@@ -29,7 +30,7 @@
 
             <ul class="menu-list">
                 <li><a href="/dashboard/profile">Update Account</a></li>
-                <li><a href="/invoices">Invoices</a></li>
+                <li><a href="/dashboard/invoices">Invoices</a></li>
                 <li><a href="/settings">Settings</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
@@ -37,24 +38,46 @@
 
         <!-- Main Content Area -->
         <div class="main-content">
+            <!-- Upcoming Appointments Section -->
             <div class="content-box">
-                <h3>Recent Activity</h3>
-                <p>See your latest activities here.</p>
+                <h3>Upcoming Appointments</h3>
+                <p>See your upcoming appointments here.</p>
             </div>
+
+            <!-- Invoices Section (Only Unpaid) -->
             <div class="content-box">
-                <h3>Invoices</h3>
-                <p>View and manage your invoices.</p>
+                <h3>Most Recent Invoice</h3>
+                <% if (invoice) { %>
+                    <div class="invoice-block">
+                        <h2>Invoice #<%= invoice.invoiceNumber %></h2>
+                        <p><strong>Customer:</strong> <%= invoice.customerName %></p>
+                        <p><strong>Session Date:</strong> <%= invoice.sessionDate.toDateString() %></p> <!-- Format date for better readability -->
+                        <p><strong>Due Date:</strong> <%= invoice.dueDate.toDateString() %></p> <!-- Format date for better readability -->
+                        <p><strong>Hours:</strong> <%= invoice.hours %></p>
+                        <p><strong>Total:</strong> $<%= invoice.total.toFixed(2) %></p> <!-- Format total to two decimal places -->
+                        <p class="status <%= invoice.isPaid ? 'paid' : 'not-paid' %>">
+                            <%= invoice.isPaid ? 'Paid' : 'Not Paid' %>
+                        </p>
+                    </div>
+                <% } else { %>
+                    <p>No invoices found.</p>
+                <% } %>
             </div>
+            
+
+            <!-- Other sections -->
             <div class="content-box">
                 <h3>Account Settings</h3>
                 <p>Update your account information.</p>
             </div>
+
             <div class="content-box">
                 <h3>Support</h3>
                 <p>Contact support for assistance.</p>
             </div>
         </div>
     </div>
+    
     <%- include("./partials/footer.ejs") %>
 </body>
 </html>

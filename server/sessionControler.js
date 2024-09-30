@@ -55,20 +55,35 @@ const updateProfile = async (req, res) => {
 
 const getDashboard = async (req, res) => {
     if (!req.session || !req.session.userId) {
-        return res.redirect("/login"); // Redirect to login if not authenticated
+        return res.redirect("/login");
     }
 
     try {
-        const user = await User.findById(req.session.userId).select('name email profilePicture'); // Select the fields you need
+        // Fetch the user data
+        const user = await User.findById(req.session.userId).select('name email profilePicture');
         if (!user) {
-            return res.status(404).send("User not found"); // Handle user not found
+            return res.status(404).send("User not found");
         }
 
-        res.render("dashboard", { user, currntRoute: 'dashboard' });
+        // Fetch all invoices for the user and sort by date in descending order
+        const invoices = await Invoice.find({ customer: user._id }).sort({ createdAt: -1 }); // Assuming 'createdAt' is the field for invoice date
+
+        // Get only the most recent invoice
+        const recentInvoice = invoices.length > 0 ? invoices[0] : null;
+
+        res.render("dashboard", {
+            user,
+            invoice: recentInvoice, // Passing only the most recent invoice
+            currentRoute: 'dashboard'
+        });
     } catch (err) {
+        console.error("Error fetching invoices:", err);
         return res.status(500).send("Internal server error");
     }
 };
+
+
+
 
 const logout = (req, res) => {
 
@@ -93,16 +108,30 @@ const logout = (req, res) => {
 };
 
 const getInvoicesForUser = async (req, res) => {
+    // Check if userId exists in the session
+    if (!req.session || !req.session.userId) {
+        return res.redirect("/login"); // Redirect to login if not authenticated
+    }
+
     try {
-        const user = req.user; // Assuming user information is stored in req.user after login
+        // Fetch the user based on userId stored in the session
+        const user = await User.findById(req.session.userId);
+        if (!user) {
+            return res.status(404).send("User not found"); // Handle user not found
+        }
 
-        const invoices = await Invoice.find({ customerName: user._id }).exec();
+        // Fetch invoices associated with the user's ID
+        const invoices = await Invoice.find({ customer: user._id }).exec();
 
-        res.render('invoices', { user, invoices });
+        // Render the invoices page with user and invoices data
+        res.render("dashboard/invoices", { user, invoices }); // Adjust the path to your invoices.ejs file
     } catch (err) {
-        res.status(500).send("Error retrieving invoices");
+        console.error("Error retrieving invoices:", err);
+        return res.status(500).send("Error retrieving invoices");
     }
 };
+
+
 
 
 

@@ -19,7 +19,7 @@ route.get("/signup", (req, res) => res.render("signup"))
 route.get("/dashboard/profile", getProfile);
 route.get("/dashboard", getDashboard);
 route.get('/logout', logout);
-route.get('/invoices', getInvoicesForUser); // Similar structure to the /dashboard route
+route.get('/dashboard/invoices', getInvoicesForUser); // Similar structure to the /dashboard route
 
 
 // *********** POST requests **********

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/invoices.css">
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+    <title>Invoice Dashboard</title>
+</head>
+<body>
+    <%- include("../partials/nav.ejs") %>
+
+    <div class="title-div">
+        <h1>Your Invoices</h1>
+    </div>
+    <div class="container">
+        <div class="back-button-container">
+            <a href="/dashboard" class="back-button">←</a>
+        </div>
+        <div class="invoice-grid">
+            <% if (invoices.length > 0) { %>
+                <% invoices.forEach(invoice => { %>
+                    <div class="invoice-block">
+                        <h2>Invoice <%= invoice.invoiceNumber %></h2>
+                        <p><strong>Session Date:</strong> <%= invoice.sessionDate.toDateString() %></p>
+                        <p><strong>Due Date:</strong> <%= invoice.dueDate.toDateString() %></p>
+                        <p><strong>Hours:</strong> <%= invoice.hours %></p>
+                        <p><strong>Quantity:</strong> <%= invoice.quantity %></p>
+                        <p><strong>Total:</strong> $<%= invoice.total.toFixed(2) %></p>
+                        <p class="status <%= invoice.isPaid ? 'paid' : 'not-paid' %>">
+                            <%= invoice.isPaid ? 'Paid' : 'Not Paid' %>
+                        </p>
+                        <button class="view-details" data-invoice='<%= JSON.stringify(invoice).replace(/'/g, "&apos;") %>' onclick="showDetails(this)">View Details</button>
+                    </div>                    
+                <% }); %>
+            <% } else { %>
+                <p>No invoices found.</p>
+            <% } %>
+        </div>
+        
+        <div id="detailsForm" class="details-form">
+            <span class="close-button" onclick="closeDetails()">✖️</span> <!-- Close button -->
+            <div id="invoiceDetailsContent"></div>
+            <div id="payButtonContainer" style="display: none;">
+                <button class="pay-button">Pay Now</button>
+            </div>
+        </div>
+    </div>
+    <%- include("../partials/footer.ejs") %>
+
+    <script>
+       function showDetails(button) {
+            const invoice = JSON.parse(button.getAttribute('data-invoice'));
+            console.log(invoice); // Log the invoice object to see its structure
+
+            const detailsForm = document.getElementById("detailsForm");
+            const invoiceDetailsContent = document.getElementById("invoiceDetailsContent");
+            const payButtonContainer = document.getElementById("payButtonContainer");
+
+            // Populate the details form with invoice information
+            invoiceDetailsContent.innerHTML = `
+                <p><strong>Invoice Number:</strong> ${invoice.invoiceNumber}</p>
+                <p><strong>Session Date:</strong> ${new Date(invoice.sessionDate).toLocaleDateString()}</p>
+                <p><strong>Due Date:</strong> ${new Date(invoice.dueDate).toLocaleDateString()}</p>
+                <p><strong>Hours:</strong> ${invoice.hours}</p>
+                <p><strong>Quantity:</strong> ${invoice.quantity}</p>
+                <p><strong>Total:</strong> $${invoice.total ? invoice.total.toFixed(2) : 'N/A'}</p>
+                <p><strong>Status:</strong> ${invoice.isPaid ? 'Paid' : 'Not Paid'}</p>
+            `;
+
+            // Show or hide the pay button based on payment status
+            payButtonContainer.style.display = invoice.isPaid ? 'none' : 'block';
+
+            // Slide the form into view
+            detailsForm.classList.add("active");
+        }
+
+        function closeDetails() {
+            const detailsForm = document.getElementById("detailsForm");
+            detailsForm.classList.remove("active"); // Remove active class to slide it out
+        }
+
+
+    </script>
+</body>
+</html>

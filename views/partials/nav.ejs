@@ -27,7 +27,7 @@
 
             </ul>
             <div class="profile-picture-container">
-                <% if (currentRoute === '/dashboard' || currentRoute === '/dashboard/profile') { %>
+                <% if (currentRoute === '/dashboard' || currentRoute === '/dashboard/profile' || currentRoute === '/dashboard/invoices') { %>
                 <% } else { %>
                     <% if (user && user.profilePicture && user.profilePicture.data) { %>
                         <img src="data:<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="Profile Picture" class="profile-img" id="profile-pic">
