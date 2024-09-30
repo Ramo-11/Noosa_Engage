@@ -27,12 +27,16 @@
 
             </ul>
             <div class="profile-picture-container">
-                <% if (user && user.profilePicture && user.profilePicture.data) { %>
-                    <img src="data:<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="Profile Picture" class="profile-img" id="profile-pic">
+                <% if (currentRoute === '/dashboard' || currentRoute === '/dashboard/profile') { %>
                 <% } else { %>
-                    <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img" id="profile-pic">
+                    <% if (user && user.profilePicture && user.profilePicture.data) { %>
+                        <img src="data:<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="Profile Picture" class="profile-img" id="profile-pic">
+                    <% } else { %>
+                        <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img" id="profile-pic">
+                    <% } %>
                 <% } %>
             
+                <% if (currentRoute !== '/dashboard' && currentRoute !== '/profile') { %>
                 <div class="dropdown" id="dropdown-menu">
                     <ul>
                         <% if (userLoggedIn) { %>
@@ -47,8 +51,10 @@
                             <li><a href="/signup">Sign Up</a></li>
                         <% } %>
                     </ul>
-                </div>                
+                </div>
+                <% } %>
             </div>
+            
         </div>
     </nav>
     <script>

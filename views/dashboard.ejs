@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="/styles/dashboard.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-XEW6Y9S2YM');
+    </script>
 </head>
 <body>
     <%- include("./partials/nav.ejs") %>
@@ -12,14 +20,11 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="profile-section">
-                <!-- Display the user's profile picture if available, otherwise show a placeholder -->
                 <% if (user && user.profilePicture && user.profilePicture.data) { %>
                     <img src="data:<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="Profile Picture" class="profile-img">
                 <% } else { %>
                     <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img">
                 <% } %>                
-                <!-- Display user's name -->
-                <p class="user-email"><%= user.email %></p>
             </div>
 
             <ul class="menu-list">

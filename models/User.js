@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// Define the User schema
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -15,7 +14,7 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true,  // Ensure email is unique
+        unique: true,
         trim: true
     },
     password: {
@@ -23,22 +22,47 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     profilePicture: {
-        data: Buffer,   // Store image as a binary Buffer
-        contentType: String // Store the content type (e.g., image/jpeg)
+        data: Buffer,
+        contentType: String
     },
     address: {
         type: String,
-        default: ""    // Empty string if no address provided
+        default: "" // Optional field
     },
     phoneNumber: {
         type: String,
-        default: ""    // Empty string if no phone number provided
+        default: "" // Optional field
+    },
+    school: {
+        type: String,
+        default: "" // Optional field
+    },
+    grade: {
+        type: String,
+        default: "" // Optional field
+    },
+    subjects: {
+        type: String,
+        default: "" // Optional field
+    },
+    learningStyle: {
+        type: String,
+        default: "" // Optional field
+    },
+    goals: {
+        type: String,
+        default: "" // Optional field
+    },
+    learningChallenges: {
+        type: String,
+        default: "" // Optional field
     },
     isAdmin: {
         type: Boolean,
-        default: false // Default to false for normal users
+        default: false
     }
-}, { timestamps: true });  // Automatically adds createdAt and updatedAt fields
+}, { timestamps: true });
+
 
 // Create the model
 const User = mongoose.model('User', userSchema);
