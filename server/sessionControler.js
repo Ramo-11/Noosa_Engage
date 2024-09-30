@@ -20,10 +20,38 @@ const getProfile = async (req, res) => {
         // Render the profile page with the user data
         res.render("dashboard/profile", { user }); // Assuming you have a profile.ejs file
     } catch (err) {
-        console.error("Error fetching user profile:", err);
         return res.status(500).send("Internal server error");
     }
 };
+
+const updateProfile = async (req, res) => {
+    try {
+        const userId = req.session.userId; // Assuming you have user authentication in place
+        const updatedData = {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            phoneNumber: req.body.phoneNumber,
+            address: req.body.address,
+            school: req.body.school,
+            grade: req.body.grade,
+            subjects: req.body.subjects,
+            learningStyle: req.body.learningStyle,
+            goals: req.body.goals,
+            learningChallenges: req.body.learningChallenges
+        };
+
+        // Update the user in the database
+        await User.findByIdAndUpdate(userId, updatedData, { new: true });
+        
+        // Redirect or respond with a success message
+        res.redirect('/dashboard/profile'); // Redirect to the profile page after update
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
 
 const getDashboard = async (req, res) => {
     if (!req.session || !req.session.userId) {
@@ -36,10 +64,8 @@ const getDashboard = async (req, res) => {
             return res.status(404).send("User not found"); // Handle user not found
         }
 
-        console.log(user);
         res.render("dashboard", { user, currntRoute: 'dashboard' });
     } catch (err) {
-        console.error("Error fetching user profile:", err);
         return res.status(500).send("Internal server error");
     }
 };
@@ -51,7 +77,6 @@ const logout = (req, res) => {
 
     req.session.destroy(err => {
         if (err) {
-            console.log("Logout error:", err);
             return res.status(500).json({ message: "Could not log out" });
         }
 
@@ -65,7 +90,6 @@ const logout = (req, res) => {
     });
 
     // Log the previous userLoggedIn status
-    console.log("User logged in status before destruction:", wasLoggedIn);
 };
 
 const getInvoicesForUser = async (req, res) => {
@@ -76,7 +100,6 @@ const getInvoicesForUser = async (req, res) => {
 
         res.render('invoices', { user, invoices });
     } catch (err) {
-        console.error("Error fetching invoices:", err);
         res.status(500).send("Error retrieving invoices");
     }
 };
@@ -144,7 +167,6 @@ const getUser = async (req) => {
             // Add other user properties as needed
         };
     } catch (error) {
-        console.error("Error fetching user data:", error);
         return {
             isLoggedIn: false,
             profilePicture: null, // Default value in case of error
@@ -211,4 +233,5 @@ module.exports = {
     getDashboard,
     signUpUser,
     getInvoicesForUser,
+    updateProfile,
 };

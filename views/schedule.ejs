@@ -160,7 +160,6 @@
             const time = document.getElementById("time").value;
             const tutor = document.getElementById("tutor").value;
 
-            console.log('Submitting Appointment:', { fullName, email, date, time, tutor});
 
             const result = await fetch("/api/scheduleAppointment", {
                 method: "POST",

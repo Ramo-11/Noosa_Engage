@@ -3,7 +3,7 @@ const route = express.Router()
 const {sendEmail} = require("./mail");
 const sendAppointmentEmail = require("./appointmentEmail");
 const renderCoursePage = require("./courseController");
-const { getProfile, logout, loginUser, getDashboard, signUpUser, getInvoicesForUser } = require("./sessionControler");
+const { getProfile, logout, loginUser, getDashboard, signUpUser, getInvoicesForUser, updateProfile } = require("./sessionControler");
 const { upload, profilePictureHandler } = require('./profilePictureHandler');
 
 
@@ -27,7 +27,9 @@ route.post("/api/sendEmail", sendEmail)
 route.post("/api/scheduleAppointment", sendAppointmentEmail)
 route.post("/api/signup", signUpUser);
 route.post("/api/login", loginUser);
-route.post('/profile/upload', upload.single('profilePicture'), profilePictureHandler);
+route.post('/api/editprofile', updateProfile);
+route.post('/api/profilepictureupload', upload.single('profilePicture'), profilePictureHandler);
+
 
 
 
