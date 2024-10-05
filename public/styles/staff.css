@@ -11,7 +11,7 @@
     min-width: 800px;
     display: flex;
     justify-content: space-between;
-    gap: 20px
+    gap: 20px;
 }
 
 .tutor img {
@@ -38,7 +38,7 @@
 }
 
 .tutor-info h3 {
-    margin: 13px 0;;
+    margin: 13px 0;
 }
 
 .tutor-info ul:not(:last-child) li {
@@ -50,6 +50,7 @@
     justify-content: flex-start;
     gap: 30px;
 }
+
 .mostafa-social-media {
     display: flex;
     justify-content: flex-start;
@@ -58,7 +59,7 @@
 
 .tutor-info ul a {
     font-size: 30px;
-    color: black
+    color: black;
 }
 
 .tutor-info ul a:hover {
@@ -67,55 +68,56 @@
 
 @media (max-width: 430px) {
     .main-content {
-        margin-bottom: 50px; /* Reduce margin at the bottom */
-        gap: 30px; /* Reduce gap between elements */
+        margin-bottom: 50px;
+        gap: 30px;
     }
 
     .tutor {
-        flex-direction: column; /* Stack elements vertically */
-        align-items: center; /* Center items horizontally */
-        min-width: 100%; /* Ensure full width */
+        flex-direction: column;
+        align-items: center;
+        min-width: 100%;
     }
 
     .tutor img {
-        width: 100%; /* Make images responsive */
-        height: auto; /* Maintain aspect ratio */
-        max-width: 200px; /* Limit max width */
+        width: 100%;
+        height: auto;
+        max-width: 200px;
     }
 
     .tutor-info {
-        min-width: 100%; /* Ensure full width */
-        text-align: center; /* Center text */
+        min-width: 100%;
+        text-align: center;
     }
 
     .tutor-info h1 {
-        font-size: 30px; /* Adjust font size */
+        font-size: 30px;
     }
 
     .tutor-info h2 {
-        font-size: 24px; /* Adjust font size */
+        font-size: 24px;
     }
 
     .tutor-info h3 {
-        font-size: 20px; /* Adjust font size */
+        font-size: 20px;
     }
+
     .omar-social-media {
-        justify-content: center; /* Center social media links */
+        justify-content: center;
     }
-    .mostafa-social-media{
-        justify-content: center; /* Center social media links */
+
+    .mostafa-social-media {
+        justify-content: center;
     }
 
     .tutor-info ul a {
-        font-size: 20px; /* Adjust font size */
+        font-size: 20px;
     }
 
     ul li {
-        font-size: 14px; /* Make the font size smaller */
-        line-height: 1.5; /* Adjust line height for better spacing */
-        margin-bottom: 5px; /* Space between list items */
-        text-align: left; /* Ensure text aligns left */
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 5px;
+        text-align: left;
         padding-left: 10px;
-
     }
 }

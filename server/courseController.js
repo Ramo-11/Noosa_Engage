@@ -1,21 +1,22 @@
-const getCourseData = (courseName) => {
-    const courseData = {
-        'pre-algebra': { className: 'Pre-Algebra', classDescription: 'This is a pre-algebra class...' },
-        'algebra': { className: 'Algebra', classDescription: 'This is an algebra class...' },
-        // Add other courses here
-    };
+const fs = require('fs')
+const path = require('path')
 
-    return courseData[courseName];
-};
-const renderCoursePage = (req, res) => {
-    const course = getCourseData(req.params.courseName);
+const getCourseData = (courseName) => {
+    const filePath = path.join(__dirname, '../utils/courseData.json')
+    
+    const data = fs.readFileSync(filePath, 'utf-8')
+    const courseData = JSON.parse(data)
+    return courseData[courseName] || null
+}
+
+const renderCoursePage = async (req, res) => {
+    const course = getCourseData(req.params.courseName)
 
     if (course) {
-        console.log(course)
-        res.render('course', course);
+        res.render('course', course)
     } else {
-        res.status(404).send('Course not found');
+        res.status(404).send('Course not found')
     }
-};
+}
 
-module.exports = renderCoursePage;
+module.exports = renderCoursePage
