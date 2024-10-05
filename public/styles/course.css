@@ -1,0 +1,148 @@
+.class-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+.class-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.class-header img {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.class-header h1 {
+    font-size: 2.5rem;
+    color: #0a3755;
+    font-weight: bold;
+}
+
+.class-content {
+    text-align: left;
+    color: #555;
+}
+
+.class-content p.description {
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.class-content h2 {
+    font-size: 1.8rem;
+    color: #0a3755;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.class-content ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.class-content ul li {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.class-content p.best-for {
+    font-size: 1rem;
+    background-color: #f0f8ff;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.class-content .topics-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.class-content .topic-item {
+    background-color: #f0f8ff;
+    color: #0a3755;
+    border: 1px solid #0a3755;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .class-container {
+        max-width: 100%;
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    .class-header h1 {
+        font-size: 2rem;
+    }
+
+    .class-content h2 {
+        font-size: 1.6rem;
+    }
+
+    .class-content p.description {
+        font-size: 1.1rem;
+        line-height: 1.6rem;
+    }
+
+    .class-content ul li {
+        font-size: 0.95rem;
+    }
+
+    .class-content .topics-container {
+        gap: 10px;
+    }
+
+    .class-content .topic-item {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .class-header img {
+        max-height: 200px;
+    }
+
+    .class-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .class-content h2 {
+        font-size: 1.4rem;
+    }
+
+    .class-content p.description {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    .class-content ul li {
+        font-size: 0.9rem;
+    }
+
+    .class-content .topics-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .class-content .topic-item {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+}
