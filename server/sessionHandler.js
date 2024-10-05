@@ -2,7 +2,7 @@
 const User = require("../models/User"); // Ensure the path to your User model is correct
 const bcrypt = require("bcrypt");
 const { generalLogger } = require("../utils/generalLogger");
-const { sendSignupEmail } = require("../server/mail");
+const { sendSignupEmail } = require("./mail");
 const Invoice = require('../models/invoice'); // Import the Invoice model
 
 

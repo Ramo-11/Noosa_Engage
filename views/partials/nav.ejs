@@ -21,7 +21,9 @@
             <ul class="menu-items">
                 <li><a href="/">Home</a></li>
                 <li><a href="/prices">Our Prices</a></li>
+                <% if (userLoggedIn) { %>
                 <li><a href="/schedule">Schedule</a></li>
+                <% } %>
                 <li><a href="/staff">Staff</a></li>
                 <li><a href="/contact">Contact us</a></li>
 

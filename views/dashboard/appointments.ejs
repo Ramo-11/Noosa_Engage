@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/appointments.css">
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+    <title>Appointment Dashboard</title>
+</head>
+<body>
+    <%- include("../partials/nav.ejs") %>
+
+    <div class="title-div">
+        <h1>Appointments</h1>
+    </div>
+    <div class="container">
+        <div class="back-button-container">
+            <a href="/dashboard" class="back-button">←</a>
+        </div>
+        <div class="appointment-grid">
+            <% if (appointments.length > 0) { %>
+                <% appointments.forEach(appointment => { %>
+                    <div class="appointment-block">
+                        <h2>Appointment <%= appointment.appointmentNumber %></h2>
+                        <p><strong>Date:</strong> <%= new Date(appointment.date).toLocaleDateString() %></p>
+                        <p><strong>Time:</strong> <%= appointment.time %></p>
+                        <p><strong>Tutor:</strong> <%= appointment.tutorName %></p>
+                        <p><strong>Customer:</strong> <%= appointment.customerName %></p>
+                        <button class="view-details" data-appointment='<%= JSON.stringify(appointment).replace(/'/g, "&apos;") %>' onclick="showDetails(this)">View Details</button>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>No appointments found.</p>
+            <% } %>
+        </div>
+
+        <div id="detailsForm" class="details-form">
+            <span class="close-button" onclick="closeDetails()">✖️</span> <!-- Close button -->
+            <div id="appointmentDetailsContent"></div>
+        </div>
+        <div id="confirmationForm" class="confirmation-form">
+            <!-- This will be populated with the confirmation message -->
+        </div>
+    </div>
+    <%- include("../partials/footer.ejs") %>
+
+    <script>
+        // Show appointment details and the cancel option
+        function showDetails(button) {
+            const appointment = JSON.parse(button.getAttribute('data-appointment'));
+    
+            const detailsForm = document.getElementById("detailsForm");
+            const appointmentDetailsContent = document.getElementById("appointmentDetailsContent");
+    
+            // Populate the details form with appointment information and a cancel button
+            appointmentDetailsContent.innerHTML = `
+                <p><strong>Appointment Number:</strong> ${appointment.appointmentNumber}</p>
+                <p><strong>Date:</strong> ${appointment.date}</p>
+                <p><strong>Time:</strong> ${appointment.time}</p>
+                <p><strong>Tutor:</strong> ${appointment.tutorName}</p>
+                <p><strong>Customer:</strong> ${appointment.customerName}</p>
+                <button onclick="confirmCancel('${appointment._id}')">Cancel Appointment</button>
+            `;
+    
+            // Slide the form into view
+            detailsForm.classList.add("active");
+        }
+    
+        // Show confirmation dialog for canceling the appointment
+        function confirmCancel(appointmentId) {
+            const confirmationForm = document.getElementById("confirmationForm");
+    
+            // Show confirmation form with Yes/No options
+            confirmationForm.innerHTML = `
+                <p>Are you sure you want to cancel this appointment?</p>
+                <button onclick="deleteAppointment('${appointmentId}')">Yes</button>
+                <button onclick="closeConfirmation()">No</button>
+            `;
+    
+            confirmationForm.classList.add("active"); // Show the confirmation form
+        }
+    
+        // Delete the appointment from the database
+        async function deleteAppointment(appointmentId) {
+            try {
+                const response = await fetch(`/api/appointments/${appointmentId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json', 
+                    },
+                });
+
+                if (response.ok) {
+                    location.reload()
+                } else {
+                    alert("Failed to cancel appointment. Please try again.");
+                }
+            } catch (error) {
+                console.error('Error:', error)
+                alert(error)
+            }
+        }
+
+    
+        // Close the appointment details form
+        function closeDetails() {
+            const detailsForm = document.getElementById("detailsForm");
+            detailsForm.classList.remove("active");
+        }
+    
+        // Close the confirmation dialog
+        function closeConfirmation() {
+            const confirmationForm = document.getElementById("confirmationForm");
+            confirmationForm.classList.remove("active");
+        }
+    </script>    
+</body>
+</html>

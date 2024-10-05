@@ -30,7 +30,11 @@
                         to enhancing students' knowledge in Math, Science, Computer Science,
                         and other subjects. We provide tutoring sessions for students in all levels.
                     </p>
+                    <% if (userLoggedIn) { %>
                     <button class="button_to_register"><a class="schedule" href="/schedule">Register Now</a></button>
+                    <% } else { %>
+                    <button class="button_to_register"><a class="schedule" href="/login">Register Now</a></button>
+                    <% } %>
                 </div>
                 
             </div>

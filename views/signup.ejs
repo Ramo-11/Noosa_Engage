@@ -47,8 +47,10 @@
                         <input type="email" name="email" placeholder="Enter your email" required>
                     </div>
                     <div class="input-box">
-                        <input type="password" name="password" placeholder="Create password" required>
-                    </div>
+                      <input type="password" name="password" placeholder="Create password" 
+                             required pattern="(?=.*\d)(?=.*[A-Z]).{6,}" 
+                             title="Password must be at least 6 characters long, include at least one number and one uppercase letter.">
+                  </div>
                     <div class="input-box">
                         <input type="password" name="confirmPassword" placeholder="Confirm password" required>
                     </div>

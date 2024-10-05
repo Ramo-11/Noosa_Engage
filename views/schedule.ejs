@@ -156,10 +156,11 @@
         async function submitAppointment() {
             const fullName = document.getElementById("name").value;
             const email = document.getElementById("email").value;
-            const date = document.getElementById("date").value;
-            const time = document.getElementById("time").value;
-            const tutor = document.getElementById("tutor").value;
+            const date = document.getElementById("date").value; // Make sure this is in YYYY-MM-DD format
+            const time = document.getElementById("time").value; // Ensure this is in HH:MM format
+            const tutorName = document.getElementById("tutor").value; // This should be the ObjectId of the tutor
 
+            console.log('Submitting Appointment:', { fullName, email, date, time, tutorName });
 
             const result = await fetch("/api/scheduleAppointment", {
                 method: "POST",
@@ -171,7 +172,9 @@
                     email,
                     date,
                     time,
-                    tutor
+                    tutor: tutorName,       // Pass tutorId instead of tutor name
+                    duration: 1,          // Set duration to 1 hour
+                    description: ""       // Initialize description as an empty string
                 })
             });
 

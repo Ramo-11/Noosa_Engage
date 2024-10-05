@@ -5,9 +5,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const { generalLogger } = require("./utils/generalLogger");
 const connectDB = require('./server/connectDB');
-const sessionMiddleware = require("./server/middleWare/sessionConfig");
-const userStatusMiddleware = require("./server/middleWare/userStatus"); 
-const userMiddleware = require("./server/middleWare/userMiddleware"); 
+const {sessionMiddleware, userStatusMiddleware,userMiddleware} = require("./server/middleWare/sessionController");
 // ********** End Imports **********
 
 // ********** Initialization **************
@@ -20,8 +18,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(cookieParser());
-app.use(sessionMiddleware); // Use session middleware
-app.use(userStatusMiddleware); // Use user status middleware
+app.use(sessionMiddleware);
+app.use(userStatusMiddleware);
 app.use(userMiddleware);
 app.use("/", router);
 
