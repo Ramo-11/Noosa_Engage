@@ -41,6 +41,8 @@ route.post("/api/signup", signUpUser);
 route.post("/api/login", loginUser);
 route.post('/api/editprofile', updateProfile);
 route.post('/api/profilepictureupload', upload.single('profilePicture'), profilePictureHandler);
+
+// *********** DELETE requests **********
 route.delete('/api/appointments/:id', deleteAppointment);
 
 

@@ -59,29 +59,6 @@ h1 {
     padding-top: 20px;
 }
 
-.back-button-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 10px;
-    z-index: 2;
-}
-
-.back-button {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: #f37239;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 14px;
-    z-index: 2;
-}
-
-.back-button:hover {
-    background-color: #d96024;
-}
-
 .profile-picture {
     flex: 1;
     display: flex;

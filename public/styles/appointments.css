@@ -28,7 +28,7 @@ h1 {
 }
 
 .appointment-block:hover {
-    transform: scale(1.05);  
+    transform: scale(1.01);  
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
 }
 
@@ -118,9 +118,12 @@ h1 {
 }
 
 /* Responsive styles for mobile screens (430px and below) */
-@media (max-width: 430px) {
+@media screen and (max-width: 430px) {
+    
+    .title-div {
+        padding: 10px;
+    }
     .container {
-        width: 100%;
         padding: 10px;
     }
 
