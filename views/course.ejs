@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= className %> - Course Details</title>
+    <link rel="stylesheet" href="/styles/course.css">
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+
+    <div class="class-container">
+        <div class="class-header">
+            <img src="/images/<%= courseImage %>" alt="<%= className %> image">
+            <h1><%= className %></h1>
+        </div>
+        <div class="class-content">
+            <p class="description"><%= classDescription %></p>
+            
+            <h2>Example Topics</h2>
+            <div class="topics-container">
+                <% exampleTopics.forEach(function(topic) { %>
+                    <div class="topic-item"><%= topic %></div>
+                <% }); %>
+            </div>
+
+            <h2>Best For</h2>
+            <p class="best-for"><%= bestFor %></p>
+        </div>
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+</body>
+</html>
