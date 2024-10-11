@@ -13,6 +13,7 @@
 
 .contact-form {
     margin-top: 5%;
+    margin-bottom: 100px;
     min-width: 40rem;
     display: flex;
     flex-direction: column;
@@ -77,28 +78,28 @@ textarea {
         
 
     .contact-form h1 {
-        font-size: 24px; /* Smaller font size for smaller screens */
-        margin-top: 0;   /* Remove any top margin from the heading */
+        font-size: 24px;
+        margin-top: 0;
     }
 
     .contact-form input, textarea {
-        padding: 8px 10px; /* Smaller padding */
-        min-height: 40px;  /* Reduced height for input fields */
-        font-size: 14px;   /* Slightly smaller font size */
+        padding: 8px 10px;
+        min-height: 40px;
+        font-size: 14px;
     }
 
     .submitButton {
-        width: 100%; /* Makes the submit button full width */
-        margin: 0;   /* Centers the button */
+        width: 100%;
+        margin: 0;
         font-size: 15px;
     }
 
     textarea {
-        height: 150px; /* Smaller height for the textarea */
+        height: 150px;
     }
 
     .submitFlag {
-        width: 100%; /* Ensures the flag is also responsive */
+        width: 100%;
         margin-top: 10px;
         margin-bottom: 10px;
     }

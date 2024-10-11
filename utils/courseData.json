@@ -6,6 +6,13 @@
         "exampleTopics": ["Reading", "Writing", "Vocabulary", "Grammar"],
         "bestFor": "All levels."
     },
+    "quran": {
+        "className": "Quran",
+        "courseImage": "Quran.webp",
+        "classDescription": "A course to teach the Quran. The class level depends on your level and your desired outcome.",
+        "exampleTopics": ["Tajweed", "Reading", "Tafseer", "Hifdh"],
+        "bestFor": "All levels."
+    },
     "pre-algebra": {
         "className": "Pre-Algebra",
         "courseImage": "Pre-Algebra.webp",

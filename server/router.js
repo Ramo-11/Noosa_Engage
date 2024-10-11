@@ -2,7 +2,6 @@ const express = require("express")
 const route = express.Router()
 const sendEmail = require("./mail")
 const sendAppointmentEmail = require("./appointmentEmail");
-const getCourseData = require("./courseData");
 const renderCoursePage = require("./courseController");
 
 

@@ -31,36 +31,35 @@ footer {
     color: #be7303;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .footer-div {
-        flex-direction: column; /* Stack items on top of each other for smaller screens */
-        gap: 20px; /* Reduced gap */
-        align-items: center; /* Center align for smaller screens */
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
     }
 
     .social-media {
-        flex-direction: row; /* Keep social media icons in a row */
-        justify-content: center; /* Center align social media icons */
-        gap: 20px; /* Reduced gap between icons */
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
     }
 
     .social-media a {
-        font-size: 50px; /* Smaller icons for smaller screens */
+        font-size: 50px;
     }
 }
 
 @media (max-width: 480px) {
     footer {
-        height: auto; /* Allow footer to adjust height based on content */
-        padding: 1rem 0; /* Add some padding for better spacing */
+        height: auto;
+        padding: 1rem 0;
     }
 
     .footer-div {
-        gap: 10px; /* Further reduced gap */
+        gap: 10px;
     }
 
     .social-media a {
-        font-size: 40px; /* Even smaller icons for very small screens */
+        font-size: 40px;
     }
 }

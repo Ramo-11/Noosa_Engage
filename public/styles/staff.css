@@ -1,123 +1,76 @@
-.main-content {
-    margin-bottom: 100px;
+.staff-container {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    gap: 50px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 100px;
+    margin-top: 5%;
+    margin-bottom: 5%;
 }
 
-.tutor {
-    min-width: 800px;
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
+.card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    width: 500px;
+    text-align: center;
 }
 
-.tutor img {
-    width: 400px;
-    height: 400px;
+.card img {
+    width: 100%;
+    height: auto;
 }
 
-.tutor-info {
-    min-width: 500px;
+.card-info {
+    padding: 20px;
 }
 
-.tutor-info hr {
-    border: 3px solid #c9c9c9;
+.card-info h2 {
+    font-size: 26px;
+    color: #0a3755;
+    margin-bottom: 15px;
+    font-weight: bold;
 }
 
-.tutor-info h1 {
-    margin: 20px 0;
-    font-size: 45px;
-    color: #0A3755;
+.card-info h3 {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 15px;
+    font-style: italic;
 }
 
-.tutor-info h2 {
-    margin: 18px 0;
+.card-info p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: justify;
 }
 
-.tutor-info h3 {
-    margin: 13px 0;
+.card-info a i {
+    font-size: 36px;
+    margin-top: 20px;
 }
 
-.tutor-info ul:not(:last-child) li {
-    list-style: square;
+.card-info a {
+    color: #333;
+    margin: 0 10px;
+    transition: color 0.3s ease;
 }
 
-.omar-social-media {
-    display: flex;
-    justify-content: flex-start;
-    gap: 30px;
+.card-info a:hover {
+    color: #0077b5;
 }
 
-.mostafa-social-media {
-    display: flex;
-    justify-content: flex-start;
-    gap: 30px;
-}
-
-.tutor-info ul a {
-    font-size: 30px;
-    color: black;
-}
-
-.tutor-info ul a:hover {
-    color: #be7303;
-}
-
-@media (max-width: 430px) {
-    .main-content {
-        margin-bottom: 50px;
-        gap: 30px;
-    }
-
-    .tutor {
+@media (max-width: 768px) {
+    .staff-container {
         flex-direction: column;
         align-items: center;
-        min-width: 100%;
     }
 
-    .tutor img {
+    .card {
         width: 100%;
-        height: auto;
-        max-width: 200px;
-    }
-
-    .tutor-info {
-        min-width: 100%;
-        text-align: center;
-    }
-
-    .tutor-info h1 {
-        font-size: 30px;
-    }
-
-    .tutor-info h2 {
-        font-size: 24px;
-    }
-
-    .tutor-info h3 {
-        font-size: 20px;
-    }
-
-    .omar-social-media {
-        justify-content: center;
-    }
-
-    .mostafa-social-media {
-        justify-content: center;
-    }
-
-    .tutor-info ul a {
-        font-size: 20px;
-    }
-
-    ul li {
-        font-size: 14px;
-        line-height: 1.5;
-        margin-bottom: 5px;
-        text-align: left;
-        padding-left: 10px;
+        max-width: 350px;
     }
 }

@@ -1,76 +1,76 @@
 <html>
     <head>
         <title>Staff</title>
-        <link rel="stylesheet" href="/styles/general.css">
-        <link rel="stylesheet" href="/styles/staff.css">
-        <link rel="shortcut icon" href="/images/Logo-white.png">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src="https://kit.fontawesome.com/256321248c.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="/styles/general.css" />
+        <link rel="stylesheet" href="/styles/staff.css" />
+        <link rel="shortcut icon" href="/images/Logo-white.png" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
     </head>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-XEW6Y9S2YM');
-    </script>
     <body>
         <%- include("./partials/nav.ejs") %>
+
         <div class="main-content">
             <div class="title-div">
-                <h1>Staff</h1>
+                <h1>Our Team</h1>
             </div>
-            <div class="tutor">
-                <img src="/images/Mostafa.png" alt="Photo of Mostafa">
-                <div class="tutor-info">
-                    <hr>
-                    <h1>Mostafa Abdulaleem</h1>
-                    <hr>
-                    <h2>Embedded Software Engineer</h2>
-                    <h3>Education</h3>
-                    <ul>
-                        <li>Bachelors Degree in Electrical Engineering from Purdue University</li>
-                        <li>Minor in Mathematics from Purdue University</li>
-                    </ul>
-                    <h3>Experience</h3>
-                    <ul>
-                        <li>Test concentration sensors to ensure reliability and efficiency</li>
-                        <li>Works as a design engineer for power distribution system</li>
-                        <li>Taught high school math, physics and chemistry</li>
-                        <li>Tutored math for college students during my senior year of college </li>
-                    </ul>
-                    <h3>Links</h3>
-                    <ul class="mostafa-social-media">
-                        <li class="linkedin-link"><a target="_blank" href="https://www.linkedin.com/in/mostafa-abdulaleem-649303179"><i class="fab fa-linkedin-in"></i></a></li>
-                    </ul>
+            <div class="staff-container">
+                <div class="card">
+                    <img src="/images/Mostafa.png" alt="Photo of Mostafa" />
+                    <div class="card-info">
+                        <h2>Mostafa Abdulaleem</h2>
+                        <h3>Embedded Software Engineer</h3>
+                        <p>
+                            Bachelors Degree in Electrical Engineering from
+                            Purdue University
+                        </p>
+                        <p>
+                            Tested concentration sensors, power distribution
+                            system design, and taught various subjects.
+                        </p>
+                        <p>
+                            Experience at teaching science for students of all ages.
+                        </p>
+                        <a
+                            href="https://www.linkedin.com/in/mostafa-abdulaleem-649303179"
+                            target="_blank"
+                            ><i class="fab fa-linkedin-in"></i
+                        ></a>
+                    </div>
                 </div>
-            </div>
-            <div class="tutor">
-                <img src="/images/Omar.jpeg" alt="Photo of Omar">
-                <div class="tutor-info">
-                    <hr>
-                    <h1>Omar Abdelalim</h1>
-                    <hr>
-                    <h2>Software Engineer</h2>
-                    <h3>Education</h3>
-                    <ul>
-                        <li>Bachelors Degree in Computer Engineering from Purdue University</li>
-                        <li>Minor in Computer Science from Purdue University</li>
-                    </ul>
-                    <h3>Experience</h3>
-                    <ul>
-                        <li>Works as a software engineer for Stryker Corporation</li>
-                        <li>Taught college-level engineering courses</li>
-                        <li>Worked as a teaching assistant at Purdue University for CS courses</li>
-                    </ul>
-                    <h3>Links</h3>
-                    <ul class="omar-social-media">
-                        <li class="linkedin-link"><a target="_blank" href="https://www.linkedin.com/in/omar-abdelalim11"><i class="fab fa-linkedin-in"></i></a></li>
-                        <li class="linkedin-link"><a target="_blank" href="https://www.omarengineer.com"><i class="fa fa-desktop"></i></a></li>
-                    </ul>
+
+                <div class="card">
+                    <img src="/images/Omar.jpeg" alt="Photo of Omar" />
+                    <div class="card-info">
+                        <h2>Omar Abdelalim</h2>
+                        <h3>Sr. Software Engineer</h3>
+                        <p>
+                            Masters Degree in Computer Science from Purdue University
+                        </p>
+                        <p>
+                            Bachelors Degree in Computer Engineering from Purdue University
+                        </p>
+                        <p>
+                            Senior Software Engineer at Stryker 
+                        </p>
+                        <p>
+                            Taught University Level Computer Science Courses for 2 years
+                        </p>
+                        <a
+                            href="https://www.linkedin.com/in/omar-abdelalim11"
+                            target="_blank"
+                            ><i class="fab fa-linkedin-in"></i
+                        ></a>
+                        <a href="https://www.omarengineer.com" target="_blank"
+                            ><i class="fa fa-desktop"></i
+                        ></a>
+                    </div>
                 </div>
             </div>
         </div>
+
         <%- include("./partials/footer.ejs") %>
     </body>
 </html>
