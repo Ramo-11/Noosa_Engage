@@ -2,7 +2,8 @@ const express = require("express")
 const route = express.Router()
 const renderCoursePage = require("./courseController");
 const {sendEmail, sendAppointmentEmail} = require("./mail");
-const { getProfile, logout, loginUser, getDashboard, signUpUser, getInvoicesForUser, updateProfile } = require("./sessionHandler");
+const {getInvoicesForUser, createInvoiceForUser} = require("./invoiceHandler");
+const { getProfile, logout, loginUser, getDashboard, signUpUser, updateProfile } = require("./sessionHandler");
 const { upload, profilePictureHandler } = require('./profilePictureHandler');
 const {getAppointments, createAppointment, deleteAppointment} = require("./appointmentHandler");
 
@@ -17,6 +18,7 @@ route.get("/contact", (req, res) => res.render("contact"))
 route.get('/courses/:courseName', renderCoursePage)
 route.get("/login", (req, res) => res.render("login"))
 route.get("/signup", (req, res) => res.render("signup"))
+route.get("/dashboard/createInvoice", (req, res) => res.render("dashboard/createInvoices"));
 route.get("/dashboard/profile", getProfile);
 route.get("/dashboard", getDashboard);
 route.get('/logout', logout);
@@ -30,6 +32,7 @@ route.post("/api/signup", signUpUser);
 route.post("/api/login", loginUser);
 route.post('/api/editprofile', updateProfile);
 route.post('/api/profilepictureupload', upload.single('profilePicture'), profilePictureHandler);
+route.post('/api/createInvoice', createInvoiceForUser); // Make sure this matches
 
 // *********** DELETE requests **********
 route.delete('/api/appointments/:id', deleteAppointment);

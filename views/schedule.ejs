@@ -160,8 +160,6 @@
             const time = document.getElementById("time").value; // Ensure this is in HH:MM format
             const tutorName = document.getElementById("tutor").value; // This should be the ObjectId of the tutor
 
-            console.log('Submitting Appointment:', { fullName, email, date, time, tutorName });
-
             const result = await fetch("/api/scheduleAppointment", {
                 method: "POST",
                 headers: {

@@ -1,11 +1,14 @@
 // server/sessionController.js
+
+//#region Imports
 const User = require("../models/User"); // Ensure the path to your User model is correct
 const bcrypt = require("bcrypt");
 const { generalLogger } = require("../utils/generalLogger");
 const { sendSignupEmail } = require("./mail");
 const Invoice = require('../models/invoice'); // Import the Invoice model
+//#endregion
 
-
+//#region Methods
 const getProfile = async (req, res) => {
     if (!req.session || !req.session.userId) {
         return res.redirect("/login"); // Redirect to login if not authenticated
@@ -54,13 +57,14 @@ const updateProfile = async (req, res) => {
 
 
 const getDashboard = async (req, res) => {
+    // Check if there is a session and user ID
     if (!req.session || !req.session.userId) {
         return res.redirect("/login");
     }
 
     try {
-        // Fetch the user data
-        const user = await User.findById(req.session.userId).select('name email profilePicture');
+        // Fetch the entire user data
+        const user = await User.findById(req.session.userId);
         if (!user) {
             return res.status(404).send("User not found");
         }
@@ -71,8 +75,12 @@ const getDashboard = async (req, res) => {
         // Get only the most recent invoice
         const recentInvoice = invoices.length > 0 ? invoices[0] : null;
 
+        // Log the user object for debugging
+        console.log(user);
+
+        // Render the dashboard and pass the entire user object
         res.render("dashboard", {
-            user,
+            user: user.toObject(), // Convert Mongoose model to a plain JS object
             invoice: recentInvoice, // Passing only the most recent invoice
             currentRoute: 'dashboard'
         });
@@ -81,7 +89,6 @@ const getDashboard = async (req, res) => {
         return res.status(500).send("Internal server error");
     }
 };
-
 
 
 
@@ -106,34 +113,6 @@ const logout = (req, res) => {
 
     // Log the previous userLoggedIn status
 };
-
-const getInvoicesForUser = async (req, res) => {
-    // Check if userId exists in the session
-    if (!req.session || !req.session.userId) {
-        return res.redirect("/login"); // Redirect to login if not authenticated
-    }
-
-    try {
-        // Fetch the user based on userId stored in the session
-        const user = await User.findById(req.session.userId);
-        if (!user) {
-            return res.status(404).send("User not found"); // Handle user not found
-        }
-
-        // Fetch invoices associated with the user's ID
-        const invoices = await Invoice.find({ customer: user._id }).exec();
-
-        // Render the invoices page with user and invoices data
-        res.render("dashboard/invoices", { user, invoices }); // Adjust the path to your invoices.ejs file
-    } catch (err) {
-        console.error("Error retrieving invoices:", err);
-        return res.status(500).send("Error retrieving invoices");
-    }
-};
-
-
-
-
 
 async function loginUser(req, res) {
     const { email, password } = req.body;
@@ -161,7 +140,7 @@ async function loginUser(req, res) {
         req.session.userId = user._id;
 
         generalLogger.info("User logged in successfully");
-        return res.status(200).render("login", { successMessage: "Login successful! Redirecting to homepage..." });
+        return res.status(200).render("login", { successMessage: "Login successful! Redirecting to dashboard..." });
     } catch (error) {
         generalLogger.error("Error logging in: ", error);
         return res.status(500).render("login", { errorMessage: "Internal server error" });
@@ -172,11 +151,10 @@ async function loginUser(req, res) {
 const getUser = async (req) => {
     // Check if there is a session and user ID
     if (!req.session || !req.session.userId) {
-        // Return a default user object if not logged in
+        // Return a default object if not logged in
         return {
             isLoggedIn: false,
-            profilePicture: null, // Default value if no profile picture
-            // Add other default properties as needed
+            user: null, // No user data available
         };
     }
 
@@ -185,23 +163,24 @@ const getUser = async (req) => {
         if (!user) {
             return {
                 isLoggedIn: false,
-                profilePicture: null, // Default value if user is not found
+                user: null, // User not found in the database
             };
         }
 
-        // Return user data with logged-in status
+        // Return the entire user object with logged-in status
         return {
             isLoggedIn: true,
-            profilePicture: user.profilePicture, // Include the user's profile picture
-            // Add other user properties as needed
+            user: user.toObject(), // Converts Mongoose model to plain JS object
         };
     } catch (error) {
+        console.error('Error fetching user:', error);
         return {
             isLoggedIn: false,
-            profilePicture: null, // Default value in case of error
+            user: null, // In case of error
         };
     }
 };
+
 
 async function signUpUser(req, res) {
     const { firstName, lastName, email, password, confirmPassword } = req.body;
@@ -251,9 +230,9 @@ async function signUpUser(req, res) {
         return res.render('signup', { errorMessage: "Error: Internal server error" });
     }
 }
+//#endregion
 
-
-// Exporting the functions
+//#region Exports
 module.exports = {
     getProfile,
     logout,
@@ -261,6 +240,6 @@ module.exports = {
     getUser,
     getDashboard,
     signUpUser,
-    getInvoicesForUser,
     updateProfile,
 };
+//#endregion

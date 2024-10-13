@@ -27,7 +27,8 @@
                         <p><strong>Time:</strong> <%= appointment.time %></p>
                         <p><strong>Tutor:</strong> <%= appointment.tutorName %></p>
                         <p><strong>Customer:</strong> <%= appointment.customerName %></p>
-                        <button class="view-details" data-appointment='<%= JSON.stringify(appointment).replace(/'/g, "&apos;") %>' onclick="showDetails(this)">View Details</button>
+                        <!-- Pass the appointment ID and user information (e.g., customerName) -->
+                        <button class="cancel-button" onclick="confirmCancel('<%= appointment._id %>', '<%= appointment.customerName %>')">Cancel Appointment</button>
                     </div>
                 <% }); %>
             <% } else { %>
@@ -35,77 +36,47 @@
             <% } %>
         </div>
 
-        <div id="detailsForm" class="details-form">
-            <span class="close-button" onclick="closeDetails()">✖️</span> <!-- Close button -->
-            <div id="appointmentDetailsContent"></div>
-        </div>
+        <!-- Confirmation Form for Canceling an Appointment -->
         <div id="confirmationForm" class="confirmation-form">
         </div>
     </div>
     <%- include("../partials/footer.ejs") %>
 
     <script>
-        // Show appointment details and the cancel option
-        function showDetails(button) {
-            const appointment = JSON.parse(button.getAttribute('data-appointment'));
-    
-            const detailsForm = document.getElementById("detailsForm");
-            const appointmentDetailsContent = document.getElementById("appointmentDetailsContent");
-    
-            // Populate the details form with appointment information and a cancel button
-            appointmentDetailsContent.innerHTML = `
-                <p><strong>Appointment Number:</strong> ${appointment.appointmentNumber}</p>
-                <p><strong>Date:</strong> ${appointment.date}</p>
-                <p><strong>Time:</strong> ${appointment.time}</p>
-                <p><strong>Tutor:</strong> ${appointment.tutorName}</p>
-                <p><strong>Customer:</strong> ${appointment.customerName}</p>
-                <button onclick="confirmCancel('${appointment._id}')">Cancel Appointment</button>
-            `;
-    
-            // Slide the form into view
-            detailsForm.classList.add("active");
-        }
-    
         // Show confirmation dialog for canceling the appointment
-        function confirmCancel(appointmentId) {
+        function confirmCancel(appointmentId, user) {
             const confirmationForm = document.getElementById("confirmationForm");
-    
+
             // Show confirmation form with Yes/No options
             confirmationForm.innerHTML = `
-                <p>Are you sure you want to cancel this appointment?</p>
-                <button onclick="deleteAppointment('${appointmentId}')">Yes</button>
+                <p>Are you sure you want to cancel this appointment for ${user}?</p>
+                <button onclick="deleteAppointment('${appointmentId}', '${user}')">Yes</button>
                 <button onclick="closeConfirmation()">No</button>
             `;
     
             confirmationForm.classList.add("active"); // Show the confirmation form
         }
     
-        // Delete the appointment from the database
-        async function deleteAppointment(appointmentId) {
+        // Delete the appointment from the database, passing both appointmentId and user
+        async function deleteAppointment(appointmentId, user) {
             try {
                 const response = await fetch(`/api/appointments/${appointmentId}`, {
                     method: 'DELETE',
                     headers: {
-                        'Content-Type': 'application/json', 
+                        'Content-Type': 'application/json',
                     },
+                    body: JSON.stringify({ user }) // Send the user info in the request body
                 });
 
                 if (response.ok) {
-                    location.reload()
+                    location.reload(); // Reload the page after successful deletion
                 } else {
                     alert("Failed to cancel appointment. Please try again.");
                 }
             } catch (error) {
-                console.error('Error:', error)
-                alert(error)
+                console.error('Error:', error);
+                alert(error);
             }
-        }
-
-    
-        // Close the appointment details form
-        function closeDetails() {
-            const detailsForm = document.getElementById("detailsForm");
-            detailsForm.classList.remove("active");
         }
     
         // Close the confirmation dialog
@@ -113,6 +84,6 @@
             const confirmationForm = document.getElementById("confirmationForm");
             confirmationForm.classList.remove("active");
         }
-    </script>    
+    </script>
 </body>
 </html>

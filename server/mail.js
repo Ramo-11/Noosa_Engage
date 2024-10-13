@@ -1,6 +1,86 @@
+//#region Imports
 const nodemailer = require("nodemailer")
 const { generalLogger } = require("../utils/generalLogger")
 const validateEmail = require('../utils/emailValidator');
+//#endregion
+
+//#region Method
+async function sendDeleteAppointmentEmail(user, appointment) {
+    const { email, fullName } = user;
+    const { appointmentDate, time, tutorName } = appointment;
+
+    if (!email || !appointmentDate || !time || !tutorName) {
+        generalLogger.error("Error sending appointment deletion email: one or more fields are missing");
+        return;
+    }
+
+    if (!validateEmail(email)) {
+        generalLogger.error("Error sending appointment deletion email: Invalid email address");
+        return;
+    }
+
+    let mailTransporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "noosa@noosaengage.com",
+            pass: "cxpy yaqy zllx mrqn"
+        }
+    });
+
+    // Email for the user
+    let userDescription = `
+        <p>Dear ${fullName},</p>
+        <p>Your appointment scheduled for <strong>${appointmentDate}</strong> at <strong>${time}</strong> with <strong>${tutorName}</strong> has been successfully canceled. If this was a mistake or you need further assistance, feel free to reach out to us.</p>
+        <p>Best regards,</p>
+        <p>Noosa Engage Team</p>
+        <p><strong>Phone:</strong> +000000000<br>
+        <strong>Email:</strong> <a href="mailto:noosa@noosaengage.com">noosa@noosaengage.com</a><br>
+        <strong>Website:</strong> <a href="https://www.noosaengage.com">www.noosaengage.com</a></p>
+    `;
+
+    // Email for Noosa Engage
+    let adminDescription = `
+        <p>The following appointment has been canceled:</p>
+        <p><strong>Date:</strong> ${appointmentDate}<br>
+        <strong>Time:</strong> ${time}<br>
+        <strong>User:</strong> ${fullName}<br>
+        <strong>Tutor:</strong> ${tutorName}</p>
+    `;
+
+    // Sending email to the user
+    let userDetails = {
+        from: "noosa@noosaengage.com",
+        to: email,
+        subject: `Appointment Cancellation: ${appointmentDate} at ${time}`,
+        html: userDescription
+    };
+
+    mailTransporter.sendMail(userDetails, (error) => {
+        if (error) {
+            generalLogger.error(`Cannot send cancellation email to user ${email}: `, error);
+        } else {
+            generalLogger.info(`Cancellation email was sent successfully to user ${email}`);
+        }
+    });
+
+    // Sending email to Noosa Engage
+    let adminDetails = {
+        from: "noosa@noosaengage.com",
+        to: "noosa@noosaengage.com",
+        subject: `Appointment Canceled: ${fullName}`,
+        html: adminDescription
+    };
+
+    mailTransporter.sendMail(adminDetails, (error) => {
+        if (error) {
+            generalLogger.error("Cannot send cancellation email to Noosa Engage: ", error);
+        } else {
+            generalLogger.info("Cancellation email was sent successfully to Noosa Engage");
+        }
+    });
+}
+
+
 
 async function sendEmail(req, res) {
     const { fullName, email, subject, description } = req.body
@@ -67,7 +147,6 @@ async function sendSignupEmail(user) {
 }
 
 async function sendForgotPasswordEmail(email, resetCode) {
-    console.log(email);
     let mailTransporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -169,5 +248,8 @@ async function sendAppointmentEmail(req, res) {
         }
     });
 }
+//#endregion
 
-module.exports  = { sendEmail, sendSignupEmail, sendForgotPasswordEmail, sendAppointmentEmail };
+//#region Exports
+module.exports  = { sendEmail, sendSignupEmail, sendForgotPasswordEmail, sendAppointmentEmail, sendDeleteAppointmentEmail};
+//#endregion

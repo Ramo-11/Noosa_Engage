@@ -1,0 +1,81 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.title-div {
+    margin: 0;
+    padding: 0;
+}
+
+.schedule-form {
+    min-width: 40rem;
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 50px;
+    padding: 50px;
+    background: #fff;
+    box-shadow: 2px 5px 20px rgba(119,119,119,0.5);
+}
+
+.schedule-form h1 {
+    color: #0a3755;
+    font-size: 30px;
+}
+
+.schedule-form input, .schedule-form textarea, .schedule-form select {
+    padding: 10px 15px;
+    width: 100%;
+    min-height: 50px;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #070707;
+    background-color: #e0e0e0;
+    box-sizing: border-box;
+}
+
+.submitter-name label,
+.submitter-email label,
+.submitter-date label,
+.submitter-quantity label,
+.submitter-price label,
+.submitter-total label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.submitButton {
+    width: 50%;
+    margin: -15px 0 10px 24%;
+    font-size: 17px;
+}
+.error-message {
+    color: red; /* Style for error messages */
+    margin-top: 10px;
+    display: none; /* Initially hide error message */
+}
+.submitter {
+    margin-bottom: 15px; /* Space between input fields */
+}
+@media (max-width: 430px) {
+    .schedule-form {
+        min-width: 100%;
+        padding: 30px;
+        gap: 30px;
+    }
+}

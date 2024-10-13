@@ -31,10 +31,13 @@
             <ul class="menu-list">
                 <li><a href="/dashboard/profile">Update Account</a></li>
                 <li><a href="/dashboard/appointments">Appointment History</a></li>
-                <li><a href="/dashboard/invoices">Invoices</a></li>
-                <li><a href="/settings">Settings</a></li>
+                <% if (user && user.isAdmin) { %> <!-- Check if the user is an admin -->
+                    <li><a href="/dashboard/createInvoice">Create Invoice</a></li>
+                <% } else { %> <!-- Else statement for non-admin users -->
+                    <li><a href="/dashboard/invoices">Invoices</a></li>
+                <% } %>
                 <li><a href="/logout">Logout</a></li>
-            </ul>
+            </ul>            
         </div>
 
         <!-- Main Content Area -->
@@ -65,7 +68,6 @@
                 <% } %>
             </div>
             
-
             <!-- Other sections -->
             <div class="content-box">
                 <h3>Account Settings</h3>

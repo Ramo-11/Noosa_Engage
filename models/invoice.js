@@ -25,16 +25,14 @@ const invoiceSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    quantity: {
+    price: {
         type: Number,
         required: true
     },
     total: {
         type: Number,
         required: true,
-        default: function() {
-            return this.hours * this.quantity * 50;  // Auto-calculate total
-        }
+        default: 0 // Set default to 0, will calculate before saving
     },
     isPaid: {
         type: Boolean,
@@ -42,6 +40,12 @@ const invoiceSchema = new mongoose.Schema({
         default: false  // Default value is false, meaning unpaid
     }
 }, { timestamps: true });  // Automatically adds createdAt and updatedAt fields
+
+// Pre-save hook to calculate the total before saving
+invoiceSchema.pre('save', function(next) {
+    this.total = this.hours * this.price; // Calculate total based on hours and price
+    next();
+});
 
 // Create the model
 const Invoice = mongoose.model('Invoice', invoiceSchema);

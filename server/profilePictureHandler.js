@@ -1,8 +1,11 @@
 // server/profilePictureHandler.js
+
+//#region Imports
 const multer = require('multer');
 const User = require('../models/User'); // Assuming the User model is in models folder
+//#endregion
 
-// Multer memory storage configuration (store images in memory)
+//#region Methods
 const storage = multer.memoryStorage();
 
 // Multer upload middleware
@@ -39,8 +42,11 @@ const profilePictureHandler = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };
+//#endregion
 
+//#region Exports
 module.exports = {
   upload,
   profilePictureHandler,
 };
+//#endregion
