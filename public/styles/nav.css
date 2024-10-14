@@ -18,6 +18,7 @@
 .logo-div img {
     width: 80px;
     height: 80px;
+    margin-left: 200px;
 }
 
 .container {
@@ -42,7 +43,6 @@
 
 .menu-items {
     display: flex; /* Keep menu items in a row */
-    margin-right: 160px;
 }
 
 .menu-items li {
@@ -52,11 +52,10 @@
 }
 /* Profile picture container styles */
 .profile-picture-container {
-    margin-left: -1000px;
-    margin-right: 100px;
     position: relative; /* Positioning context for the dropdown */
     display: flex; /* Use flexbox for alignment */
     align-items: center; /* Center items vertically within the container */
+    margin-right: 200px; /* Space between menu items and profile picture */
 }
 
 /* Dropdown styles */

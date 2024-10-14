@@ -26,14 +26,11 @@ const sessionMiddleware = session({
 });
 
 const userMiddleware = async (req, res, next) => {
-    res.locals.user = await getUser(req); // Retrieve user data and attach it to res.locals
-    res.locals.currentRoute = req.path; // Pass the current route to the views
-    next(); // Call the next middleware or route handler
+    const userData = await getUser(req);
+    res.locals.user = userData.user; // Attach user object
+    res.locals.userLoggedIn = userData.isLoggedIn; // Attach login status
+    res.locals.currentRoute = req.path; // Current route
+    next();
 };
 
-const userStatusMiddleware = (req, res, next) => {
-    res.locals.userLoggedIn = req.session.userId ? true : false; // Check if the user is logged in
-    next(); // Proceed to the next middleware/route handler
-};
-
-module.exports = {sessionMiddleware, userMiddleware, userStatusMiddleware}; // Ensure this line is present
+module.exports = {sessionMiddleware, userMiddleware}; // Ensure this line is present

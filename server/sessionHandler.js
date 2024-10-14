@@ -76,7 +76,6 @@ const getDashboard = async (req, res) => {
         const recentInvoice = invoices.length > 0 ? invoices[0] : null;
 
         // Log the user object for debugging
-        console.log(user);
 
         // Render the dashboard and pass the entire user object
         res.render("dashboard", {
@@ -149,37 +148,35 @@ async function loginUser(req, res) {
 
 
 const getUser = async (req) => {
-    // Check if there is a session and user ID
     if (!req.session || !req.session.userId) {
-        // Return a default object if not logged in
         return {
             isLoggedIn: false,
-            user: null, // No user data available
+            user: null,
         };
     }
 
     try {
-        const user = await User.findById(req.session.userId);
+        const user = await User.findById(req.session.userId); 
         if (!user) {
             return {
                 isLoggedIn: false,
-                user: null, // User not found in the database
+                user: null,
             };
         }
 
-        // Return the entire user object with logged-in status
         return {
             isLoggedIn: true,
-            user: user.toObject(), // Converts Mongoose model to plain JS object
+            user: user,
         };
     } catch (error) {
         console.error('Error fetching user:', error);
         return {
             isLoggedIn: false,
-            user: null, // In case of error
+            user: null,
         };
     }
 };
+
 
 
 async function signUpUser(req, res) {

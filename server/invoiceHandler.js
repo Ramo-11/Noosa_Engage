@@ -11,10 +11,7 @@ const getInvoicesForUser = async (req, res) => {
     }
 
     try {
-        console.log("User ID is" + req.session.userId)
-        // Fetch the user based on userId stored in the session
         const user = await User.findById(req.session.userId);
-        console.log("User is: "+ user)
         if (!user) {
             return res.status(404).send("User not found"); // Handle user not found
         }
@@ -22,8 +19,6 @@ const getInvoicesForUser = async (req, res) => {
         // Fetch invoices associated with the user's ID
         const invoices = await Invoice.find({ customer: user._id }).exec();
 
-        console.log("What is the user and invoices")
-        console.log(user.firstName, invoices)
         // Render the invoices page with user and invoices data
         res.render("dashboard/invoices", { user, invoices }); // Adjust the path to your invoices.ejs file
     } catch (err) {
