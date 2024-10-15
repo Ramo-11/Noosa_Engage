@@ -12,9 +12,13 @@
     padding: 0;
 }
 
+.title-div {
+    margin: 0;
+    padding: 0;
+}
 
-.forgot-password-form {
-    min-width: 40rem; /* Adjusted width */
+.schedule-form {
+    min-width: 40rem;
     margin-top: 5%;
     display: flex;
     flex-direction: column;
@@ -22,16 +26,15 @@
     gap: 50px;
     padding: 50px;
     background: #fff;
-    box-shadow: 2px 5px 20px rgba(119, 119, 119, 0.5);
-    border-radius: 10px; /* Rounded corners */
+    box-shadow: 2px 5px 20px rgba(119,119,119,0.5);
 }
 
-.forgot-password-form h1 {
+.schedule-form h1 {
     color: #0a3755;
     font-size: 30px;
 }
 
-.forgot-password-form input {
+.schedule-form input, .schedule-form textarea, .schedule-form select {
     padding: 10px 15px;
     width: 100%;
     min-height: 50px;
@@ -44,66 +47,138 @@
     box-sizing: border-box;
 }
 
-.forgot-password-form .input-box {
-    display: flex;
-    flex-direction: column;
-}
-
-.forgot-password-form .input-box label {
+.submitter-name label,
+.submitter-email label,
+.submitter-tutor label,
+.submitter-date label,
+.submitter-time label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
     font-size: 14px;
 }
 
-.forgot-password-form .button {
-    text-align: center;
+.submitter-time label {
+    margin-left: -10px;
 }
 
-.forgot-password-form .button input {
-    width: 50%;
-    margin: 10px auto; /* Center the button */
-    font-size: 17px;
-    cursor: pointer;
-    background-color: #0a3755; /* Button color */
-    color: white; /* Button text color */
+.submitter-date-time {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 30px;
+}
+
+.submitter-date, .submitter-time {
+    flex: 1;
+}
+
+.submitter-time {
+    padding-left: 10px;
+}
+
+.submitter-date input {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background-color: #e0e0e0;
+}
+
+.submitter-time select {
+    width: 100%;
+    font-size: 15px;
     border: none;
     border-radius: 10px;
-    padding: 10px 20px;
-    transition: background-color 0.3s;
+    background-color: #e0e0e0;
+    box-sizing: border-box;
 }
 
-.forgot-password-form .button input:hover {
-    background-color: #084a74; /* Darker shade on hover */
+.submitter-time select {
+    margin-left: -10px;
 }
 
-.success-message,
-.error-message {
+.submitButton {
+    width: 50%;
+    margin: -15px 0 10px 24%;
+    font-size: 17px;
+}
+
+.submitFlag {
+    margin-top: -30px;
+    margin-bottom: -30px;
+    width: 80%;
     padding: 10px;
-    margin-top: 10px;
-    width: 80%; /* Responsive width */
-    text-align: center;
-    border-radius: 5px;
-}
-
-.success-message {
-    color: #4CAF50;
-    background-color: rgba(76, 175, 80, 0.1);
+    border-radius: 3px;
 }
 
 .error-message {
     color: #D8000C;
-    background-color: rgba(216, 0, 12, 0.1);
+    background-color: transparent;
+    padding: 10px;
+    margin-top: 10px;
+    display: block;
+}
+
+.terms-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.terms-container input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.terms-container label {
+    font-size: 14px;
+    color: #333;
+    line-height: 16px;
 }
 
 @media (max-width: 430px) {
-    .forgot-password-form {
-        min-width: 100%; /* Full width on smaller screens */
+    .schedule-form {
+        min-width: 100%;
         padding: 30px;
         gap: 30px;
     }
 
-    .forgot-password-form .button input {
-        width: 80%; /* Button full width on small screens */
+    .submitter-date-time {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .submitter-date {
+        width: 100%;
+    }
+
+    .submitter-time {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .submitter-date {
+        display: flex;
+    }
+
+    .submitter-date input {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .submitter-time select {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .submitButton {
+        width: 80%;
+        margin: 0 auto;
+        font-size: 16px;
     }
 }

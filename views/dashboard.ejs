@@ -42,11 +42,28 @@
 
         <!-- Main Content Area -->
         <div class="main-content">
-            <!-- Upcoming Appointments Section -->
-            <div class="content-box">
-                <h3>Upcoming Appointments</h3>
-                <p>See your upcoming appointments here.</p>
-            </div>
+        <!-- Scheduled Appointments Section -->
+        <div class="content-box">
+            <h3>Scheduled Appointments</h3>
+            <% if (appointments.length > 0) { %>
+                <% appointments.forEach(appointment => { %>
+                    <div class="appointment-block">
+                        <h4><%= appointment.tutorName %></h4>
+                        <p><strong>User Name:</strong> <%= appointment.userName %></p>
+                        <p><strong>Appointment Date:</strong> <%= appointment.appointmentDate %></p>
+                        <p><strong>Time:</strong> <%= appointment.time %></p>
+                        <p><strong>Duration:</strong> <%= appointment.duration %> hours</p>
+                        <p><strong>Status:</strong> <%= appointment.status %></p>
+                        <% if (appointment.description) { %>
+                            <p><strong>Description:</strong> <%= appointment.description %></p>
+                        <% } %>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>No scheduled appointments found.</p>
+            <% } %>
+        </div>
+            
 
             <!-- Invoices Section (Only Unpaid) -->
             <div class="content-box">
@@ -67,16 +84,10 @@
                     <p>No invoices found.</p>
                 <% } %>
             </div>
-            
-            <!-- Other sections -->
-            <div class="content-box">
-                <h3>Account Settings</h3>
-                <p>Update your account information.</p>
-            </div>
 
             <div class="content-box">
                 <h3>Support</h3>
-                <p>Contact support for assistance.</p>
+                <p><a href="/contact" style="color: blue; text-decoration: underline;">Contact support for assistance.</a></p>
             </div>
         </div>
     </div>

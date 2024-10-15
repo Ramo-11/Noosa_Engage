@@ -134,6 +134,42 @@ body {
     background-color: #d35400;
 }
 
+/* Invoice Block Styling */
+.appointment-block {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    text-align: left;
+}
+
+.appointment-block h2 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+
+.appointment-block p {
+    font-size: 1em;
+    color: #555;
+    margin: 5px 0;
+}
+
+.appointment-block .view-details {
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1em;
+}
+
+.appointment-block .view-details:hover {
+    background-color: #d35400;
+}
 /* Paid / Not Paid Status Styling */
 .status {
     font-weight: bold;

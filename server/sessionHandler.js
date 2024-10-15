@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const { generalLogger } = require("../utils/generalLogger");
 const { sendSignupEmail } = require("./mail");
 const Invoice = require('../models/invoice'); // Import the Invoice model
+const appointments = require("../models/appointments");
 //#endregion
 
 //#region Methods
@@ -54,8 +55,6 @@ const updateProfile = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
-
-
 const getDashboard = async (req, res) => {
     // Check if there is a session and user ID
     if (!req.session || !req.session.userId) {
@@ -69,25 +68,31 @@ const getDashboard = async (req, res) => {
             return res.status(404).send("User not found");
         }
 
+        // Fetch all scheduled appointments for the user
+        const appointmentsList = await appointments.find({
+            user: user._id, // Ensure you filter by the user's ID
+            status: 'Scheduled' // Only fetch scheduled appointments
+        }).sort({ appointmentDate: 1, time: 1 }); // Sort by appointment date and time in ascending order
+
         // Fetch all invoices for the user and sort by date in descending order
-        const invoices = await Invoice.find({ customer: user._id }).sort({ createdAt: -1 }); // Assuming 'createdAt' is the field for invoice date
+        const invoices = await Invoice.find({ customer: user._id }).sort({ createdAt: -1 });
 
         // Get only the most recent invoice
         const recentInvoice = invoices.length > 0 ? invoices[0] : null;
-
-        // Log the user object for debugging
 
         // Render the dashboard and pass the entire user object
         res.render("dashboard", {
             user: user.toObject(), // Convert Mongoose model to a plain JS object
             invoice: recentInvoice, // Passing only the most recent invoice
+            appointments: appointmentsList, // Passing all scheduled appointments
             currentRoute: 'dashboard'
         });
     } catch (err) {
-        console.error("Error fetching invoices:", err);
+        console.error("Error fetching appointments:", err);
         return res.status(500).send("Internal server error");
     }
 };
+
 
 
 
