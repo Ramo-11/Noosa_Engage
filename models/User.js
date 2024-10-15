@@ -37,6 +37,14 @@ const userSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false // Default to false for normal users
+    },
+    resetCode: {
+        type: String,
+        default: null  // Stores the reset code, null if no code is generated
+    },
+    resetCodeExpiration: {
+        type: Date,
+        default: null  // Optionally stores when the reset code expires
     }
 }, { timestamps: true });  // Automatically adds createdAt and updatedAt fields
 

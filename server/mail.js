@@ -146,32 +146,6 @@ async function sendSignupEmail(user) {
     });
 }
 
-async function sendForgotPasswordEmail(email, resetCode) {
-    let mailTransporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: "noosa@noosaengage.com",
-            pass: "cxpy yaqy zllx mrqn"
-        }
-    });
-
-    let details = {
-        from: "noosa@noosaengage.com",
-        to: email,
-        subject: "Password Reset Request",
-        text: `You requested a password reset. Please use the following link to reset your password: \n\n http://yourwebsite.com/reset-password?code=${resetCode}\n\nIf you did not request this, please ignore this email.`
-    };
-
-    mailTransporter.sendMail(details, (error) => {
-        if (!error) {
-            generalLogger.info(`Password reset email sent to ${email}`);
-        } else {
-            generalLogger.error("Failed to send password reset email");
-            generalLogger.debug(error);
-        }
-    });
-}
-
 async function sendAppointmentEmail(req, res) {
     const { fullName, email, date, time, tutor } = req.body;
 
@@ -248,8 +222,57 @@ async function sendAppointmentEmail(req, res) {
         }
     });
 }
+
+async function sendResetEmail(user, resetCode) {
+    const email = user.email
+    const firstName = user.firstName;
+
+    if (!email || !firstName) {
+        generalLogger.error("Error sending password reset email: one or more fields are missing");
+        return;
+    }
+
+    console.log(user.email)
+    console.log(user.firstName)
+    if (!validateEmail(email)) {
+        generalLogger.error("Error sending password reset email: Invalid email address");
+        return;
+    }
+
+    let mailTransporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "noosa@noosaengage.com",
+            pass: "cxpy yaqy zllx mrqn"
+        }
+    });
+
+    let details = {
+        from: "noosa@noosaengage.com",
+        to: email,
+        subject: "Password Reset Request",
+        html: `
+            <p>Dear ${firstName},</p>
+            <p>You requested a password reset. Please click the link below to reset your password:</p>
+            <p><a href="http://localhost:3000/updatepassword?code=${resetCode}">Reset Password</a></p>
+            <p>If you did not request this, please ignore this email.</p>
+            <p>Best regards,</p>
+            <p>Noosa Engage Team</p>
+        `
+    };
+
+    mailTransporter.sendMail(details, (error) => {
+        if (!error) {
+            generalLogger.info(`Password reset email sent to ${email}`);
+        } else {
+            generalLogger.error("Failed to send password reset email");
+            generalLogger.debug(error);
+        }
+    });
+}
+
 //#endregion
 
 //#region Exports
-module.exports  = { sendEmail, sendSignupEmail, sendForgotPasswordEmail, sendAppointmentEmail, sendDeleteAppointmentEmail};
+module.exports  = { sendEmail, sendSignupEmail, sendAppointmentEmail, sendDeleteAppointmentEmail, sendResetEmail};
 //#endregion

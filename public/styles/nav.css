@@ -153,7 +153,7 @@
         width: 40px; 
         position: absolute;
         top: 20px;
-        right: -60px;
+        right: -150px;
         z-index: 2;
         background: #0d3754;
         display: flex;
@@ -168,6 +168,8 @@
         display: flex;
         justify-content: center; /* Centers the image horizontally */
         align-items: center;     /* Centers the image vertically */
+        margin-right: 200px;
+
     }
     
     .logo-div img {
