@@ -247,6 +247,8 @@ async function sendResetEmail(user, resetCode) {
         }
     });
 
+    let baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://noosaengage.com';
+
     let details = {
         from: "noosa@noosaengage.com",
         to: email,
@@ -254,7 +256,7 @@ async function sendResetEmail(user, resetCode) {
         html: `
             <p>Dear ${firstName},</p>
             <p>You requested a password reset. Please click the link below to reset your password:</p>
-            <p><a href="http://localhost:3000/updatepassword?code=${resetCode}">Reset Password</a></p>
+            <p><a href="${baseUrl}/updatepassword?code=${resetCode}">Reset Password</a></p>
             <p>If you did not request this, please ignore this email.</p>
             <p>Best regards,</p>
             <p>Noosa Engage Team</p>
