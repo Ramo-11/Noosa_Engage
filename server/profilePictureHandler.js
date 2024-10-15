@@ -1,0 +1,52 @@
+// server/profilePictureHandler.js
+
+//#region Imports
+const multer = require('multer');
+const User = require('../models/User'); // Assuming the User model is in models folder
+//#endregion
+
+//#region Methods
+const storage = multer.memoryStorage();
+
+// Multer upload middleware
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB file limit
+});
+
+// Profile picture handler function
+const profilePictureHandler = async (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No file uploaded.');
+  }
+
+  try {
+    const user = await User.findById(req.body.userId);
+    if (!user) {
+      return res.status(404).send('User not found.');
+    }
+
+    // Update the user's profile picture
+    user.profilePicture = {
+      data: req.file.buffer, // Save the image buffer
+      contentType: req.file.mimetype // Save the content type
+    };
+
+    // Save the updated user document
+    await user.save();
+
+    // Send a response
+    setTimeout(() => {
+        res.redirect("/dashboard/profile");
+    }, 2000);     } catch (error) {
+    res.status(500).send('Internal Server Error');
+  }
+};
+//#endregion
+
+//#region Exports
+module.exports = {
+  upload,
+  profilePictureHandler,
+};
+//#endregion
