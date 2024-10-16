@@ -49,63 +49,20 @@
 
 .submitter-name label,
 .submitter-email label,
-.submitter-tutor label,
-.submitter-date label,
-.submitter-time label {
+.submitter-course label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
     font-size: 14px;
 }
 
-.submitter-time label {
-    margin-left: -10px;
-}
-
-.submitter-date-time {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 30px;
-}
-
-.submitter-date, .submitter-time {
-    flex: 1;
-}
-
-.submitter-time {
-    padding-left: 10px;
-}
-
-.submitter-date input {
-    width: 100%;
-    padding: 10px 15px;
-    border-radius: 10px;
-    background-color: #e0e0e0;
-}
-
-.submitter-time select {
-    width: 100%;
-    font-size: 15px;
-    border: none;
-    border-radius: 10px;
-    background-color: #e0e0e0;
-    box-sizing: border-box;
-}
-
-.submitter-time select {
-    margin-left: -10px;
-}
-
 .submitButton {
     width: 50%;
-    margin: -15px 0 10px 24%;
+    margin: 15px 0 10px 24%;
     font-size: 17px;
 }
 
 .submitFlag {
-    margin-top: -30px;
-    margin-bottom: -30px;
     width: 80%;
     padding: 10px;
     border-radius: 3px;
@@ -144,36 +101,6 @@
         min-width: 100%;
         padding: 30px;
         gap: 30px;
-    }
-
-    .submitter-date-time {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .submitter-date {
-        width: 100%;
-    }
-
-    .submitter-time {
-        width: 100%;
-        padding: 10px;
-    }
-
-    .submitter-date {
-        display: flex;
-    }
-
-    .submitter-date input {
-        width: 100%;
-        padding: 10px;
-        box-sizing: border-box;
-    }
-
-    .submitter-time select {
-        width: 100%;
-        padding: 10px;
-        box-sizing: border-box;
     }
 
     .submitButton {

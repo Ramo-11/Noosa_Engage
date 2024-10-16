@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="/styles/general.css">
     <link rel="stylesheet" href="/styles/schedule.css">
     <link rel="shortcut icon" href="/images/Logo-white.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <title>Schedule an Appointment</title>
 </head>
 <body>
@@ -28,139 +27,41 @@
                 <input type="email" id="email" class="input" placeholder="" maxlength="50">
             </div>
             
-            <div class="submitter-tutor">
-                <label for="tutor">Select Tutor</label>
-                <select id="tutor" class="input">
+            <div class="submitter-course">
+                <label for="course">Select a Course</label>
+                <select id="course" class="input">
                     <option value="" disabled selected></option>
-                    <option value="Mostafa Abdulaleem">Mostafa Abdulaleem</option>
-                    <option value="Omar Abdelalim">Omar Abdelalim</option>
+                    <option value="algebra">Algebra</option>
+                    <option value="arabic">Arabic</option>
+                    <option value="chemistry">Chemistry</option>
+                    <option value="data-structures-algorithms">Data Structures and Algorithms</option>
+                    <option value="databases">Databases</option>
+                    <option value="geometry">Geometry</option>
+                    <option value="introduction-to-programming">Programming</option>
+                    <option value="oop">Object-Oriented Programming</option>
+                    <option value="physics">Physics</option>
+                    <option value="pre-algebra">Pre-Algebra</option>
+                    <option value="pre-calculus">Pre-Calculus</option>
+                    <option value="quran">Quran</option>
+                    <option value="web-development">Web Development</option>
                 </select>
             </div>
-            
-            <div class="submitter-date-time">
-                <div class="submitter-date" id="dateContainer" style="display: none;">
-                    <label for="date">Date</label>
-                    <input type="text" id="date" class="input" placeholder="">
-                </div>
-                <div class="submitter-time" id="timeContainer" style="display: none;">
-                    <label for="time">Select Time</label>
-                    <select id="time" class="input">
-                        <option value="" disabled selected></option>
-                    </select>
-                </div>
-            </div>
-            
+        
             <button class="submitButton" id="submitButton">Submit</button>
         </div>
     </div>
     <%- include("./partials/footer.ejs") %>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script type="module">
-        import availableTimes from './js/availableTimes.js';
-        let datePicker;
-
         document.addEventListener('DOMContentLoaded', function() {
-            datePicker = flatpickr("#date", {
-                enableTime: false,
-                dateFormat: "Y-m-d",
-                disable: [],
-                onChange: function(selectedDates, dateStr) {
-                    updateTimes(dateStr);
-                    validateDate(dateStr);
-                }
-            });
-
-            // Bind event listener for tutor change
-            const tutorSelect = document.getElementById("tutor");
-            tutorSelect.addEventListener('change', onTutorChange);
-
-            // Bind event listener for submit button
             const submitButton = document.getElementById("submitButton");
             submitButton.addEventListener('click', submitAppointment);
         });
 
-        function onTutorChange() {
-            const tutor = document.getElementById("tutor").value;
-
-            const dateContainer = document.getElementById("dateContainer");
-            const timeContainer = document.getElementById("timeContainer");
-            dateContainer.style.display = tutor ? 'block' : 'none';
-
-            document.getElementById("date").value = '';
-            document.getElementById("time").innerHTML = '<option value="" disabled selected></option>';
-            timeContainer.style.display = 'none';
-
-            document.getElementById("submitFlag").hidden = true;
-
-            if (tutor) {
-                const availableDates = Object.keys(availableTimes[tutor] || {});
-                updateDatePicker(availableDates);
-            }
-        }
-
-        function updateDatePicker(availableDates) {
-            const formattedDates = availableDates.map(date => date.toString());
-
-            if (datePicker) {
-                datePicker.set('disable', [
-                    function(date) {
-                        const dateStr = date.toISOString().split('T')[0];
-                        return !formattedDates.includes(dateStr);
-                    }
-                ]);
-                datePicker.redraw();
-            }
-        }
-
-        function updateTimes(date) {
-            const timeSelect = document.getElementById("time");
-            timeSelect.innerHTML = '<option value="" disabled selected></option>'; // Clear previous options
-
-            const timeContainer = document.getElementById("timeContainer");
-            const tutor = document.getElementById("tutor").value;
-            const submitFlag = document.getElementById("submitFlag");
-
-            if (tutor && date) {
-                const availableTimesForDate = availableTimes[tutor]?.[date] || [];
-
-                if (availableTimesForDate.length === 0) {
-                    timeContainer.style.display = 'none';
-                } else {
-                    submitFlag.style.display = "none";
-                    availableTimesForDate.forEach(time => {
-                        const option = document.createElement("option");
-                        option.value = time;
-                        option.textContent = time;
-                        timeSelect.appendChild(option);
-                    });
-                    timeContainer.style.display = 'block';
-                }
-            } else {
-                timeContainer.style.display = 'none';
-                submitFlag.style.display = "none";
-            }
-        }
-
-        function validateDate(date) {
-            const tutor = document.getElementById("tutor").value;
-            const submitFlag = document.getElementById("submitFlag");
-            submitFlag.hidden = true; // Hide error message initially
-
-            if (tutor && date) {
-                const availableTimesForDate = availableTimes[tutor]?.[date] || [];
-                // Validate availableTimesForDate as needed
-            }
-        }
-
         async function submitAppointment() {
             const fullName = document.getElementById("name").value;
             const email = document.getElementById("email").value;
-            const date = document.getElementById("date").value;
-            const time = document.getElementById("time").value;
-            const tutor = document.getElementById("tutor").value;
-
-            console.log('Submitting Appointment:', { fullName, email, date, time, tutor});
+            const course = document.getElementById("course").value;
 
             const result = await fetch("/api/scheduleAppointment", {
                 method: "POST",
@@ -170,9 +71,7 @@
                 body: JSON.stringify({
                     fullName,
                     email,
-                    date,
-                    time,
-                    tutor
+                    course
                 })
             });
 

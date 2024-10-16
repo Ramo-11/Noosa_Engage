@@ -1,7 +1,7 @@
 const express = require("express")
 const route = express.Router()
 const sendEmail = require("./mail")
-const sendAppointmentEmail = require("./appointmentEmail");
+const processScheduleRequest = require("./scheduleController");
 const renderCoursePage = require("./courseController");
 
 
@@ -15,6 +15,6 @@ route.get('/courses/:courseName', renderCoursePage)
 
 // *********** POST requests **********
 route.post("/api/sendEmail", sendEmail)
-route.post("/api/scheduleAppointment", sendAppointmentEmail)
+route.post("/api/scheduleAppointment", processScheduleRequest)
 
 module.exports = route

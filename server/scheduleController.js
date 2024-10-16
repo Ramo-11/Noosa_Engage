@@ -2,10 +2,10 @@ const nodemailer = require('nodemailer');
 const { generalLogger } = require('../utils/generalLogger');
 const validateEmail = require('../utils/emailValidator');
 
-async function sendAppointmentEmail(req, res) {
-    const { fullName, email, date, time, tutor } = req.body;
+async function processScheduleRequest(req, res) {
+    const { fullName, email, course } = req.body;
 
-    if (!fullName || !email || !date || !time || !tutor) {
+    if (!fullName || !email || !course) {
         generalLogger.error("Error scheduling appointment: one or more fields are missing");
         return res.status(400).send({ message: "Error: All fields must be completed" });
     }
@@ -23,33 +23,29 @@ async function sendAppointmentEmail(req, res) {
         }
     });
 
-    const phoneNumbers = {
-        "Mostafa Abdulaleem": "574-347-1217",
-        "Omar Abdelalim": "574-406-4727"
-    };
-
-    // Email for the user
-    let userDescription = `
+    // Email for the client
+    let clientEmail = `
         <p>Dear ${fullName},</p>
-        <p>Your appointment has been scheduled for <strong>${date}</strong> at <strong>${time}</strong> with <strong>${tutor}</strong>. Please contact us if you need to reschedule or if you have any questions.</p>
-        <p>Best regards,</p>
+        <p>Your appointment has been scheduled for <strong>${course}</strong>. We will contact you shortly to find a date and a time to meet. Please contact us if you have any questions.</p>
+        <p>Sincerely,</p>
         <p>Noosa Engage Team</p>
-        <p><strong>Phone:</strong> ${phoneNumbers[tutor] || '+000000000'}<br>
+        <p><strong>Phone:</strong> +15744064727<br>
         <strong>Email:</strong> <a href="mailto:noosa@noosaengage.com">noosa@noosaengage.com</a><br>
         <strong>Website:</strong> <a href="https://www.noosaengage.com">www.noosaengage.com</a></p>
     `;
 
     // Email for Noosa Engage
-    let adminDescription = `
-    <p>a new appointment has been scheduled for <strong>${date}</strong> at <strong>${time}</strong> with <strong>${fullName}</strong>.</p>
+    let adminEmail = `
+    <p>a new appointment has been scheduled for <strong>${course}</strong> with <strong>${fullName}</strong>.</p>
+    <p>Email: <strong>${email}</strong>.</p>
     `;
 
     // Sending email to the user
     let userDetails = {
         from: "noosa@noosaengage.com",
         to: email,
-        subject: `Appointment Confirmation: ${date} at ${time}`,
-        html: userDescription
+        subject: `Appointment Confirmation for class ${course}`,
+        html: clientEmail
     };
 
     mailTransporter.sendMail(userDetails, (error) => {
@@ -65,7 +61,7 @@ async function sendAppointmentEmail(req, res) {
         from: "noosa@noosaengage.com",
         to: "noosa@noosaengage.com",
         subject: `New Appointment: ${fullName}`,
-        html: adminDescription
+        html: adminEmail
     };
 
     mailTransporter.sendMail(adminDetails, (error) => {
@@ -79,4 +75,4 @@ async function sendAppointmentEmail(req, res) {
     });
 }
 
-module.exports = sendAppointmentEmail;
+module.exports = processScheduleRequest;

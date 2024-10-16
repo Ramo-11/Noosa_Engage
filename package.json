@@ -1,16 +1,15 @@
 {
   "name": "noosa_engage",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "website for noosa engage",
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "node app.js",
-    "updateTimes": "node server/availableTimesHandler/updateAvailableTimes.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Ramo-11/Noosa_web.git"
+    "url": "https://github.com/Ramo-11/Noosa_Engage.git"
   },
   "author": "Omar Abdelalim",
   "license": "ISC",

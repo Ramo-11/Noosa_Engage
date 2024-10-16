@@ -1,25 +1,4 @@
 {
-    "arabic": {
-        "className": "Arabic",
-        "courseImage": "Arabic.webp",
-        "classDescription": "A course to teach the Arabic language. The class level depends on your level and your desired outcome.",
-        "exampleTopics": ["Reading", "Writing", "Vocabulary", "Grammar"],
-        "bestFor": "All levels."
-    },
-    "quran": {
-        "className": "Quran",
-        "courseImage": "Quran.webp",
-        "classDescription": "A course to teach the Quran. The class level depends on your level and your desired outcome.",
-        "exampleTopics": ["Tajweed", "Reading", "Tafseer", "Hifdh"],
-        "bestFor": "All levels."
-    },
-    "pre-algebra": {
-        "className": "Pre-Algebra",
-        "courseImage": "Pre-Algebra.webp",
-        "classDescription": "An introductory course to algebra covering basic concepts.",
-        "exampleTopics": ["Integers", "Fractions", "Basic Equations", "Exponents"],
-        "bestFor": "Students who are just beginning their algebra journey."
-    },
     "algebra": {
         "className": "Algebra",
         "courseImage": "Algebra.webp",
@@ -27,19 +6,12 @@
         "exampleTopics": ["Linear Equations", "Polynomials", "Quadratic Equations", "Functions"],
         "bestFor": "Students who have basic knowledge of algebra and want to deepen their understanding."
     },
-    "geometry": {
-        "className": "Geometry",
-        "courseImage": "Geometry.webp",
-        "classDescription": "This course covers fundamental geometric principles including shapes, angles, and theorems.",
-        "exampleTopics": ["Triangles", "Circles", "Area and Volume", "Pythagorean Theorem"],
-        "bestFor": "Students interested in geometry and its real-world applications."
-    },
-    "pre-calculus": {
-        "className": "Pre-Calculus",
-        "courseImage": "Pre-Calculus.webp",
-        "classDescription": "This course prepares students for calculus, covering advanced algebra, functions, and trigonometry.",
-        "exampleTopics": ["Trigonometric Functions", "Exponential and Logarithmic Functions", "Sequences and Series", "Limits"],
-        "bestFor": "Students preparing for calculus."
+    "arabic": {
+        "className": "Arabic",
+        "courseImage": "Arabic.webp",
+        "classDescription": "A course to teach the Arabic language. The class level depends on your level and your desired outcome.",
+        "exampleTopics": ["Reading", "Writing", "Vocabulary", "Grammar"],
+        "bestFor": "All levels."
     },
     "chemistry": {
         "className": "Chemistry",
@@ -48,33 +20,12 @@
         "exampleTopics": ["Atomic Structure", "Chemical Reactions", "Stoichiometry", "Periodic Trends"],
         "bestFor": "Students interested in the fundamentals of chemistry."
     },
-    "physics": {
-        "className": "Physics",
-        "courseImage": "Physics.webp",
-        "classDescription": "A comprehensive physics course exploring the laws of motion, energy, and the physical world.",
-        "exampleTopics": ["Kinematics", "Newton's Laws", "Energy and Work", "Electricity and Magnetism"],
-        "bestFor": "Students curious about how the universe works."
-    },
-    "web-development": {
-        "className": "Web Development",
-        "courseImage": "Web_Dev.webp",
-        "classDescription": "Learn the basics of building websites, covering HTML, CSS, and JavaScript.",
-        "exampleTopics": ["HTML", "CSS", "JavaScript", "Responsive Design"],
-        "bestFor": "Students interested in creating their own websites."
-    },
     "data-structures-algorithms": {
         "className": "Data Structures and Algorithms",
         "courseImage": "DS_and_Algorithms.webp",
         "classDescription": "A course that dives into the organization of data and the algorithms used to process them.",
         "exampleTopics": ["Arrays and Lists", "Sorting and Searching", "Graphs and Trees", "Dynamic Programming"],
         "bestFor": "Students aiming to enhance their problem-solving skills in computer science."
-    },
-    "oop": {
-        "className": "Object-Oriented Programming",
-        "courseImage": "OOP.webp",
-        "classDescription": "An introductory course to object-oriented programming concepts, focusing on classes, objects, and design patterns.",
-        "exampleTopics": ["Classes and Objects", "Inheritance", "Polymorphism", "Design Patterns"],
-        "bestFor": "Students with basic programming skills looking to learn OOP."
     },
     "databases": {
         "className": "Databases",
@@ -83,11 +34,60 @@
         "exampleTopics": ["SQL Queries", "Database Design", "Normalization", "Transactions"],
         "bestFor": "Students interested in managing and organizing data."
     },
+    "geometry": {
+        "className": "Geometry",
+        "courseImage": "Geometry.webp",
+        "classDescription": "This course covers fundamental geometric principles including shapes, angles, and theorems.",
+        "exampleTopics": ["Triangles", "Circles", "Area and Volume", "Pythagorean Theorem"],
+        "bestFor": "Students interested in geometry and its real-world applications."
+    },
     "introduction-to-programming": {
         "className": "Programming",
         "courseImage": "Programming.webp",
         "classDescription": "Fundamental coding concepts and logic.",
         "exampleTopics": ["Variables and Data Types", "Control Structures", "Functions", "Basic Algorithms", "Loops"],
         "bestFor": "All levels, from beginner in coding, to advanced levels to create complex software."
+    },
+    "oop": {
+        "className": "Object-Oriented Programming",
+        "courseImage": "OOP.webp",
+        "classDescription": "An introductory course to object-oriented programming concepts, focusing on classes, objects, and design patterns.",
+        "exampleTopics": ["Classes and Objects", "Inheritance", "Polymorphism", "Design Patterns"],
+        "bestFor": "Students with basic programming skills looking to learn OOP."
+    },
+    "physics": {
+        "className": "Physics",
+        "courseImage": "Physics.webp",
+        "classDescription": "A comprehensive physics course exploring the laws of motion, energy, and the physical world.",
+        "exampleTopics": ["Kinematics", "Newton's Laws", "Energy and Work", "Electricity and Magnetism"],
+        "bestFor": "Students curious about how the universe works."
+    },
+    "pre-algebra": {
+        "className": "Pre-Algebra",
+        "courseImage": "Pre-Algebra.webp",
+        "classDescription": "An introductory course to algebra covering basic concepts.",
+        "exampleTopics": ["Integers", "Fractions", "Basic Equations", "Exponents"],
+        "bestFor": "Students who are just beginning their algebra journey."
+    },
+    "pre-calculus": {
+        "className": "Pre-Calculus",
+        "courseImage": "Pre-Calculus.webp",
+        "classDescription": "This course prepares students for calculus, covering advanced algebra, functions, and trigonometry.",
+        "exampleTopics": ["Trigonometric Functions", "Exponential and Logarithmic Functions", "Sequences and Series", "Limits"],
+        "bestFor": "Students preparing for calculus."
+    },
+    "quran": {
+        "className": "Quran",
+        "courseImage": "Quran.webp",
+        "classDescription": "A course to teach the Quran. The class level depends on your level and your desired outcome.",
+        "exampleTopics": ["Tajweed", "Reading", "Tafseer", "Hifdh"],
+        "bestFor": "All levels."
+    },
+    "web-development": {
+        "className": "Web Development",
+        "courseImage": "Web_Dev.webp",
+        "classDescription": "Learn the basics of building websites, covering HTML, CSS, and JavaScript.",
+        "exampleTopics": ["HTML", "CSS", "JavaScript", "Responsive Design"],
+        "bestFor": "Students interested in creating their own websites."
     }
 }
