@@ -1,57 +1,63 @@
 <html>
-    <head>
-        <title>Prices</title>
-        <link rel="stylesheet" href="/styles/general.css">
-        <link rel="stylesheet" href="/styles/prices.css">
-        <link rel="shortcut icon" href="/images/Logo-white.png">
-    </head>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+<head>
+    <title>Prices</title>
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/prices.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+</head>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-        gtag('config', 'G-XEW6Y9S2YM');
-    </script>
-    <body>
-        <%- include("./partials/nav.ejs") %>
-        <div class="main-content">
-            <div class="title-div">
-                <h1>Prices</h1>
-            </div>
-            <div class="prices-divs">
-                <div class="intro-session">
-                    <div class="picture_div">
-                        <img src="/images/intro.png" alt="Photo of first session">
-                    </div>
-                    <div class="description">
-                        <h2>Intro Session</h2>
-                        <h2>Free</h2>
-                        <h3>30 minutes - 1 hour</h3>
-                    </div>
-                </div>
-                <div class="high-school">
-                    <div class="picture_div">
-                        <img src="/images/second.png" alt="Photo of high school">
-                    </div>
-                    <div class="description">
-                        <h2>High School</h2>
-                        <h2>$40</h2>
-                        <h3>1 hour</h3>
-                    </div>
-                </div>
-                <div class="college-other-level">
-                    <div class="picture_div">
-                        <img src="/images/third.png" alt="Photo of college">
-                    </div>
-                    <div class="description">
-                        <h2>University/Other</h2>
-                        <h2>$50</h2>
-                        <h3>1 hour</h3>
-                    </div>
-                </div>
-            </div>
-            <button class="button_to_register"><a class="schedule" href="/schedule">Register Now</a></button>
+    gtag('config', 'G-XEW6Y9S2YM');
+</script>
+<body>
+    <%- include("./partials/nav.ejs") %>
+    <div class="main-content">
+        <div class="title-div">
+            <h1>Prices</h1>
         </div>
-        <%- include("./partials/footer.ejs") %>
-    </body>
+        <div class="prices-divs">
+            <div class="elementary-middle-school">
+                <div class="picture_div">
+                    <img src="/images/elementary.png" alt="Photo of elementary school">
+                </div>
+                <div class="description">
+                    <h2>Elementary & Middle School</h2>
+                    <h3>$30 (1 session/week)</h3>
+                    <h3>$50 (2 sessions/week)</h3>
+                    <h4>1 hour per session</h4>
+                </div>
+            </div>
+            <div class="high-school">
+                <div class="picture_div">
+                    <img src="/images/highschool.png" alt="Photo of high school">
+                </div>
+                <div class="description">
+                    <h2>High School</h2>
+                    <h3>$40 (1 session/week)</h3>
+                    <h3>$70 (2 sessions/week)</h3>
+                    <h4>1 hour per session</h4>
+                </div>
+            </div>
+            <div class="college-other-level">
+                <div class="picture_div">
+                    <img src="/images/college.png" alt="Photo of college">
+                </div>
+                <div class="description">
+                    <h2>College & Above</h2>
+                    <h3>$50 (1 session/week)</h3>
+                    <h3>$80 (2 sessions/week)</h3>
+                    <h4>1 hour per session</h4>
+                </div>
+            </div>
+        </div>
+        <div class="note">
+            <p>All sessions are priced for up to 90 minutes. Flexible budgeting options are available on request. Contact us for more information.</p>
+        </div>
+        <button class="button_to_register"><a class="schedule" href="/schedule">Register Now</a></button>
+    </div>
+    <%- include("./partials/footer.ejs") %>
+</body>
 </html>
