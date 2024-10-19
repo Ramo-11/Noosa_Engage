@@ -1,100 +1,227 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles/general.css">
-    <link rel="stylesheet" href="/styles/schedule.css">
-    <link rel="shortcut icon" href="/images/Logo-white.png">
-    <title>Schedule an Appointment</title>
-</head>
-<body>
-    <%- include("./partials/nav.ejs") %>
-    <div class="main-content">
-        <div class="title-div">
-            <h1>Schedule</h1>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/styles/general.css" />
+        <link rel="stylesheet" href="/styles/schedule.css" />
+        <link rel="shortcut icon" href="/images/Logo-white.png" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+        <title>Schedule an Appointment</title>
+    </head>
+    <body>
+        <%- include("./partials/nav.ejs") %>
+        <div class="main-content">
+            <div class="title-div">
+                <h1>Schedule</h1>
+            </div>
+            <div class="schedule-form">
+                <h1>Appointment Details</h1>
+                <p class="submitFlag" id="submitFlag" hidden></p>
+                <div class="submitter-name">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" class="input" placeholder="" maxlength="50"/>
+                </div>
+                <div class="submitter-email">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="input" placeholder="" maxlength="50"/>
+                </div>
+
+                <div class="submitter-course">
+                    <label for="course">Select a Course</label>
+                    <select id="course" class="input">
+                        <option value="" disabled selected></option>
+                        <option value="algebra">Algebra</option>
+                        <option value="arabic">Arabic</option>
+                        <option value="chemistry">Chemistry</option>
+                        <option value="data-structures-algorithms">Data Structures and Algorithms</option>
+                        <option value="databases">Databases</option>
+                        <option value="geometry">Geometry</option>
+                        <option value="introduction-to-programming">Programming</option>
+                        <option value="oop">Object-Oriented Programming</option>
+                        <option value="physics">Physics</option>
+                        <option value="pre-algebra">Pre-Algebra</option>
+                        <option value="pre-calculus">Pre-Calculus</option>
+                        <option value="quran">Quran</option>
+                        <option value="web-development">Web Development</option>
+                    </select>
+                </div>
+
+                <div class="submitter-date-time">
+                    <div class="submitter-date" id="dateContainer" style="display: none">
+                        <label for="date">Date</label>
+                        <input type="text" id="date" class="input" placeholder="Select a date"/>
+                    </div>
+                    <div class="submitter-time" id="timeContainer" style="display: none">
+                        <label for="time">Select Time</label>
+                        <select id="time" class="input">
+                            <option value="" disabled selected></option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="submitButton" id="submitButton">Submit</button>
+            </div>
         </div>
-        <div class="schedule-form">
-            <h1>Appointment Details</h1>
-            <p class="submitFlag" id="submitFlag" hidden></p>
-            <div class="submitter-name">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" class="input" placeholder="" maxlength="50">
-            </div>
-            <div class="submitter-email">
-                <label for="email">Email</label>
-                <input type="email" id="email" class="input" placeholder="" maxlength="50">
-            </div>
-            
-            <div class="submitter-course">
-                <label for="course">Select a Course</label>
-                <select id="course" class="input">
-                    <option value="" disabled selected></option>
-                    <option value="algebra">Algebra</option>
-                    <option value="arabic">Arabic</option>
-                    <option value="chemistry">Chemistry</option>
-                    <option value="data-structures-algorithms">Data Structures and Algorithms</option>
-                    <option value="databases">Databases</option>
-                    <option value="geometry">Geometry</option>
-                    <option value="introduction-to-programming">Programming</option>
-                    <option value="oop">Object-Oriented Programming</option>
-                    <option value="physics">Physics</option>
-                    <option value="pre-algebra">Pre-Algebra</option>
-                    <option value="pre-calculus">Pre-Calculus</option>
-                    <option value="quran">Quran</option>
-                    <option value="web-development">Web Development</option>
-                </select>
-            </div>
-        
-            <button class="submitButton" id="submitButton">Submit</button>
-        </div>
-    </div>
-    <%- include("./partials/footer.ejs") %>
+        <%- include("./partials/footer.ejs") %>
 
-    <script type="module">
-        document.addEventListener('DOMContentLoaded', function() {
-            const submitButton = document.getElementById("submitButton");
-            submitButton.addEventListener('click', submitAppointment);
-        });
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script type="module">
+            let tutorTimes = {};
+            let classesTutors = {};
+            let datePicker;
 
-        async function submitAppointment() {
-            const fullName = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const course = document.getElementById("course").value;
+            document.addEventListener("DOMContentLoaded", async function () {
+                tutorTimes = await fetchJson("/resources/tutorTimes.json");
+                classesTutors = await fetchJson("/resources/coursesTutors.json");
 
-            const result = await fetch("/api/scheduleAppointment", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    fullName,
-                    email,
-                    course
+                datePicker = flatpickr("#date", {
+                    enableTime: false, 
+                    dateFormat: "Y-m-d",
+                    disable: [],
+                    onChange: function(selectedDates, dateStr) {
+                        updateTimes(dateStr)
+                        validateDate(dateStr)
+                    },
                 })
-            });
 
-            const message = await result.json();
-            const submitFlag = document.getElementById("submitFlag");
-            submitFlag.innerHTML = message["message"];
-            submitFlag.style.display = "block";
+                const courseSelect = document.getElementById("course")
+                courseSelect.addEventListener("change", onClassChange)
 
-            if (result.status === 200) {
-                submitFlag.style.color = "#0a3755";
-                submitFlag.style.backgroundColor = "#b7dffa";
-                await sleep(1000);
-                location.reload(true);
-            } else {
-                submitFlag.style.color = "#D8000C";
-                submitFlag.style.backgroundColor = "#FFBABA";
-                await sleep(2000);
+                const submitButton = document.getElementById("submitButton")
+                submitButton.addEventListener("click", submitAppointment)
+            })
+
+            async function fetchJson(url) {
+                const response = await fetch(url)
+                return await response.json()
             }
 
-            function sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
+            function onClassChange() {
+                const selectedClass = document.getElementById("course").value;
+                const tutor = classesTutors[selectedClass];
+
+                const dateContainer = document.getElementById("dateContainer");
+                const timeContainer = document.getElementById("timeContainer");
+
+                dateContainer.style.display = tutor ? "block" : "none";
+                document.getElementById("date").value = "";
+                document.getElementById("time").innerHTML = '<option value="" disabled selected></option>';
+                timeContainer.style.display = "none";
+                document.getElementById("submitFlag").hidden = true;
+
+                if (tutor) {
+                    const availableDates = Object.keys(tutorTimes[tutor] || {});
+                    updateDatePicker(availableDates);
+                }
             }
-        }
-    </script>
-</body>
+
+            function updateDatePicker(availableDates) {
+                const formattedDates = availableDates.map((date) =>
+                    date.toString()
+                );
+
+                if (datePicker) {
+                    datePicker.set("disable", [
+                        function (date) {
+                            const dateStr = date.toISOString().split("T")[0];
+                            return !formattedDates.includes(dateStr);
+                        },
+                    ]);
+                    datePicker.redraw();
+                }
+            }
+
+            function updateTimes(date) {
+                const timeSelect = document.getElementById("time");
+                timeSelect.innerHTML =
+                    '<option value="" disabled selected></option>';
+
+                const timeContainer = document.getElementById("timeContainer");
+                const selectedClass = document.getElementById("course").value;
+                const tutor = classesTutors[selectedClass];
+                const submitFlag = document.getElementById("submitFlag");
+
+                if (tutor && date) {
+                    const availableTimesForDate =
+                        tutorTimes[tutor]?.[date] || [];
+
+                    console.log(tutorTimes);
+                    console.log(tutorTimes[tutor]);
+                    console.log(tutorTimes[tutor]?.[date]);
+
+                    if (availableTimesForDate.length === 0) {
+                        timeContainer.style.display = "none";
+                    } else {
+                        submitFlag.style.display = "none";
+                        availableTimesForDate.forEach((time) => {
+                            const option = document.createElement("option");
+                            option.value = time;
+                            option.textContent = time;
+                            timeSelect.appendChild(option);
+                        });
+                        timeContainer.style.display = "block";
+                    }
+                } else {
+                    timeContainer.style.display = "none";
+                    submitFlag.style.display = "none";
+                }
+            }
+
+            function validateDate(date) {
+                const selectedClass = document.getElementById("course").value;
+                const tutor = classesTutors[selectedClass];
+                const submitFlag = document.getElementById("submitFlag");
+                submitFlag.hidden = true;
+
+                if (tutor && date) {
+                    const availableTimesForDate =
+                        tutorTimes[tutor]?.[date] || [];
+                }
+            }
+
+            async function submitAppointment() {
+                const fullName = document.getElementById("name").value;
+                const email = document.getElementById("email").value;
+                const course = document.getElementById("course").value;
+                const date = document.getElementById("date").value;
+                const time = document.getElementById("time").value;
+
+                const result = await fetch("/api/scheduleAppointment", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        fullName,
+                        email,
+                        course,
+                        date,
+                        time
+                    }),
+                });
+
+                const message = await result.json();
+                const submitFlag = document.getElementById("submitFlag");
+                submitFlag.innerHTML = message["message"];
+                submitFlag.style.display = "block";
+
+                if (result.status === 200) {
+                    submitFlag.style.color = "#0a3755";
+                    submitFlag.style.backgroundColor = "#b7dffa";
+                    await sleep(1000);
+                    location.reload(true);
+                } else {
+                    submitFlag.style.color = "#D8000C";
+                    submitFlag.style.backgroundColor = "#FFBABA";
+                    await sleep(2000);
+                }
+
+                function sleep(ms) {
+                    return new Promise((resolve) => setTimeout(resolve, ms));
+                }
+            }
+        </script>
+    </body>
 </html>

@@ -1,4 +1,4 @@
-const availableTimes = {
+{
   "Mostafa Abdulaleem": {
     "2024-09-11": [
       "5:00 PM",
@@ -1504,8 +1504,4 @@ const availableTimes = {
       "10:30 PM"
     ]
   }
-};
-
-export default availableTimes;
-
-
+}
