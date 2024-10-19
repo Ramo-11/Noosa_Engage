@@ -3,7 +3,7 @@ const express = require("express")
 const router = require("./server/router")
 const cookieParser = require("cookie-parser")
 const bodyParser = require("body-parser")
-const { generalLogger } = require("./utils/generalLogger")
+const { generalLogger } = require("./server/utils/generalLogger")
 const connectDB = require('./server/connectDB');
 // ********** End Imports **********
 

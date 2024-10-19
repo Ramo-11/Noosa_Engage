@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 
 const getCourseData = (courseName) => {
-    const filePath = path.join(__dirname, '../utils/courseData.json')
+    const filePath = path.join(__dirname, './utils/resources/courseData.json')
     
     const data = fs.readFileSync(filePath, 'utf-8')
     const courseData = JSON.parse(data)
