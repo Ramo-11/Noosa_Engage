@@ -56,12 +56,12 @@ async function signupUser(req, res) {
 
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
         generalLogger.error("Sign-up failed: Missing required fields")
-        return res.render('signup', { errorMessage: "Error: All fields are required" })
+        return res.status(400).send({ message: "Error: All fields are required" })
     }
 
     if (password !== confirmPassword) {
         generalLogger.error("Sign-up failed: Passwords do not match")
-        return res.render('signup', { errorMessage: "Error: Passwords do not match" })
+        return res.status(400).send({ message: "Error: Passwords do not match" })
     }
 
     try {
@@ -81,6 +81,7 @@ async function signupUser(req, res) {
         })
 
         await newUser.save()
+
         generalLogger.info(`New user registered: ${email}`)
         sendSignupEmail(newUser)
         return res.redirect("/login")

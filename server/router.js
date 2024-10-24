@@ -1,6 +1,6 @@
 const express = require("express")
 const route = express.Router()
-const sendEmail = require("./mail")
+const { sendEmail } = require("./mail")
 const processScheduleRequest = require("./scheduleController")
 const renderCoursePage = require("./courseController")
 const {logout, loginUser, signupUser } = require("./session/sessionHandler")
