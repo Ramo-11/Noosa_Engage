@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/appointments.css">
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+    <title>Appointment Dashboard</title>
+</head>
+<body>
+    <%- include("../partials/nav.ejs") %>
+
+    <div class="title-div">
+        <h1>Appointments</h1>
+    </div>
+    <div class="container">
+        <div class="appointment-grid">
+            <% if (appointments.length > 0) { %>
+                <% appointments.forEach(appointment => { %>
+                    <div class="appointment-block">
+                        <h2>Appointment <%= appointment.appointmentNumber %></h2>
+                        <p><strong>Date:</strong> <%= new Date(appointment.date).toLocaleDateString() %></p>
+                        <p><strong>Time:</strong> <%= appointment.time %></p>
+                        <p><strong>Tutor:</strong> <%= appointment.tutorName %></p>
+                        <p><strong>Customer:</strong> <%= appointment.customerName %></p>
+                        <!-- Pass the appointment ID and user information (e.g., customerName) -->
+                        <button class="cancel-button" onclick="confirmCancel('<%= appointment._id %>', '<%= appointment.customerName %>')">Cancel Appointment</button>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>No appointments found.</p>
+            <% } %>
+        </div>
+
+        <!-- Confirmation Form for Canceling an Appointment -->
+        <div id="confirmationForm" class="confirmation-form">
+        </div>
+    </div>
+    <%- include("../partials/footer.ejs") %>
+
+    <script>
+        // Show confirmation dialog for canceling the appointment
+        function confirmCancel(appointmentId, user) {
+            const confirmationForm = document.getElementById("confirmationForm");
+
+            // Show confirmation form with Yes/No options
+            confirmationForm.innerHTML = `
+                <p>Are you sure you want to cancel this appointment for ${user}?</p>
+                <button onclick="deleteAppointment('${appointmentId}', '${user}')">Yes</button>
+                <button onclick="closeConfirmation()">No</button>
+            `;
+    
+            confirmationForm.classList.add("active"); // Show the confirmation form
+        }
+    
+        // Delete the appointment from the database, passing both appointmentId and user
+        async function deleteAppointment(appointmentId, user) {
+            try {
+                const response = await fetch(`/api/appointments/${appointmentId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user }) // Send the user info in the request body
+                });
+
+                if (response.ok) {
+                    location.reload(); // Reload the page after successful deletion
+                } else {
+                    alert("Failed to cancel appointment. Please try again.");
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert(error);
+            }
+        }
+    
+        // Close the confirmation dialog
+        function closeConfirmation() {
+            const confirmationForm = document.getElementById("confirmationForm");
+            confirmationForm.classList.remove("active");
+        }
+    </script>
+</body>
+</html>

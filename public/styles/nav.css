@@ -1,66 +1,109 @@
 *,
 *::after,
-*::before{
+*::before {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
 }
 
-.html{
+.html {
     font-size: 62.5%;
 }
 
 .navbar input[type="checkbox"],
-.navbar .hamburger-lines{
+.navbar .hamburger-lines {
     display: none;
 }
 
 .logo-div img {
     width: 80px;
-    height: 80px
+    height: 80px;
+    margin-left: 200px;
 }
 
-
-.container{
-    max-width: 1200px;
+.container {
+    max-width: 100%;
     width: 100%;
     margin: auto;
 }
 
-.navbar{
+.navbar {
     width: 100%;
     background: #0d3754;
     height: 80px;
     z-index: 100;
 }
 
-.navbar-container{
+.navbar-container {
     display: flex;
-    justify-content: space-between;
-    height:80px;
+    justify-content: space-between; /* Space between items */
     align-items: center;
+    height: 100%;
 }
 
-.menu-items{
-    order: 2;
-    display: flex;
+.menu-items {
+    display: flex; /* Keep menu items in a row */
 }
 
-.menu-items li{
+.menu-items li {
     list-style: none;
     margin-left: 1.5rem;
     font-size: 1.3rem;
 }
+/* Profile picture container styles */
+.profile-picture-container {
+    position: relative; /* Positioning context for the dropdown */
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically within the container */
+    margin-right: 200px; /* Space between menu items and profile picture */
+}
 
-.navbar a{
+/* Dropdown styles */
+.dropdown {
+    display: none; /* Hidden by default */
+    position: absolute;
+    transform: translateX(-50%);
+    top: 50px;
+    background-color: #f37239;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    gap: 50px;
+    width: 150px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.dropdown.show {
+    display: block; /* Show dropdown when this class is added */
+}
+.dropdown ul {
+    padding: 5px; /* Remove default padding */
+    margin: 0; 
+    list-style-type: none; /* Remove bullet points */
+}
+
+.dropdown li {
+    margin: 10px 0; /* Adjust the vertical gap between items */
+}
+
+/* Profile image styles */
+.profile-img {
+    cursor: pointer; /* Change cursor to pointer for better UX */
+    width: 40px; /* Adjust width as needed */
+    height: 40px; /* Adjust height as needed */
+    border-radius: 50%; /* Make it circular */
+}
+
+.navbar a {
     color: #ffffff;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease-in-out;
 }
 
-.navbar a:hover{
-    color: #f37239
+.navbar a:hover {
+    color: #0d3754;
 }
 
 @media (max-width: 430px){
@@ -104,11 +147,29 @@
         flex-direction: column;
         justify-content: space-between;
     }
+    .navbar-container .profile-picture-container {
+        display: block;
+        height: 40px;
+        width: 40px; 
+        position: absolute;
+        top: 20px;
+        right: -150px;
+        z-index: 2;
+        background: #0d3754;
+        display: flex;
+        justify-content: center;
+    }
 
+    .dropdown {
+     margin-left: 100px;
+    }
+    
     .logo-div {
         display: flex;
         justify-content: center; /* Centers the image horizontally */
         align-items: center;     /* Centers the image vertically */
+        margin-right: 200px;
+
     }
     
     .logo-div img {

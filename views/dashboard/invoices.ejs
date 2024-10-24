@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/invoices.css">
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+    <title>Invoice Dashboard</title>
+</head>
+<body>
+    <%- include("../partials/nav.ejs") %>
+
+    <div class="title-div">
+        <h1>Your Invoices</h1>
+    </div>
+    <div class="container">
+        <div class="invoice-grid">
+            <% if (invoices.length > 0) { %>
+                <% invoices.forEach(invoice => { %>
+                    <div class="invoice-block">
+                        <h2>Invoice <%= invoice.invoiceNumber %></h2>
+                        <p><strong>Session Date:</strong> <%= invoice.sessionDate.toDateString() %></p>
+                        <p><strong>Due Date:</strong> <%= invoice.dueDate.toDateString() %></p>
+                        <p><strong>Hours:</strong> <%= invoice.hours %></p>
+                        <p><strong>Quantity:</strong> <%= invoice.quantity %></p>
+                        <p><strong>Total:</strong> $<%= invoice.total.toFixed(2) %></p>
+                        <p class="status <%= invoice.isPaid ? 'paid' : 'not-paid' %>">
+                            <%= invoice.isPaid ? 'Paid' : 'Not Paid' %>
+                        </p>
+                        <% if (!invoice.isPaid) { %>
+                            <button class="pay-button">Pay Now</button> <!-- Pay Now button for unpaid invoices -->
+                        <% } %>
+                    </div>                    
+                <% }); %>
+            <% } else { %>
+                <p>No invoices found.</p>
+            <% } %>
+        </div>
+    </div>
+    <%- include("../partials/footer.ejs") %>
+
+    <script>
+        // You may add JavaScript functions here to handle payment actions if needed
+    </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/styles/dashboard.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-XEW6Y9S2YM');
+    </script>
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+    
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="profile-section">
+                <% if (user && user.profilePicture && user.profilePicture.data) { %>
+                    <img src="data:<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="Profile Picture" class="profile-img">
+                <% } else { %>
+                    <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img">
+                <% } %>                
+            </div>
+
+            <ul class="menu-list">
+                <li><a href="/dashboard/profile">Update Account</a></li>
+                <li><a href="/dashboard/appointments">Appointment History</a></li>
+                <% if (user && user.isAdmin) { %> <!-- Check if the user is an admin -->
+                    <li><a href="/dashboard/createInvoice">Create Invoice</a></li>
+                <% } else { %> <!-- Else statement for non-admin users -->
+                    <li><a href="/dashboard/invoices">Invoices</a></li>
+                <% } %>
+                <li><a href="/logout">Logout</a></li>
+            </ul>            
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+        <!-- Scheduled Appointments Section -->
+        <div class="content-box">
+            <h3>Scheduled Appointments</h3>
+            <% if (appointments.length > 0) { %>
+                <% appointments.forEach(appointment => { %>
+                    <div class="appointment-block">
+                        <h4><%= appointment.tutorName %></h4>
+                        <p><strong>User Name:</strong> <%= appointment.userName %></p>
+                        <p><strong>Appointment Date:</strong> <%= appointment.appointmentDate %></p>
+                        <p><strong>Time:</strong> <%= appointment.time %></p>
+                        <p><strong>Duration:</strong> <%= appointment.duration %> hours</p>
+                        <p><strong>Status:</strong> <%= appointment.status %></p>
+                        <% if (appointment.description) { %>
+                            <p><strong>Description:</strong> <%= appointment.description %></p>
+                        <% } %>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>No scheduled appointments found.</p>
+            <% } %>
+        </div>
+            
+
+            <!-- Invoices Section (Only Unpaid) -->
+            <div class="content-box">
+                <h3>Most Recent Invoice</h3>
+                <% if (invoice) { %>
+                    <div class="invoice-block">
+                        <h2>Invoice #<%= invoice.invoiceNumber %></h2>
+                        <p><strong>Customer:</strong> <%= invoice.customerName %></p>
+                        <p><strong>Session Date:</strong> <%= invoice.sessionDate.toDateString() %></p> <!-- Format date for better readability -->
+                        <p><strong>Due Date:</strong> <%= invoice.dueDate.toDateString() %></p> <!-- Format date for better readability -->
+                        <p><strong>Hours:</strong> <%= invoice.hours %></p>
+                        <p><strong>Total:</strong> $<%= invoice.total.toFixed(2) %></p> <!-- Format total to two decimal places -->
+                        <p class="status <%= invoice.isPaid ? 'paid' : 'not-paid' %>">
+                            <%= invoice.isPaid ? 'Paid' : 'Not Paid' %>
+                        </p>
+                    </div>
+                <% } else { %>
+                    <p>No invoices found.</p>
+                <% } %>
+            </div>
+
+            <div class="content-box">
+                <h3>Support</h3>
+                <p><a href="/contact" style="color: blue; text-decoration: underline;">Contact support for assistance.</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <%- include("./partials/footer.ejs") %>
+</body>
+</html>
