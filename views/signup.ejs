@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Contact us</title>
+        <link rel="stylesheet" href="/styles/general.css">
+        <link rel="stylesheet" href="/styles/signup.css">
+        <link rel="shortcut icon" href="/images/Logo-white.png">
+    </head>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-XEW6Y9S2YM');
+    </script>
+    <body>
+        <%- include("./partials/nav.ejs") %>
+        <div class="main-content">
+            <div class="title-div">
+                <h1>Sign Up</h1>
+            </div>
+            <div class="signup-form">
+                <h1>Register</h1>
+                <p class="submitFlag" id="submitFlag" hidden></p>
+                <div class="submitter-name">
+                    <input type="text" id="name" class="input" placeholder="Full Name" maxlength="50">
+                </div>
+                <div class="submitter-email">
+                    <input type="text" id="email" class="input" placeholder="Email" maxlength="50">
+                </div>
+                <div class="submitter-password">
+                    <input type="password" id="password" name="password" placeholder="New Password" 
+                    required pattern="(?=.*\d)(?=.*[A-Z]).{6,}" 
+                    title="Password must be at least 6 characters long, include at least one number and one uppercase letter.">
+                </div>
+                <div class="submitter-password-configm">
+                    <input type="password" id="confirmedPassword" name="confirmedPassword" placeholder="Confirm Password" 
+                    required pattern="(?=.*\d)(?=.*[A-Z]).{6,}" 
+                    title="Password must be at least 6 characters long, include at least one number and one uppercase letter.">
+                </div>
+                <button class="submitButton" id="submitButton" onclick="submitSignup()">Submit</button>
+            </div>
+        </div>
+        <%- include("./partials/footer.ejs") %>
+        <script>
+            async function submitSignup() {
+                disableSubmitButton()
+                const fullName = document.getElementById("name").value
+                const email = document.getElementById("email").value
+                const password = document.getElementById("password").value
+                const confirmedPassword = document.getElementById("confirmedPassword").value
+        
+                const result = await fetch("/api/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify ({
+                        fullName,
+                        email,
+                        password,
+                        confirmedPassword
+                    })
+                })
+    
+                const reqResult = await result
+                const message = await result.json()
+    
+                document.getElementById("submitFlag").innerHTML = message["message"]
+                document.getElementById("submitFlag").style.display = "block"
+                
+                if (result.status === 200) {
+                    document.getElementById("submitFlag").style.color = "#0a3755"
+                    document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
+                    window.location.href = "/login"
+                }
+                else {
+                    document.getElementById("submitFlag").style.color = "#D8000C"
+                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                }
+    
+                await sleep(3000)
+                location.reload(true);
+    
+                function sleep(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                }
+    
+                function disableSubmitButton() {
+                    document.getElementById("submitButton").disabled = true
+                    document.getElementById("submitButton").style.backgroundColor = "#b7dffa"
+                    document.getElementById("submitButton").style.cursor = "default"
+                }
+            }
+        </script>
+    </body>
+</html>

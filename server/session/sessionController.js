@@ -9,7 +9,7 @@ if (process.env.NODE_ENV != "production") {
     process.env.MONGODB_URI = process.env.MONGODB_URI_PROD
     process.env.DB_NAME = process.env.DB_NAME_PROD
 }
-const { getUser } = require('./sessionHandler')
+const { getUser } = require('../user/userController')
 
 
 const sessionMiddleware = session({
