@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title> 
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/login.css">
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+
+    <div class="main-content">
+        <div class="title-div">
+            <h1>Log In</h1>
+        </div>
+        <div class="wrapper">
+            
+            <% if (typeof errorMessage !== "undefined") { %>
+                <div class="error-message">
+                    <p><%= errorMessage %></p>
+                </div>
+            <% } %>
+
+            <% if (typeof successMessage !== "undefined") { %>
+                <div class="success-message">
+                    <p><%= successMessage %></p>
+                </div>
+                <script>
+                    setTimeout(function() {
+                        window.location.href = "/dashboard"
+                    }, 2000)
+                </script>
+            <% } else { %>
+                <h1>Welcome Back</h1>
+                <form action="/api/login" method="POST">
+                    <div class="input-box">
+                        <input type="text" name="email" placeholder="Email" required id="email-input">
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="password" placeholder="Password" required>
+                    </div>
+                    <div class="input-box button">
+                        <input type="submit" value="Log In">
+                    </div>
+                </form>
+            <% } %>
+        </div>
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+    <script>
+        const emailInput = document.getElementById('email-input')
+    
+        emailInput.addEventListener('input', function() {
+            this.value = this.value.toLowerCase()
+        })
+    </script>
+</body>
+</html>

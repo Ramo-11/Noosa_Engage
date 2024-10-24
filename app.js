@@ -4,7 +4,7 @@ const router = require("./server/router")
 const cookieParser = require("cookie-parser")
 const bodyParser = require("body-parser")
 const { generalLogger } = require("./server/utils/generalLogger")
-const connectDB = require('./server/connectDB');
+const connectDB = require('./server/db/connectDB');
 // ********** End Imports **********
 
 // ********** Initialization **************
