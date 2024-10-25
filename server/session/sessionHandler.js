@@ -23,31 +23,31 @@ async function loginUser(req, res) {
     const { email, password } = req.body
 
     if (!email || !password) {
-        generalLogger.error("Error logging in: one or more fields are missing")
-        return res.status(400).render("login", { errorMessage: "All fields must be completed" })
+        generalLogger.error("Error logging in: email or password missing")
+        return res.status(400).send({ message: "Email or password are missing" })
     }
 
     try {
         const user = await User.findOne({ email })
         if (!user) {
             generalLogger.error("Error logging in: user not found")
-            return res.status(401).render("login", { errorMessage: "Invalid email" })
+            return res.status(401).send({ message: "Invalid email" })
         }
 
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) {
             generalLogger.error("Error logging in: incorrect password")
-            return res.status(401).render("login", { errorMessage: "Invalid password" })
+            return res.status(401).send({ message: "Invalid password" })
         }
 
         req.session.userLoggedIn = true
         req.session.userId = user._id
 
         generalLogger.info("User logged in successfully")
-        return res.status(200).render("login", { successMessage: "Login successful! Redirecting to dashboard..." })
+        return res.status(200).send({ message: "Login successful! Redirecting to dashboard..." })
     } catch (error) {
         generalLogger.error("Error logging in: ", error)
-        return res.status(500).render("login", { errorMessage: "Internal server error" })
+        return res.status(500).send({ message: "Internal server error" })
     }
 }
 
@@ -68,7 +68,7 @@ async function signupUser(req, res) {
         const existingUser = await User.findOne({ email })
         if (existingUser) {
             generalLogger.error("Sign-up failed: Email already in use")
-            return res.render('signup', { errorMessage: "Error: Email already in use" })
+            return res.status(400).send({ message: "Email already in use" })
         }
 
         const hashedPassword = await bcrypt.hash(password, 10)
@@ -84,15 +84,15 @@ async function signupUser(req, res) {
 
         generalLogger.info(`New user registered: ${email}`)
         sendSignupEmail(newUser)
-        return res.redirect("/login")
+        return res.status(200).send({ message: "Signup successful" })
     } catch (error) {
         generalLogger.error("Error registering user:", error)
-        return res.render('signup', { errorMessage: "Error: Internal server error" })
+        return res.status(500).send({ message: "Internal server error" })
     }
 }
 
 module.exports = {
     logout,
     loginUser,
-    signupUser,
+    signupUser
 }
