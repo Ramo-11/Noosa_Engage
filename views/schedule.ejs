@@ -61,7 +61,7 @@
                     </div>
                 </div>
 
-                <button class="submitButton" id="submitButton">Submit</button>
+                <button class="submitButton" id="submitButton" onclick="submitAppointment()">Submit</button>
             </div>
         </div>
         <%- include("./partials/footer.ejs") %>
@@ -88,9 +88,6 @@
 
                 const courseSelect = document.getElementById("course")
                 courseSelect.addEventListener("change", onClassChange)
-
-                const submitButton = document.getElementById("submitButton")
-                submitButton.addEventListener("click", submitAppointment)
             })
 
             async function fetchJson(url) {

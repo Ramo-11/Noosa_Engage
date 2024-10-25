@@ -1,59 +1,86 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title> 
-    <link rel="stylesheet" href="/styles/general.css">
-    <link rel="stylesheet" href="/styles/login.css">
-</head>
-<body>
-    <%- include("./partials/nav.ejs") %>
-
-    <div class="main-content">
-        <div class="title-div">
-            <h1>Log In</h1>
-        </div>
-        <div class="wrapper">
-            <% if (typeof errorMessage !== "undefined") { %>
-                <div class="error-message">
-                    <p><%= errorMessage %></p>
-                </div>
-            <% } %>
-
-            <% if (typeof successMessage !== "undefined") { %>
-                <div class="success-message">
-                    <p><%= successMessage %></p>
-                </div>
-                <script>
-                    setTimeout(function() {
-                        window.location.href = "/dashboard"
-                    }, 2000)
-                </script>
-            <% } else { %>
-                <h1>Welcome Back</h1>
-                <form action="/api/login" method="POST">
-                    <div class="input-box">
-                        <input type="text" name="email" placeholder="Email" required id="email-input">
-                    </div>
-                    <div class="input-box">
-                        <input type="password" name="password" placeholder="Password" required>
-                    </div>
-                    <div class="input-box button">
-                        <input type="submit" value="Log In">
-                    </div>
-                </form>
-            <% } %>
-        </div>
-    </div>
-
-    <%- include("./partials/footer.ejs") %>
+<html>
+    <head>
+        <title>Login</title>
+        <link rel="stylesheet" href="/styles/general.css">
+        <link rel="stylesheet" href="/styles/login.css">
+        <link rel="shortcut icon" href="/images/Logo-white.png">
+    </head>
     <script>
-        const emailInput = document.getElementById('email-input')
-    
-        emailInput.addEventListener('input', function() {
-            this.value = this.value.toLowerCase()
-        })
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-XEW6Y9S2YM');
     </script>
-</body>
+    <body>
+        <%- include("./partials/nav.ejs") %>
+        <div class="main-content">
+            <div class="title-div">
+                <h1>Login</h1>
+            </div>
+            <div class="login-form">
+                <h1>Welcome Back</h1>
+                <p class="submitFlag" id="submitFlag" hidden></p>
+                <div class="submitter-email">
+                    <input type="text" id="email" class="input" placeholder="Email" maxlength="50">
+                </div>
+                <div class="submitter-password">
+                    <input type="password" id="password" name="password" placeholder="Password" 
+                    required pattern="(?=.*\d)(?=.*[A-Z]).{6,}" 
+                    title="Password must be at least 6 characters long, include at least one number and one uppercase letter.">
+                </div>
+                <button class="submitButton" id="submitButton" onclick="submitLogin()">Submit</button>
+            </div>
+        </div>
+        <%- include("./partials/footer.ejs") %>
+        <script>
+            async function submitLogin() {
+                disableSubmitButton()
+                const email = document.getElementById("email").value
+                const password = document.getElementById("password").value
+        
+                const result = await fetch("/api/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify ({
+                        email,
+                        password
+                    })
+                })
+    
+                const reqResult = await result
+                const message = await result.json()
+    
+                document.getElementById("submitFlag").innerHTML = message["message"]
+                document.getElementById("submitFlag").style.display = "block"
+                
+                if (result.status === 200) {
+                    document.getElementById("submitFlag").style.color = "#0a3755"
+                    document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
+                    await sleep(3000)
+                    window.location.href = "/"
+                }
+                else {
+                    document.getElementById("submitFlag").style.color = "#D8000C"
+                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                }
+    
+                await sleep(3000)
+                location.reload(true);
+    
+                function sleep(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                }
+    
+                function disableSubmitButton() {
+                    document.getElementById("submitButton").disabled = true
+                    document.getElementById("submitButton").style.backgroundColor = "#b7dffa"
+                    document.getElementById("submitButton").style.cursor = "default"
+                }
+            }
+        </script>
+    </body>
 </html>
