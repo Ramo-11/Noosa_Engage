@@ -52,14 +52,14 @@ async function loginUser(req, res) {
 }
 
 async function signupUser(req, res) {
-    const { firstName, lastName, email, password, confirmPassword } = req.body
+    const {fullName, email, password, confirmedPassword } = req.body
 
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    if (!fullName || !email || !password || !confirmedPassword) {
         generalLogger.error("Sign-up failed: Missing required fields")
         return res.status(400).send({ message: "Error: All fields are required" })
     }
 
-    if (password !== confirmPassword) {
+    if (password !== confirmedPassword) {
         generalLogger.error("Sign-up failed: Passwords do not match")
         return res.status(400).send({ message: "Error: Passwords do not match" })
     }
@@ -74,8 +74,7 @@ async function signupUser(req, res) {
         const hashedPassword = await bcrypt.hash(password, 10)
 
         const newUser = new User({
-            firstName,
-            lastName,
+            fullName,
             email,
             password: hashedPassword
         })

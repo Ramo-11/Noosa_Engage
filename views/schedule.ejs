@@ -61,20 +61,84 @@
                     </div>
                 </div>
 
-                <button class="submitButton" id="submitButton" onclick="submitAppointment()">Submit</button>
+                <button class="submitButton" id="submitButton" onclick="validateAndSubmitAppointment()">Submit</button>
             </div>
         </div>
         <%- include("./partials/footer.ejs") %>
 
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script>
+            function validateAndSubmitAppointment() {
+                const fullName = document.getElementById("name").value.trim()
+                const email = document.getElementById("email").value.trim()
+                const course = document.getElementById("course").value
+                const date = document.getElementById("date").value
+                const time = document.getElementById("time").valu;
+
+                if (!fullName || !email || !course || !date || !time) {
+                    const submitFlag = document.getElementById("submitFlag")
+                    submitFlag.innerHTML = "All fields are required"
+                    submitFlag.style.color = "#D8000C"
+                    submitFlag.style.backgroundColor = "#FFBABA"
+                    submitFlag.style.display = "block"
+                    return
+                }
+
+                submitAppointment()
+            }
+            
+            async function submitAppointment() {
+                const fullName = document.getElementById("name").value
+                const email = document.getElementById("email").value
+                const course = document.getElementById("course").value
+                const date = document.getElementById("date").value
+                const time = document.getElementById("time").value
+
+                const result = await fetch("/api/scheduleAppointment", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        fullName,
+                        email,
+                        course,
+                        date,
+                        time
+                    }),
+                })
+
+                const message = await result.json()
+                const submitFlag = document.getElementById("submitFlag")
+                submitFlag.innerHTML = message["message"]
+                submitFlag.style.display = "block"
+
+                if (result.status === 200) {
+                    submitFlag.style.color = "#0a3755"
+                    submitFlag.style.backgroundColor = "#b7dffa"
+                    await sleep(3000)
+                    location.reload(true)
+                    
+                } else {
+                    submitFlag.style.color = "#D8000C"
+                    submitFlag.style.backgroundColor = "#FFBABA"
+                    await sleep(3000)
+                    location.reload(true)
+                }
+
+                function sleep(ms) {
+                    return new Promise((resolve) => setTimeout(resolve, ms))
+                }
+            }
+        </script>
         <script type="module">
-            let tutorTimes = {};
-            let classesTutors = {};
-            let datePicker;
+            let tutorTimes = {}
+            let classesTutors = {}
+            let datePicker
 
             document.addEventListener("DOMContentLoaded", async function () {
-                tutorTimes = await fetchJson("/resources/tutorTimes.json");
-                classesTutors = await fetchJson("/resources/coursesTutors.json");
+                tutorTimes = await fetchJson("/resources/tutorTimes.json")
+                classesTutors = await fetchJson("/resources/coursesTutorsjson");
 
                 datePicker = flatpickr("#date", {
                     enableTime: false, 
@@ -96,127 +160,81 @@
             }
 
             function onClassChange() {
-                const selectedClass = document.getElementById("course").value;
-                const tutor = classesTutors[selectedClass];
+                const selectedClass = document.getElementById("course").value
+                const tutor = classesTutors[selectedClass]
 
-                const dateContainer = document.getElementById("dateContainer");
-                const timeContainer = document.getElementById("timeContainer");
+                const dateContainer = document.getElementById("dateContainer")
+                const timeContainer = document.getElementById("timeContainer")
 
-                dateContainer.style.display = tutor ? "block" : "none";
-                document.getElementById("date").value = "";
-                document.getElementById("time").innerHTML = '<option value="" disabled selected></option>';
-                timeContainer.style.display = "none";
-                document.getElementById("submitFlag").hidden = true;
+                dateContainer.style.display = tutor ? "block" : "none"
+                document.getElementById("date").value = ""
+                document.getElementById("time").innerHTML = '<option value="" disabled selected></option>'
+                timeContainer.style.display = "none"
+                document.getElementById("submitFlag").hidden = true
 
                 if (tutor) {
-                    const availableDates = Object.keys(tutorTimes[tutor] || {});
-                    updateDatePicker(availableDates);
+                    const availableDates = Object.keys(tutorTimes[tutor] || {})
+                    updateDatePicker(availableDates)
                 }
             }
 
             function updateDatePicker(availableDates) {
                 const formattedDates = availableDates.map((date) =>
                     date.toString()
-                );
+                )
 
                 if (datePicker) {
                     datePicker.set("disable", [
                         function (date) {
-                            const dateStr = date.toISOString().split("T")[0];
-                            return !formattedDates.includes(dateStr);
+                            const dateStr = date.toISOString().split("T")[0]
+                            return !formattedDates.includes(dateStr)
                         },
                     ]);
-                    datePicker.redraw();
+                    datePicker.redraw()
                 }
             }
 
             function updateTimes(date) {
-                const timeSelect = document.getElementById("time");
+                const timeSelect = document.getElementById("time")
                 timeSelect.innerHTML =
-                    '<option value="" disabled selected></option>';
+                    '<option value="" disabled selected></option>'
 
-                const timeContainer = document.getElementById("timeContainer");
-                const selectedClass = document.getElementById("course").value;
-                const tutor = classesTutors[selectedClass];
-                const submitFlag = document.getElementById("submitFlag");
+                const timeContainer = document.getElementById("timeContainer")
+                const selectedClass = document.getElementById("course").value
+                const tutor = classesTutors[selectedClass]
+                const submitFlag = document.getElementById("submitFlag")
 
                 if (tutor && date) {
                     const availableTimesForDate =
-                        tutorTimes[tutor]?.[date] || [];
-
-                    console.log(tutorTimes);
-                    console.log(tutorTimes[tutor]);
-                    console.log(tutorTimes[tutor]?.[date]);
+                        tutorTimes[tutor]?.[date] || []
 
                     if (availableTimesForDate.length === 0) {
-                        timeContainer.style.display = "none";
+                        timeContainer.style.display = "none"
                     } else {
-                        submitFlag.style.display = "none";
+                        submitFlag.style.display = "none"
                         availableTimesForDate.forEach((time) => {
-                            const option = document.createElement("option");
-                            option.value = time;
-                            option.textContent = time;
-                            timeSelect.appendChild(option);
+                            const option = document.createElement("option")
+                            option.value = time
+                            option.textContent = time
+                            timeSelect.appendChild(option)
                         });
-                        timeContainer.style.display = "block";
+                        timeContainer.style.display = "block"
                     }
                 } else {
-                    timeContainer.style.display = "none";
-                    submitFlag.style.display = "none";
+                    timeContainer.style.display = "none"
+                    submitFlag.style.display = "none"
                 }
             }
 
             function validateDate(date) {
-                const selectedClass = document.getElementById("course").value;
-                const tutor = classesTutors[selectedClass];
-                const submitFlag = document.getElementById("submitFlag");
-                submitFlag.hidden = true;
+                const selectedClass = document.getElementById("course").value
+                const tutor = classesTutors[selectedClass]
+                const submitFlag = document.getElementById("submitFlag")
+                submitFlag.hidden = true
 
                 if (tutor && date) {
                     const availableTimesForDate =
-                        tutorTimes[tutor]?.[date] || [];
-                }
-            }
-
-            async function submitAppointment() {
-                const fullName = document.getElementById("name").value;
-                const email = document.getElementById("email").value;
-                const course = document.getElementById("course").value;
-                const date = document.getElementById("date").value;
-                const time = document.getElementById("time").value;
-
-                const result = await fetch("/api/scheduleAppointment", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        fullName,
-                        email,
-                        course,
-                        date,
-                        time
-                    }),
-                });
-
-                const message = await result.json();
-                const submitFlag = document.getElementById("submitFlag");
-                submitFlag.innerHTML = message["message"];
-                submitFlag.style.display = "block";
-
-                if (result.status === 200) {
-                    submitFlag.style.color = "#0a3755";
-                    submitFlag.style.backgroundColor = "#b7dffa";
-                    await sleep(1000);
-                    location.reload(true);
-                } else {
-                    submitFlag.style.color = "#D8000C";
-                    submitFlag.style.backgroundColor = "#FFBABA";
-                    await sleep(2000);
-                }
-
-                function sleep(ms) {
-                    return new Promise((resolve) => setTimeout(resolve, ms));
+                        tutorTimes[tutor]?.[date] || []
                 }
             }
         </script>
