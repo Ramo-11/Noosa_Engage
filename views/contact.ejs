@@ -33,11 +33,27 @@
                 <div>
                     <textarea type="text" class="input" id="description" placeholder="Talk about your request"></textarea>
                 </div>
-                <button class="submitButton" id="submitButton" onclick="submitContactPage()">Submit</button>
+                <button class="submitButton" id="submitButton" onclick="validateAndSubmitContactPage()">Submit</button>
             </div>
         </div>
         <%- include("./partials/footer.ejs") %>
         <script>
+            function validateAndSubmitContactPage() {
+                const name = document.getElementById("name").value.trim()
+                const email = document.getElementById("email").value.trim()
+                const subject = document.getElementById("name").value.trim()
+                const description = document.getElementById("description").value.trim()
+
+                if (!name || !email || !subject || !description) {
+                    document.getElementById("submitFlag").innerHTML = "All fields are required"
+                    document.getElementById("submitFlag").style.color = "#D8000C"
+                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                    document.getElementById("submitFlag").style.display = "block"
+                    return
+                }
+
+                submitContactPage()
+            }
             async function submitContactPage() {
                 disableSubmitButton()
                 const fullName = document.getElementById("name").value
@@ -67,15 +83,16 @@
                 if (result.status === 200) {
                     document.getElementById("submitFlag").style.color = "#0a3755"
                     document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
+                    await sleep(3000)
+                    location.reload(true)
                 }
                 else {
                     document.getElementById("submitFlag").style.color = "#D8000C"
                     document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                    enableSubmitButton()
+                    await sleep(3000)
                 }
-    
-                await sleep(3000)
-                location.reload(true);
-    
+        
                 function sleep(ms) {
                     return new Promise(resolve => setTimeout(resolve, ms));
                 }
@@ -84,6 +101,12 @@
                     document.getElementById("submitButton").disabled = true
                     document.getElementById("submitButton").style.backgroundColor = "#b7dffa"
                     document.getElementById("submitButton").style.cursor = "default"
+                }
+
+                function enableSubmitButton() {
+                    document.getElementById("submitButton").disabled = false
+                    document.getElementById("submitButton").style.backgroundColor = "#0a3755"
+                    document.getElementById("submitButton").style.cursor = "pointer"
                 }
             }
         </script>
