@@ -65,6 +65,7 @@ async function sendSignupEmail(user) {
     });
 }
 async function sendResetEmail(email, fullName, resetCode) {
+    console.log(resetCode)
     let mailTransporter = nodemailer.createTransport({
         service: "gmail",
         auth: {

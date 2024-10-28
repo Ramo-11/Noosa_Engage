@@ -2,6 +2,7 @@ const User = require('../models/User');
 const { sendResetEmail } = require('./mail');
 const crypto = require('crypto');
 const validateEmail = require('./utils/emailValidator');
+const bcrypt = require('bcrypt')
 
 async function resetPassword(req, res) {
     const { email } = req.body;
@@ -31,7 +32,8 @@ async function resetPassword(req, res) {
 
 async function updatePassword(req, res) {
     const { resetCode, newPassword } = req.body;
-
+    console.log("Sending resetCode:", resetCode);
+    console.log("Sending newPassword:", newPassword);
     try {
         const user = await User.findOne({ resetCode });
 
