@@ -38,7 +38,7 @@ async function sendEmail(req, res) {
 }
 
 async function sendSignupEmail(user) {
-    const { email, firstName } = user;  // Extract user info
+    const { email, firstName } = user
 
     let mailTransporter = nodemailer.createTransport({
         service: "gmail",
@@ -46,35 +46,34 @@ async function sendSignupEmail(user) {
             user: "noosa@noosaengage.com",
             pass: "cxpy yaqy zllx mrqn"
         }
-    });
+    })
 
     let details = {
         from: "noosa@noosaengage.com",
         to: email,
         subject: "Welcome to Noosa Engage",
         text: `Hello ${firstName},\n\nThank you for signing up at Noosa Engage! We're excited to have you on board.\n\nBest regards,\nThe Noosa Engage Team`
-    };
+    }
 
     mailTransporter.sendMail(details, (error) => {
         if (!error) {
-            generalLogger.info(`Welcome email sent to ${email}`);
+            generalLogger.info(`Welcome email sent to ${email}`)
         } else {
-            generalLogger.error("Failed to send welcome email");
+            generalLogger.error("Failed to send welcome email")
             generalLogger.debug(error);
         }
-    });
+    })
 }
 async function sendResetEmail(email, fullName, resetCode) {
-    console.log(resetCode)
     let mailTransporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
             user: "noosa@noosaengage.com",
             pass: "cxpy yaqy zllx mrqn"
         }
-    });
+    })
 
-    let baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://noosaengage.com';
+    let baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://noosaengage.com'
 
     let details = {
         from: "noosa@noosaengage.com",
@@ -88,14 +87,14 @@ async function sendResetEmail(email, fullName, resetCode) {
             <p>Best regards,</p>
             <p>Noosa Engage Team</p>
         `
-    };
+    }
 
     mailTransporter.sendMail(details, (error) => {
         if (!error) {
-            generalLogger.info(`Password reset email sent to ${email}`);
+            generalLogger.info(`Password reset email sent to ${email}`)
         } else {
-            generalLogger.error("Failed to send password reset email");
-            generalLogger.debug(error);
+            generalLogger.error("Failed to send password reset email")
+            generalLogger.debug(error)
         }
     });
 }
