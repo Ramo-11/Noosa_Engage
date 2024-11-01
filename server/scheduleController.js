@@ -1,20 +1,51 @@
 const nodemailer = require('nodemailer')
+const User = require('../models/User')
+const Appointment = require('../models/Appointment')
 const { generalLogger } = require('./utils/generalLogger')
 const validateEmail = require('./utils/emailValidator')
 
 async function processScheduleRequest(req, res) {
+    try {
+        const { fullName, email, course, date, time, user } = await validateScheduleRequest(req)
+        
+        const newAppointment = new Appointment({
+            customer: user._id,
+            courseName: course,
+            appointmentDate: date,
+            time
+        })
+
+        await newAppointment.save()
+
+        sendAppointmentConfirmationEmail(fullName, course, date, time, email, res)
+        return res.status(200).send({ message: "Appointment was scheduled successfully" })
+
+    } catch (err) {
+        generalLogger.error("Error creating appointment:", err.message)
+        return res.status(400).send({ message: err.message })
+    }
+}
+
+async function validateScheduleRequest(req) {
     const { fullName, email, course, date, time } = req.body
 
     if (!fullName || !email || !course || !date || !time) {
-        generalLogger.error("Error scheduling appointment: one or more fields are missing")
-        return res.status(400).send({ message: "Error: All fields must be completed" })
+        throw new Error("Error: All fields must be completed")
     }
 
     if (!validateEmail(email)) {
-        generalLogger.error("Error scheduling appointment: Invalid email address")
-        return res.status(400).send({ message: "Error: Invalid email address" })
+        throw new Error("Error: Invalid email address")
     }
 
+    const user = await User.findById(req.session.userId)
+    if (!user) {
+        throw new Error("User not found")
+    }
+
+    return { fullName, email, course, date, time, user }
+}
+
+async function sendAppointmentConfirmationEmail(fullName, course, date, time, email, res) {
     let mailTransporter = nodemailer.createTransport({
         service: "gmail",
         auth: {

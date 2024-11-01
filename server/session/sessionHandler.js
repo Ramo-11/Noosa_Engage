@@ -3,6 +3,13 @@ const bcrypt = require("bcrypt")
 const { generalLogger } = require("../utils/generalLogger")
 const { sendSignupEmail } = require("../mail")
 
+function isAuthenticated(req, res, next) {
+    if (req.session.userLoggedIn) {
+        return next()
+    }
+    res.redirect("/login")
+}
+
 const logout = (req, res) => {
     const wasLoggedIn = req.session.userLoggedIn
 
@@ -93,5 +100,6 @@ async function signupUser(req, res) {
 module.exports = {
     logout,
     loginUser,
-    signupUser
+    signupUser,
+    isAuthenticated
 }

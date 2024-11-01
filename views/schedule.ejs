@@ -73,7 +73,7 @@
                 const email = document.getElementById("email").value.trim()
                 const course = document.getElementById("course").value
                 const date = document.getElementById("date").value
-                const time = document.getElementById("time").valu;
+                const time = document.getElementById("time").value;
 
                 if (!fullName || !email || !course || !date || !time) {
                     const submitFlag = document.getElementById("submitFlag")
@@ -108,26 +108,39 @@
                     }),
                 })
 
+                const reqResult = await result
                 const message = await result.json()
-                const submitFlag = document.getElementById("submitFlag")
-                submitFlag.innerHTML = message["message"]
-                submitFlag.style.display = "block"
-
+    
+                document.getElementById("submitFlag").innerHTML = message["message"]
+                document.getElementById("submitFlag").style.display = "block"
+                
                 if (result.status === 200) {
-                    submitFlag.style.color = "#0a3755"
-                    submitFlag.style.backgroundColor = "#b7dffa"
+                    document.getElementById("submitFlag").style.color = "#0a3755"
+                    document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
                     await sleep(3000)
-                    location.reload(true)
-                    
-                } else {
-                    submitFlag.style.color = "#D8000C"
-                    submitFlag.style.backgroundColor = "#FFBABA"
+                    window.location.href = "/"
+                }
+                else {
+                    document.getElementById("submitFlag").style.color = "#D8000C"
+                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                    enableSubmitButton()
                     await sleep(3000)
-                    location.reload(true)
+                }
+    
+                function sleep(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                }
+    
+                function disableSubmitButton() {
+                    document.getElementById("submitButton").disabled = true
+                    document.getElementById("submitButton").style.backgroundColor = "#b7dffa"
+                    document.getElementById("submitButton").style.cursor = "default"
                 }
 
-                function sleep(ms) {
-                    return new Promise((resolve) => setTimeout(resolve, ms))
+                function enableSubmitButton() {
+                    document.getElementById("submitButton").disabled = false
+                    document.getElementById("submitButton").style.backgroundColor = "#0a3755"
+                    document.getElementById("submitButton").style.cursor = "pointer"
                 }
             }
         </script>
@@ -138,7 +151,7 @@
 
             document.addEventListener("DOMContentLoaded", async function () {
                 tutorTimes = await fetchJson("/resources/tutorTimes.json")
-                classesTutors = await fetchJson("/resources/coursesTutorsjson");
+                classesTutors = await fetchJson("/resources/coursesTutors.json");
 
                 datePicker = flatpickr("#date", {
                     enableTime: false, 

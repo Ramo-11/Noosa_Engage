@@ -51,6 +51,21 @@
     font-size: 1.3rem;
 }
 
+.menu-items .login a,
+.menu-items .signup a {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.menu-items .login a:hover,
+.menu-items .signup a:hover {
+    background-color: #ffffff;
+    color: #0d3754;
+}
+
 .profile-picture-container {
     position: relative;
     display: flex;
@@ -242,5 +257,4 @@
     .navbar-container input[type="checkbox"]:checked ~ .hamburger-lines .line3{
         transform: rotate(-45deg);
     }
-
 }
