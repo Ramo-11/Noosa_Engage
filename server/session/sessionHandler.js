@@ -51,7 +51,7 @@ async function loginUser(req, res) {
         req.session.userId = user._id
 
         generalLogger.info("User logged in successfully")
-        return res.status(200).send({ message: "Login successful! Redirecting to dashboard..." })
+        return res.status(200).send({ message: "Login successful! Redirecting to home screen..." })
     } catch (error) {
         generalLogger.error("Error logging in: ", error)
         return res.status(500).send({ message: "Internal server error" })

@@ -22,7 +22,7 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/prices">Our Prices</a></li>
                 <% if (userLoggedIn) { %>
-                    <li><a href="/schedule">Schedule</a></li>
+                    <li class="schedule"><a href="/schedule">Schedule</a></li>
                     <li><a href="/staff">Staff</a></li>
                     <li><a href="/contact">Contact us</a></li>
                 <% } else { %>
@@ -33,29 +33,16 @@
                 <% } %>
             </ul>
             <div class="profile-picture-container">
-                <% if (userLoggedIn) { %>
-                    <% if (user && user.profilePicture && user.profilePicture.data) { %>
-                        <img src="data:<%= user.profilePicture.contentType %>;base64,<%= user.profilePicture.data.toString('base64') %>" alt="Profile Picture" class="profile-img" id="profile-pic">
-                    <% } else { %>
-                        <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img" id="profile-pic">
-                    <% } %> 
-                <% } else { %>
-                    <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img" id="profile-pic-guest">
-                <% } %>
-                
-                <div class="dropdown" id="dropdown-menu">
-                    <ul>
-                        <% if (userLoggedIn) { %>
-                            <li><a href="/dashboard">Dashboard</a></li>
-                            <li><a href="/logout">Log Out</a></li>
-                        <% } else { %>
-                            <li><a href="/login">Log In</a></li>
-                            <li><a href="/signup">Sign Up</a></li>
-                        <% } %>
-                    </ul>
-                </div>                
-            </div>
+                <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img" id="profile-pic" <%= userLoggedIn ? '' : 'style="pointer-events: none;"' %>>
             
+                <% if (userLoggedIn) { %>
+                    <div class="dropdown" id="dropdown-menu">
+                        <ul>
+                            <li class="logout"><a href="/logout">Log Out</a></li>
+                        </ul>
+                    </div>   
+                <% } %>
+            </div>
         </div>
     </nav>
     <script>
