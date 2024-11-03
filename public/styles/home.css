@@ -10,8 +10,6 @@
 
 .section {
     width: 100%;
-    min-width: 700px;
-    max-width: 800px;
     padding: 20px;
     background-color: #ededed;
     border-radius: 20px;
@@ -32,13 +30,48 @@
     color: #707070;
 }
 
+.section.appointments {
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.appointments-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+}
+
+.appointment-item {
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #183753;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.appointment-item p {
+    margin: 5px 0;
+    color: white;
+}
+
 .signup {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 50px;
     width: 100%;
+    margin-bottom: 5%;
 }
+
 .signup h2 {
     color: #0a3755;
 }
@@ -55,30 +88,32 @@
 }
 
 @media (max-width: 430px) {
-    .main-content {
-        width: 100%;
-        gap: 1rem;
-    }
-
     .section {
-        width: 90%;
+        width: 100%;
     }
 
     .section h2 {
-        font-size: 20px;
+        font-size: 18px;
+    }
+
+    .appointment-item {
+        min-width: 80%;
+        max-width: 100%;
+        padding: 12px;
     }
 
     .section p, .section ul li {
         font-size: 14px;
+        line-height: 1.4;
     }
 
     .button_to_schedule {
-        width: 80%;
-        padding: 12px 20px;
+        width: 100%;
+        padding: 10px;
+        text-align: center;
     }
 
     .button_to_schedule a {
-        font-size: 16px;
-        line-height: 18px;
+        font-size: 15px;
     }
 }

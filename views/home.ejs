@@ -16,15 +16,20 @@
             <div class="section appointments">
                 <h2>Your Appointments</h2>
                 <% if (user.appointments && user.appointments.length > 0) { %>
-                    <ul>
+                    <div class="appointments-container">
                         <% user.appointments.forEach(appointment => { %>
-                            <li><strong><%= appointment.date %></strong> - <%= appointment.description %></li>
+                            <div class="appointment-item">
+                                <p><strong>Date:</strong> <%= appointment.appointmentDate %></p>
+                                <p><strong>Time:</strong> <%= appointment.appointmentTime %></p>
+                                <p><strong>Subject:</strong> <%= appointment.courseName %></p>
+                            </div>
                         <% }) %>
-                    </ul>
+                    </div>
                 <% } else { %>
                     <p>You have no upcoming appointments.</p>
                 <% } %>
             </div>
+            
     
             <div class="section invoices">
                 <h2>Your Invoices</h2>

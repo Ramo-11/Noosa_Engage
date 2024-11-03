@@ -12,7 +12,7 @@ async function processScheduleRequest(req, res) {
             customer: user._id,
             courseName: course,
             appointmentDate: date,
-            time
+            appointmentTime: time
         })
 
         await newAppointment.save()

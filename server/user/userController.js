@@ -1,4 +1,5 @@
 const User = require("../../models/User");
+const Appointment = require("../../models/Appointment");
 
 const getProfile = async (req, res) => {
     if (!req.session || !req.session.userId) {
@@ -8,12 +9,12 @@ const getProfile = async (req, res) => {
     try {
         const user = await User.findById(req.session.userId)
         if (!user) {
-            return res.status(404).send("User not found")
+            return res.status(404).send({ message: "User not found" })
         }
 
         res.render("dashboard/profile", { user })
     } catch (err) {
-        return res.status(500).send("Internal server error")
+        return res.status(500).send({ message: "Internal server error" })
     }
 }
 
@@ -47,7 +48,19 @@ const getUser = async (req) => {
     }
 }
 
+async function getUserAppointments(req, res) {
+    try {
+        const userId = req.session.userId
+        const appointments = await Appointment.find({ customer: userId }).lean()
+        res.render("home", { user: { ...req.session.user, appointments } })
+    } catch (error) {
+        console.error(error)
+        return res.status(500).send({ message: "Error fetching appointments" })
+    }
+}
+
 module.exports = {
     getProfile,
-    getUser
+    getUser,
+    getUserAppointments
 }
