@@ -10,6 +10,20 @@ function isAuthenticated(req, res, next) {
     res.redirect("/login")
 }
 
+function renderUserHomePageIfAuthenticated(req, res, next) {
+    if (req.session.userLoggedIn) {
+        return res.redirect("/home");
+    }
+    next();
+}
+
+function renderLandingPageIfNotAuthenticated(req, res, next) {
+    if (req.session.userLoggedIn) {
+        return next()
+    }
+    res.redirect("/")
+}
+
 const logout = (req, res) => {
     const wasLoggedIn = req.session.userLoggedIn
 
@@ -101,5 +115,7 @@ module.exports = {
     logout,
     loginUser,
     signupUser,
-    isAuthenticated
+    isAuthenticated,
+    renderUserHomePageIfAuthenticated,
+    renderLandingPageIfNotAuthenticated
 }

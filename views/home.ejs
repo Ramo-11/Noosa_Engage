@@ -1,0 +1,52 @@
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/home.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+    
+    <div class="main-content">
+        <div class="title-div">
+            <h1>Home</h1>
+        </div>
+        <div class="sections">
+            <div class="section appointments">
+                <h2>Your Appointments</h2>
+                <% if (user.appointments && user.appointments.length > 0) { %>
+                    <ul>
+                        <% user.appointments.forEach(appointment => { %>
+                            <li><strong><%= appointment.date %></strong> - <%= appointment.description %></li>
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+                    <p>You have no upcoming appointments.</p>
+                <% } %>
+            </div>
+    
+            <div class="section invoices">
+                <h2>Your Invoices</h2>
+                <% if (user.invoices && user.invoices.length > 0) { %>
+                    <ul>
+                        <% user.invoices.forEach(invoice => { %>
+                            <li><strong>Invoice #<%= invoice.id %></strong>: $<%= invoice.amount %> - <%= invoice.status %></li>
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+                    <p>You have no invoices at the moment.</p>
+                <% } %>
+            </div>
+    
+            <div class="section sign-up">
+                <h2>Sign Up for the Next Session</h2>
+                <p>Ready to book your next tutoring session? Click the button below to schedule.</p>
+                <button class="button_to_schedule"><a href="/schedule">Schedule Now</a></button>
+            </div>
+        </div>
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+</body>
+</html>

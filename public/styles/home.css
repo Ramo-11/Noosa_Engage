@@ -1,270 +1,71 @@
-.main-content {
-    position: relative;
+.sections {
+    margin-top: 2%;
+    margin-bottom: 5%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
-    gap: 50px;
+    background-color: white;
+    gap: 80px;
 }
 
-.intro-div {
-    width: 70%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 60px;
-    padding: 25px;
-    background-color: #f8f9fa;
+.section {
+    width: 100%;
+    max-width: 700px;
+    padding: 20px;
+    background-color: #ededed;
     border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.intro-div img {
-    max-width: 250px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.text-div {
-    max-width: 600px;
-    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     display: flex;
+    text-align: center;
     flex-direction: column;
-    justify-content: flex-start;
     gap: 30px;
 }
 
-.text-div hr {
-    border: 2px solid #ddd;
-    margin: 10px 0;
+.section h2 {
+    font-size: 24px;
+    color: #183753;
 }
 
-.text-div h1 {
-    color: #0a3755;
-    font-weight: bold;
-    font-size: 50px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+.section p, .section ul li {
+    font-size: 16px;
+    color: #707070;
 }
 
-.text-div p {
-    margin: 20px 0;
-    line-height: 1.8rem;
-    color: #555;
+.button_to_schedule {
+    width: 40%;
+    align-self: center;
+}
+
+.button_to_schedule a {
     font-size: 18px;
-}
-
-.main-content hr {
-    width: 60%;
-    border: 1px solid rgb(226, 226, 226);
-}
-
-.button_to_register {
-    width: 80%;
-    padding: 15px 30px;
-    border: none;
-    cursor: pointer;
-    border-radius: 50px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.button_to_register a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 20px;
-    font-weight: bold;
-    display: block;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    line-height: 25px;
-}
-
-.button_to_register:hover {
-    background-color: #be7303;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.classes-div {
-    max-width: 118rem;
-    padding: 10px 50px;
-    margin-bottom: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 100px;
-}
-
-.classes-div img {
-    width: 300px;
-    height: 300px;
-    border-radius: 5px;
-}
-
-.class-text {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 10px;
-    text-align: center;
-}
-
-.class-text h1 {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.class-text h3 {
-    font-size: 15px;
-}
-.styled-header {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #f8f9fa;
-    text-align: center;
-    margin: 20px 0;
-    position: relative;
-    padding: 10px 20px;
-    background: linear-gradient(135deg, #0a3755, #0056a0);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.3), 0 0 25px rgba(0,0,0,0.3);
-}
-.classes-div {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    column-gap: 50px;
-    gap: 100px;
-    max-width: 100rem;
-    margin-bottom: 50px;
-    padding: 20px;
-}
-
-.classes-div > div {
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    padding: 20px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.classes-div > div:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-}
-
-.classes-div img {
-    width: 100%;
-    height: auto;
-    max-height: 180px;
-    object-fit: contain;
-    border-radius: 8px;
-    margin-bottom: 15px;
-}
-
-.class-text h1 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #0a3755;
-}
-
-@media (max-width: 1200px) {
-    .classes-div {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 600px) {
-    .classes-div {
-        grid-template-columns: 1fr;
-    }
-
-    .class-text h1 {
-        font-size: 1.2rem;
-    }
-}
-
-.class-text {
-    padding: 10px;
-    text-align: center;
+    line-height: 20px;
 }
 
 @media (max-width: 430px) {
     .main-content {
-        gap: 30px;
-    }
-
-    .intro-div {
-        flex-direction: column;
-        gap: 20px;
-        align-items: center; 
-        margin-top: 0;
-        padding-top: 0;
-    }
-
-    .intro-div img {
-        max-width: 100%; /* Make the image responsive */
-    }
-
-    .text-div {
-        max-width: 100%; /* Allow the text to take up full width */
-        padding: 0 10px;
-    }
-
-    .text-div h1 {
-        font-size: 30px; /* Smaller font for smaller screens */
-    }
-
-    .text-div p {
-        font-size: 14px;
-        line-height: 1.3rem;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-
-    .classes-div {
-        max-width: 100%;
-        padding: 0;
-        gap: 20px; /* Reduced gap between items */
-        margin-bottom: 30px;
-    }
-
-    .classes-div > div {
         width: 100%;
-        padding: 0 10px; /* Add padding to contain within screen */
+        gap: 1rem;
     }
 
-    .classes-div img {
-        width: 180px;
-        height: 160px; /* Smaller images for smaller screens */
+    .section {
+        width: 90%;
     }
 
-    .class-text h1 {
-        font-size: 16px; /* Adjust font size */
+    .section h2 {
+        font-size: 20px;
     }
 
-    .class-text h3 {
-        font-size: 14px; /* Adjust font size */
-    }
-
-    .styled-header {
-        font-size: 1.8rem; /* Adjust header font size */
-        padding: 5px 10px; /* Smaller padding */
-        margin: 10px 0; /* Reduce margin */
-    }
-
-    .button_to_register {
-        width: 100%;
-        height: 60px;
-    }
-
-    .schedule {
+    .section p, .section ul li {
         font-size: 14px;
-        line-height: 36px; /* Adjust line height */
+    }
+
+    .button_to_schedule {
+        width: 80%;
+        padding: 12px 20px;
+    }
+
+    .button_to_schedule a {
+        font-size: 16px;
+        line-height: 18px;
     }
 }

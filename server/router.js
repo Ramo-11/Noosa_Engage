@@ -3,18 +3,19 @@ const route = express.Router()
 const { sendEmail } = require("./mail")
 const processScheduleRequest = require("./scheduleController")
 const renderCoursePage = require("./courseController")
-const { isAuthenticated, logout, loginUser, signupUser } = require("./session/sessionHandler")
+const { renderLandingPageIfNotAuthenticated, renderUserHomePageIfAuthenticated, isAuthenticated, logout, loginUser, signupUser } = require("./session/sessionHandler")
 const { resetPassword, updatePassword } = require("./passwordHandler")
 
 
 // *********** GET requests **********
-route.get("/", (req, res) => res.render("index"))
+route.get("/", renderUserHomePageIfAuthenticated, (req, res) => res.render("index"))
 route.get("/schedule", isAuthenticated, (req, res) => res.render("schedule"));
 route.get("/staff", (req, res) => res.render("staff"))
 route.get("/prices", (req, res) => res.render("prices"))
 route.get("/contact", (req, res) => res.render("contact"))
 route.get('/courses/:courseName', renderCoursePage)
 route.get("/login", (req, res) => res.render("login"))
+route.get("/home", renderLandingPageIfNotAuthenticated, (req, res) => res.render("home"))
 route.get("/signup", (req, res) => res.render("signup"))
 route.get('/logout', logout);
 route.get("/forgotpassword", (req, res) => res.render("forgotpassword"))

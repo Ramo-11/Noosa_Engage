@@ -22,7 +22,7 @@ const sessionMiddleware = session({
         collectionName: "sessions",
     }),
     cookie: {
-        maxAge: 30 * 60 * 1000
+        maxAge: 5 * 60 * 60 * 1000 // 5 hours in milliseconds
     }
 })
 
