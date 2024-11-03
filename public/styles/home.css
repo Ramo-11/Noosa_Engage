@@ -10,7 +10,8 @@
 
 .section {
     width: 100%;
-    max-width: 700px;
+    min-width: 700px;
+    max-width: 800px;
     padding: 20px;
     background-color: #ededed;
     border-radius: 20px;
@@ -31,8 +32,20 @@
     color: #707070;
 }
 
+.signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    width: 100%;
+}
+.signup h2 {
+    color: #0a3755;
+}
+
 .button_to_schedule {
-    width: 40%;
+    border-radius: 50px;
+    width: 13%;
     align-self: center;
 }
 
