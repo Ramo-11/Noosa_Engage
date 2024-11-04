@@ -40,11 +40,21 @@
             <div class="section invoices">
                 <h2>Your Invoices</h2>
                 <% if (user.invoices && user.invoices.length > 0) { %>
-                    <ul>
+                    <div class="invoices-container">
                         <% user.invoices.forEach(invoice => { %>
-                            <li><strong>Invoice #<%= invoice.id %></strong>: $<%= invoice.amount %> - <%= invoice.status %></li>
+                            <div class="invoice-item <%= invoice.isPaid %>">
+                                <div class="invoice-details">
+                                    <p><strong>Invoice Number:</strong> <%= invoice.invoiceNumber %></p>
+                                    <p><strong>Due Date:</strong> <%= new Date(invoice.dueDate).toLocaleDateString("en-US") %></p>
+                                    <p><strong>Total:</strong> $<%= invoice.total %></p>
+                                </div>
+                                <p class="invoice-status"><strong>Status:</strong> <%= invoice.isPaid ? "Paid" : "Not Paid" %></p>
+                                <% if (invoice.isPaid === false) { %>
+                                    <button class="payInvoiceButton" id="payInvoiceButton" onclick="payInvoice('<%= invoice.invoiceNumber %>')">Pay</button>
+                                <% } %>
+                            </div>                            
                         <% }) %>
-                    </ul>
+                    </div>
                 <% } else { %>
                     <p>You have no invoices at the moment.</p>
                 <% } %>

@@ -89,6 +89,53 @@
     color: white;
 }
 
+.invoices-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 100px;
+    width: 100%;
+}
+
+.invoice-item {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+.invoice-details p {
+    color: #333;
+    font-size: 18px;
+}
+
+.invoice-status {
+    font-weight: bold;
+    color: #555;
+    margin-top: 10px;
+}
+
+.invoice-item.true {
+    background-color: #31812b;
+}
+
+.invoice-item.false {
+    background-color: #943434;
+}
+
+.invoice-item p {
+    margin: 5px 0;
+    color: white;
+}
+
 .cancelAppointmentButton {
     font-size: 16px;
     text-align: center;
@@ -104,6 +151,23 @@
 }
 
 .cancelAppointmentButton:hover {
+    background-color: #a56402;
+}
+.payInvoiceButton {
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin-top: 12px;
+    width: 50%;
+    text-align: center;
+    background-color: #be7303;
+    color: white;
+    padding: 2px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.payInvoiceButton:hover {
     background-color: #a56402;
 }
 
@@ -144,7 +208,10 @@
         padding: 12px;
         width: 100%;
     }
-
+    .invoice-item {
+        padding: 12px;
+        width: 100%;
+    }
     .section p, .section ul li {
         font-size: 14px;
         line-height: 1.4;

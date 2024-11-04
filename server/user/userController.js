@@ -1,5 +1,7 @@
 const User = require("../../models/User");
 const Appointment = require("../../models/Appointment");
+const Invoice = require("../../models/Invoice");
+
 
 const getProfile = async (req, res) => {
     if (!req.session || !req.session.userId) {
@@ -48,19 +50,41 @@ const getUser = async (req) => {
     }
 }
 
-async function getUserAppointments(req, res) {
+async function getUserAppointments(req, res, next) {
     try {
-        const userId = req.session.userId
-        const appointments = await Appointment.find({ customer: userId }).lean()
-        res.render("home", { user: { ...req.session.user, appointments } })
+        const userId = req.session.userId;
+        const appointments = await Appointment.find({ customer: userId }).lean();
+
+        req.session.user = { ...req.session.user, appointments: appointments }; // Explicitly set appointments
+        
+        next();
     } catch (error) {
-        console.error(error)
-        return res.status(500).send({ message: "Error fetching appointments" })
+        console.error(error);
+        return res.status(500).send({ message: "Error fetching appointments" });
     }
+}
+
+async function getUserInvoices(req, res, next) {
+    try {
+        const userId = req.session.userId;
+        const invoices = await Invoice.find({ customer: userId }).lean();
+        req.session.user = { ...req.session.user, invoices: invoices }; // Explicitly set invoices
+
+        next(); 
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({ message: "Error fetching invoices" });
+    }
+}
+
+function renderHomePage(req, res) {
+    res.render("home", { user: req.session.user });
 }
 
 module.exports = {
     getProfile,
     getUser,
-    getUserAppointments
+    getUserAppointments,
+    getUserInvoices,
+    renderHomePage
 }
