@@ -26,6 +26,22 @@ async function processScheduleRequest(req, res) {
     }
 }
 
+async function cancelAppointment(req, res) {
+    const appointmentId = req.body.appointmentId
+    try {
+        const appointmentToCancel = await Appointment.findById(appointmentId)
+        appointmentToCancel.status = "Cancelled"
+        await appointmentToCancel.save()
+
+        generalLogger.debug("Appointment with id ", appointmentId, " was cancelled successfully")
+        return res.status(200).send({ message: "Appointment was cancelled successfully" })
+
+    } catch (err) {
+        generalLogger.error("Error cancelling appointment with id ", appointmentId, ": ", err.message)
+        return res.status(400).send({ message: err.message })
+    }
+}
+
 async function validateScheduleRequest(req) {
     const { fullName, email, course, date, time } = req.body
 
@@ -110,4 +126,4 @@ async function sendAppointmentConfirmationEmail(fullName, course, date, time, em
     })
 }
 
-module.exports = processScheduleRequest
+module.exports = { processScheduleRequest, cancelAppointment }

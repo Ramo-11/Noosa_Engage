@@ -15,21 +15,27 @@
         <div class="sections">
             <div class="section appointments">
                 <h2>Your Appointments</h2>
+                <p class="submitFlag" id="submitFlag" hidden></p>
                 <% if (user.appointments && user.appointments.length > 0) { %>
                     <div class="appointments-container">
                         <% user.appointments.forEach(appointment => { %>
-                            <div class="appointment-item">
-                                <p><strong>Date:</strong> <%= appointment.appointmentDate %></p>
-                                <p><strong>Time:</strong> <%= appointment.appointmentTime %></p>
-                                <p><strong>Subject:</strong> <%= appointment.courseName %></p>
-                            </div>
+                            <div class="appointment-item <%= appointment.status %>">
+                                <div class="appointment-details">
+                                    <p><strong>Subject:</strong> <%= appointment.courseName %></p>
+                                    <p><strong>Date:</strong> <%= appointment.appointmentDate %></p>
+                                    <p><strong>Time:</strong> <%= appointment.appointmentTime %></p>
+                                </div>
+                                <p class="appointment-status"><strong>Status:</strong> <%= appointment.status %></p>
+                                <% if (appointment.status === 'Scheduled') { %>
+                                    <button class="cancelAppointmentButton" id="cancelAppointmentButton" onclick="cancelAppointment('<%= appointment._id %>')">Cancel</button>
+                                <% } %>
+                            </div>                            
                         <% }) %>
                     </div>
                 <% } else { %>
                     <p>You have no upcoming appointments.</p>
                 <% } %>
             </div>
-            
     
             <div class="section invoices">
                 <h2>Your Invoices</h2>
@@ -51,5 +57,65 @@
     </div>
 
     <%- include("./partials/footer.ejs") %>
+    <script>
+        async function cancelAppointment(appointmentId) {
+            if (!confirm("Are you sure you want to cancel this appointment?")) return;
+
+            if (!appointmentId) {
+                document.getElementById("submitFlag").innerHTML = "Unable to cancel appointment";
+                document.getElementById("submitFlag").style.color = "#D8000C";
+                document.getElementById("submitFlag").style.backgroundColor = "#FFBABA";
+                document.getElementById("submitFlag").style.display = "block";
+                return;
+            }
+
+            disableCancelButton()
+    
+            const result = await fetch("/api/cancelAppointment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify ({
+                    appointmentId
+                })
+            })
+
+            const reqResult = await result
+            const message = await result.json()
+
+            document.getElementById("submitFlag").innerHTML = message["message"]
+            document.getElementById("submitFlag").style.display = "block"
+            
+            if (result.status === 200) {
+                document.getElementById("submitFlag").style.color = "#0a3755"
+                document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
+                await sleep(1000)
+                location.reload(true)
+            }
+            else {
+                document.getElementById("submitFlag").style.color = "#D8000C"
+                document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                enableCancelButton()
+                await sleep(3000)
+            }
+
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            function disableCancelButton() {
+                document.getElementById("cancelAppointmentButton").disabled = true
+                document.getElementById("cancelAppointmentButton").style.backgroundColor = "#b7dffa"
+                document.getElementById("cancelAppointmentButton").style.cursor = "default"
+            }
+
+            function enableCancelButton() {
+                document.getElementById("cancelAppointmentButton").disabled = false
+                document.getElementById("cancelAppointmentButton").style.backgroundColor = "#0a3755"
+                document.getElementById("cancelAppointmentButton").style.cursor = "pointer"
+            }
+        }
+    </script>
 </body>
 </html>

@@ -6,6 +6,7 @@
     align-items: center;
     background-color: white;
     gap: 80px;
+    width: 70%;
 }
 
 .section {
@@ -15,52 +16,95 @@
     border-radius: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     display: flex;
-    text-align: center;
     flex-direction: column;
-    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
 }
 
 .section h2 {
+    text-align: center;
     font-size: 24px;
     color: #183753;
 }
 
 .section p, .section ul li {
-    font-size: 16px;
+    text-align: center;
+    font-size: 18px;
     color: #707070;
 }
 
-.section.appointments {
-    padding-left: 100px;
-    padding-right: 100px;
+.section.appointments, .section.invoices{
+    min-height: 500px;
 }
 
 .appointments-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 30px;
+    flex-wrap: wrap;
+    gap: 100px;
     width: 100%;
 }
 
 .appointment-item {
-    padding: 15px;
-    margin-bottom: 15px;
-    background-color: #183753;
-    border: 1px solid #ddd;
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, box-shadow 0.3s;
-    width: 90%;
+    width: 100%;
+    max-width: 300px;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 20px;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+.appointment-details p {
+    color: #333;
+    font-size: 18px;
+}
+
+.appointment-status {
+    font-weight: bold;
+    color: #555;
+    margin-top: 10px;
+}
+
+.appointment-item.Scheduled {
+    background-color: #173b67;
+}
+
+.appointment-item.Completed {
+    background-color: #31812b;
+}
+
+.appointment-item.Cancelled {
+    background-color: #943434;
 }
 
 .appointment-item p {
     margin: 5px 0;
     color: white;
+}
+
+.cancelAppointmentButton {
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin-top: 12px;
+    width: 50%;
+    text-align: center;
+    background-color: #be7303;
+    color: white;
+    padding: 2px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cancelAppointmentButton:hover {
+    background-color: #a56402;
 }
 
 .signup {
@@ -88,18 +132,17 @@
 }
 
 @media (max-width: 430px) {
-    .section {
+    /* .section {
         width: 100%;
-    }
+    } */
 
     .section h2 {
         font-size: 18px;
     }
 
     .appointment-item {
-        min-width: 80%;
-        max-width: 100%;
         padding: 12px;
+        width: 100%;
     }
 
     .section p, .section ul li {

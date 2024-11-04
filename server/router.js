@@ -1,7 +1,7 @@
 const express = require("express")
 const route = express.Router()
 const { sendEmail } = require("./mail")
-const processScheduleRequest = require("./scheduleController")
+const { processScheduleRequest, cancelAppointment } = require("./scheduleController")
 const renderCoursePage = require("./courseController")
 const { getUserAppointments } = require("./user/userController")
 const { renderLandingPageIfNotAuthenticated, renderUserHomePageIfAuthenticated, isAuthenticated, logout, loginUser, signupUser } = require("./session/sessionHandler")
@@ -31,6 +31,7 @@ route.get('/updatepassword', (req, res) => {
 // *********** POST requests **********
 route.post("/api/sendEmail", sendEmail)
 route.post("/api/scheduleAppointment", processScheduleRequest)
+route.post("/api/cancelAppointment", cancelAppointment)
 route.post("/api/login", loginUser)
 route.post("/api/signup", signupUser)
 route.post('/api/forgot_password', resetPassword)
