@@ -15,7 +15,7 @@
         <div class="sections">
             <div class="section appointments">
                 <h2>Your Appointments</h2>
-                <p class="submitFlag" id="submitFlag" hidden></p>
+                <p class="appointmentFlag" id="appointmentFlag" hidden></p>
                 <% if (user.appointments && user.appointments.length > 0) { %>
                     <div class="appointments-container">
                         <% user.appointments.forEach(appointment => { %>
@@ -39,6 +39,7 @@
     
             <div class="section invoices">
                 <h2>Your Invoices</h2>
+                <p class="invoiceFlag" id="invoiceFlag" hidden></p>
                 <% if (user.invoices && user.invoices.length > 0) { %>
                     <div class="invoices-container">
                         <% user.invoices.forEach(invoice => { %>
@@ -72,14 +73,14 @@
             if (!confirm("Are you sure you want to cancel this appointment?")) return;
 
             if (!appointmentId) {
-                document.getElementById("submitFlag").innerHTML = "Unable to cancel appointment";
-                document.getElementById("submitFlag").style.color = "#D8000C";
-                document.getElementById("submitFlag").style.backgroundColor = "#FFBABA";
-                document.getElementById("submitFlag").style.display = "block";
+                document.getElementById("appointmentFlag").innerHTML = "Unable to cancel appointment";
+                document.getElementById("appointmentFlag").style.color = "#D8000C";
+                document.getElementById("appointmentFlag").style.backgroundColor = "#FFBABA";
+                document.getElementById("appointmentFlag").style.display = "block";
                 return;
             }
 
-            disableCancelButton()
+            disableButton("cancelAppointmentButton")
     
             const result = await fetch("/api/cancelAppointment", {
                 method: "POST",
@@ -94,38 +95,79 @@
             const reqResult = await result
             const message = await result.json()
 
-            document.getElementById("submitFlag").innerHTML = message["message"]
-            document.getElementById("submitFlag").style.display = "block"
+            document.getElementById("appointmentFlag").innerHTML = message["message"]
+            document.getElementById("appointmentFlag").style.display = "block"
             
             if (result.status === 200) {
-                document.getElementById("submitFlag").style.color = "#0a3755"
-                document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
-                await sleep(1000)
+                document.getElementById("appointmentFlag").style.color = "#0a3755"
+                document.getElementById("appointmentFlag").style.backgroundColor = "#b7dffa"
+                await sleep(3000)
                 location.reload(true)
             }
             else {
-                document.getElementById("submitFlag").style.color = "#D8000C"
-                document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
-                enableCancelButton()
+                document.getElementById("appointmentFlag").style.color = "#D8000C"
+                document.getElementById("appointmentFlag").style.backgroundColor = "#FFBABA"
+                enableButton("cancelAppointmentButton")
                 await sleep(3000)
             }
+        }
 
-            function sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
+        async function payInvoice(invoiceNumber) {
+            if (!invoiceNumber) {
+                document.getElementById("invoiceFlag").innerHTML = "Unable to pay invoice. Contact support";
+                document.getElementById("invoiceFlag").style.color = "#D8000C";
+                document.getElementById("invoiceFlag").style.backgroundColor = "#FFBABA";
+                document.getElementById("invoiceFlag").style.display = "block";
+                return;
             }
 
-            function disableCancelButton() {
-                document.getElementById("cancelAppointmentButton").disabled = true
-                document.getElementById("cancelAppointmentButton").style.backgroundColor = "#b7dffa"
-                document.getElementById("cancelAppointmentButton").style.cursor = "default"
-            }
+            disableButton("payInvoiceButton")
+    
+            const result = await fetch("/api/payInvoice", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify ({
+                    invoiceNumber
+                })
+            })
 
-            function enableCancelButton() {
-                document.getElementById("cancelAppointmentButton").disabled = false
-                document.getElementById("cancelAppointmentButton").style.backgroundColor = "#0a3755"
-                document.getElementById("cancelAppointmentButton").style.cursor = "pointer"
+            const reqResult = await result
+            const message = await result.json()
+
+            document.getElementById("invoiceFlag").innerHTML = message["message"]
+            document.getElementById("invoiceFlag").style.display = "block"
+            
+            if (result.status === 200) {
+                document.getElementById("invoiceFlag").style.color = "#0a3755"
+                document.getElementById("invoiceFlag").style.backgroundColor = "#b7dffa"
+                await sleep(3000)
+                location.reload(true)
+            }
+            else {
+                document.getElementById("invoiceFlag").style.color = "#D8000C"
+                document.getElementById("invoiceFlag").style.backgroundColor = "#FFBABA"
+                enableButton("payInvoiceButton")
+                await sleep(3000)
             }
         }
-    </script>
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function disableButton(buttonId) {
+            document.getElementById(buttonId).disabled = true
+            document.getElementById(buttonId).style.backgroundColor = "#b7dffa"
+            document.getElementById(buttonId).style.cursor = "default"
+        }
+
+        function enableButton(buttonId) {
+            document.getElementById(buttonId).disabled = false
+            document.getElementById(buttonId).style.backgroundColor = "#0a3755"
+            document.getElementById(buttonId).style.cursor = "pointer"
+        }
+    </script> 
 </body>
 </html>

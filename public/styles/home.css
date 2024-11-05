@@ -195,11 +195,15 @@
     line-height: 20px;
 }
 
-@media (max-width: 430px) {
-    /* .section {
-        width: 100%;
-    } */
+.appointmentFlag, .invoiceFlag {
+    margin-top: -30px;
+    margin-bottom: -30px;
+    width: 80%;
+    padding: 10px;
+    border-radius: 3px 3px 3px 3px;
+}
 
+@media (max-width: 430px) {
     .section h2 {
         font-size: 18px;
     }

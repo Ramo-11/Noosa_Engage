@@ -65,6 +65,14 @@ a {
     margin: 0;
 }
 
+.submitFlag {
+    margin-top: -30px;
+    margin-bottom: -30px;
+    width: 80%;
+    padding: 10px;
+    border-radius: 3px 3px 3px 3px;
+}
+
 @media (max-width: 430px) {
     body {
         display: flex;
@@ -74,12 +82,12 @@ a {
     }
     
     .title-div {
-        min-height: 10rem; /* Adjust height for smaller screens */
+        min-height: 10rem;
     }
 
     .title-div h1 {
-        font-size: 40px; /* Adjust font size for smaller screens */
-        line-height: 4; /* Adjust line height to make lines closer */
+        font-size: 40px;
+        line-height: 4;
         text-align: center;
     }
 }

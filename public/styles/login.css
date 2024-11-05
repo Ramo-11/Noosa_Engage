@@ -36,14 +36,6 @@
     font-size: 17px;
 }
 
-.submitFlag {
-    margin-top: -30px;
-    margin-bottom: -30px;
-    width: 80%;
-    padding: 10px;
-    border-radius: 3px 3px 3px 3px;
-}
-
 .links {
     display: flex;
     justify-content: center;

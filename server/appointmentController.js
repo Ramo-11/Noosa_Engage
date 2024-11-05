@@ -1,94 +1,65 @@
-const Appointment = require("../models/appointments")
+const nodemailer = require('nodemailer')
 const User = require('../models/User')
-const { sendDeleteAppointmentEmail } = require("./mail")
+const Appointment = require('../models/Appointment')
+const { generalLogger } = require('./utils/generalLogger')
+const validateEmail = require('./utils/emailValidator')
+const { sendAppointmentConfirmationEmail } = require('./mail')
 
-const getAppointments = async (req, res) => {
-    if (!req.session || !req.session.userId) {
-        return res.redirect("/login")
-    }
-
+async function processAppointmentRequest(req, res) {
     try {
-        const user = await User.findById(req.session.userId).select('name email')
-        if (!user) {
-            return res.status(404).send("User not found")
-        }
-
-        const appointments = await Appointment.find({ user: user._id }).sort({ appointmentDate: -1 })
-
-        res.render("dashboard/appointments", {
-            user,
-            appointments,
-            currentRoute: 'appointments'
-        })
-    } catch (err) {
-        console.error("Error fetching appointments:", err)
-        return res.status(500).send("Internal server error")
-    }
-}
-
-const createAppointment = async (req, res, next) => {
-    if (!req.session || !req.session.userId) {
-        return res.redirect("/login")
-    }
-
-    const { fullName, date: appointmentDate, time, tutor, duration, description } = req.body
-
-    try {
-        const user = await User.findById(req.session.userId).select('name')
-        if (!user) {
-            return res.status(404).send("User not found")
-        }
-
+        const { fullName, email, course, date, time, user } = await validateAppointmentRequest(req)
+        
         const newAppointment = new Appointment({
-            user: user._id,
-            userName: fullName,
-            tutorName: tutor,
-            appointmentDate,
-            time,
-            duration,
-            description
+            customer: user._id,
+            courseName: course,
+            appointmentDate: date,
+            appointmentTime: time
         })
 
         await newAppointment.save()
 
-        next()
+        sendAppointmentConfirmationEmail(fullName, course, date, time, email, res)
+        return res.status(200).send({ message: "Appointment was scheduled successfully" })
+
     } catch (err) {
-        console.error("Error creating appointment:", err)
-        return res.status(500).send("Internal server error")
+        generalLogger.error("Error creating appointment:", err.message)
+        return res.status(400).send({ message: err.message })
     }
 }
 
-const deleteAppointment = async (req, res) => {
-    if (!req.session || !req.session.userId) {
-        return res.redirect("/login")
-    }
-
+async function cancelAppointment(req, res) {
+    const appointmentId = req.body.appointmentId
     try {
-        const appointmentId = req.params.id
-        const userId = req.session.userId
-    
-        const appointment = await Appointment.findOneAndDelete({ _id: appointmentId, user: userId })
-    
-        if (!appointment) {
-            return res.status(404).send("Appointment not found or you don't have permission to cancel this.")
-        }
-    
-        const user = await User.findById(userId).select('email firstName lastName')
-        if (!user) {
-            return res.status(404).send("User not found")
-        }
+        const appointmentToCancel = await Appointment.findById(appointmentId)
+        appointmentToCancel.status = "Cancelled"
+        await appointmentToCancel.save()
 
-        const fullName = `${user.firstName} ${user.lastName}`
+        generalLogger.debug("Appointment with id ", appointmentId, " was cancelled successfully")
+        return res.status(200).send({ message: "Appointment was cancelled successfully" })
 
-
-        await sendDeleteAppointmentEmail({ email: user.email, fullName }, appointment)
-    
-        res.send({ message: "Appointment canceled successfully" })
-    
     } catch (err) {
-        console.error("Error canceling appointment:", err)
-        return res.status(500).send("Internal server error")
+        generalLogger.error("Error cancelling appointment with id ", appointmentId, ": ", err.message)
+        return res.status(400).send({ message: err.message })
     }
 }
 
-module.exports = { getAppointments, createAppointment, deleteAppointment }
+async function validateAppointmentRequest(req) {
+    const { fullName, email, course, date, time } = req.body
+
+    if (!fullName || !email || !course || !date || !time) {
+        throw new Error("Error: All fields must be completed")
+    }
+
+    if (!validateEmail(email)) {
+        throw new Error("Error: Invalid email address")
+    }
+
+    const user = await User.findById(req.session.userId)
+    if (!user) {
+        throw new Error("User not found")
+    }
+
+    return { fullName, email, course, date, time, user }
+}
+
+module.exports = { processAppointmentRequest, cancelAppointment }

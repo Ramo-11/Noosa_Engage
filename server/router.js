@@ -1,11 +1,12 @@
 const express = require("express")
 const route = express.Router()
 const { sendEmail } = require("./mail")
-const { processScheduleRequest, cancelAppointment } = require("./scheduleController")
+const { processAppointmentRequest, cancelAppointment } = require("./appointmentController")
 const renderCoursePage = require("./courseController")
 const { getUserAppointments, getUserInvoices, renderHomePage } = require("./user/userController")
 const { renderLandingPageIfNotAuthenticated, renderUserHomePageIfAuthenticated, isAuthenticated, logout, loginUser, signupUser } = require("./session/sessionHandler")
-const { resetPassword, updatePassword } = require("./passwordHandler")
+const { resetPassword, updatePassword } = require("./passwordController")
+const { payInvoice } = require("./invoiceController")
 
 
 // *********** GET requests **********
@@ -30,12 +31,13 @@ route.get('/updatepassword', (req, res) => {
 
 // *********** POST requests **********
 route.post("/api/sendEmail", sendEmail)
-route.post("/api/scheduleAppointment", processScheduleRequest)
+route.post("/api/scheduleAppointment", processAppointmentRequest)
 route.post("/api/cancelAppointment", cancelAppointment)
 route.post("/api/login", loginUser)
 route.post("/api/signup", signupUser)
-route.post('/api/forgot_password', resetPassword)
-route.post('/api/update_password', updatePassword)
+route.post('/api/forgotPassword', resetPassword)
+route.post('/api/updatePassword', updatePassword)
+route.post('/api/payInvoice', payInvoice)
 
 
 module.exports = route
