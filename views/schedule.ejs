@@ -19,15 +19,6 @@
             <div class="schedule-form">
                 <h1>Appointment Details</h1>
                 <p class="submitFlag" id="submitFlag" hidden></p>
-                <div class="submitter-name">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" class="input" placeholder="" maxlength="50"/>
-                </div>
-                <div class="submitter-email">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" class="input" placeholder="" maxlength="50"/>
-                </div>
-
                 <div class="submitter-course">
                     <label for="course">Select a Course</label>
                     <select id="course" class="input">
@@ -69,13 +60,11 @@
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script>
             function validateAndSubmitAppointment() {
-                const fullName = document.getElementById("name").value.trim()
-                const email = document.getElementById("email").value.trim()
                 const course = document.getElementById("course").value
                 const date = document.getElementById("date").value
                 const time = document.getElementById("time").value;
 
-                if (!fullName || !email || !course || !date || !time) {
+                if (!course || !date || !time) {
                     const submitFlag = document.getElementById("submitFlag")
                     submitFlag.innerHTML = "All fields are required"
                     submitFlag.style.color = "#D8000C"
@@ -88,8 +77,6 @@
             }
             
             async function submitAppointment() {
-                const fullName = document.getElementById("name").value
-                const email = document.getElementById("email").value
                 const course = document.getElementById("course").value
                 const date = document.getElementById("date").value
                 const time = document.getElementById("time").value
@@ -100,8 +87,6 @@
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        fullName,
-                        email,
                         course,
                         date,
                         time

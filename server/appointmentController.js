@@ -7,7 +7,7 @@ const { sendAppointmentConfirmationEmail } = require('./mail')
 
 async function processAppointmentRequest(req, res) {
     try {
-        const { fullName, email, course, date, time, user } = await validateAppointmentRequest(req)
+        const { course, date, time, user } = await validateAppointmentRequest(req)
         
         const newAppointment = new Appointment({
             customer: user._id,
@@ -18,7 +18,7 @@ async function processAppointmentRequest(req, res) {
 
         await newAppointment.save()
 
-        sendAppointmentConfirmationEmail(fullName, course, date, time, email, res)
+        sendAppointmentConfirmationEmail(user.fullName, course, date, time, user.email, res)
         return res.status(200).send({ message: "Appointment was scheduled successfully" })
 
     } catch (err) {
@@ -44,14 +44,10 @@ async function cancelAppointment(req, res) {
 }
 
 async function validateAppointmentRequest(req) {
-    const { fullName, email, course, date, time } = req.body
+    const { course, date, time } = req.body
 
-    if (!fullName || !email || !course || !date || !time) {
+    if (!course || !date || !time) {
         throw new Error("Error: All fields must be completed")
-    }
-
-    if (!validateEmail(email)) {
-        throw new Error("Error: Invalid email address")
     }
 
     const user = await User.findById(req.session.userId)
@@ -59,7 +55,7 @@ async function validateAppointmentRequest(req) {
         throw new Error("User not found")
     }
 
-    return { fullName, email, course, date, time, user }
+    return { course, date, time, user }
 }
 
 module.exports = { processAppointmentRequest, cancelAppointment }
