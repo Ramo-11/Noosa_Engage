@@ -4,6 +4,15 @@ const crypto = require('crypto')
 const validateEmail = require('./utils/emailValidator')
 const bcrypt = require('bcrypt')
 
+function validateResetCode(req, res, next) {
+    if (!req.query.code) return res.status(400).send('Invalid reset code.');
+    next();
+}
+
+function renderUpdatePassword(req, res) {
+    res.render('updatepassword', { code: req.query.code });
+}
+
 async function resetPassword(req, res) {
     const { email } = req.body
 
@@ -52,6 +61,8 @@ async function updatePassword(req, res) {
 }
 
 module.exports = {
+    validateResetCode,
+    renderUpdatePassword,
     resetPassword,
-    updatePassword,
+    updatePassword
 }

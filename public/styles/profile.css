@@ -1,0 +1,55 @@
+@import url("https://fonts.googleapis.com/css?family=Nunito:400,900|Montserrat|Roboto");
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 50px;
+    padding: 60px;
+    width: 60%;
+    height: 65%;
+    box-shadow: 2px 5px 20px rgba(119,119,119,0.5);
+}
+
+.editButton {
+    align-self: flex-end;
+    text-align: center;
+    width: 15%;
+}
+
+.profile-info .input {
+    width: 80%;
+    border: 0;
+    border-bottom: 1px solid #0a3755;
+    font-family: "Montserrat", sans-serif;
+    font-size: 15px;
+    color: #070707;
+    outline: none;
+}
+
+.inputField {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#image {
+    width: 80%;
+    border: 0;
+    border-bottom: 1px solid #0a3755;
+}
+
+.submitButton, .cancelButton {
+    padding: 7px 15px;
+    font-family: "Roboto", sans-serif;
+    font-size: 15px;
+    border: 0;
+    background: #0a3755;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+.flexContainer {
+    display: flex;
+    gap: 50px;
+}

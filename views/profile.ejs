@@ -1,0 +1,104 @@
+<html lang="en">
+    <head>
+        <title>Profile</title>
+        <link rel="stylesheet" href="/styles/general.css">
+        <link rel="stylesheet" href="/styles/profile.css">
+        <link rel="shortcut icon" href="/images/Logo-white.png">
+    </head>
+
+    <body>
+        <%- include("./partials/nav.ejs") %>
+        <div class="main-content">
+            <div class="title-div">
+                <h1>Profile</h1>
+            </div>
+            <div class="profile-info">
+                <p class="submitFlag" id="submitFlag" hidden></p>
+                <button class="editButton" id="editButton" onclick="editButtonFunction()">Edit</button>
+                <div class="inputField">
+                    <h2>Full Name</h2>
+                    <input type="text" class="input" value="<%=user.fullName%>" readonly>
+                </div>
+                <div class="inputField">
+                    <h2>Email</h2>
+                    <input type="text" class="input" value="<%=user.email%>" readonly>
+                </div>
+                <div class="inputField">
+                    <h2>Profile Picture</h2>
+                    <input type="file" name='image' id='image' readonly>
+                </div>
+                <div class="flexContainer">
+                    <button class="submitButton" id="submitButton" onclick="submitButtonFunction()" hidden>Submit</button>
+                    <button class="cancelButton" id="cancelButton" onclick="cancelButtonFunction()" hidden>Cancel</button>
+                </div>
+            </div>
+        </div>
+        <%- include("./partials/footer.ejs") %>
+        <script>
+            var inputFields = document.getElementsByTagName("input")
+            document.getElementById("image").disabled = true;
+            var submitButton = document.getElementById("submitButton")
+            var editButton = document.getElementById("editButton")
+            var cancelButton = document.getElementById("cancelButton")
+        
+            function editButtonFunction() {
+                submitButton.style.display = "block"
+                cancelButton.style.display = "block"
+                editButton.style.display = "none"
+                document.getElementById("image").disabled = false;
+        
+                for (let i = 0; i < inputFields.length; i++) {
+                    inputFields[i].readOnly = false
+                }
+            }
+        
+            async function submitButtonFunction() {
+                const inputFields = document.getElementsByTagName("input")
+                let data = new FormData()
+                
+                data.append("fullName", inputFields[0].value)
+                data.append("email", inputFields[1].value)
+                if (inputFields[2] && inputFields[2].files != null && inputFields[2].files.length > 0) {
+                    data.append("picture", inputFields[2].files[0])
+                }
+        
+                const result = await fetch("/api/updateUserInfo", {
+                    method: "POST",
+                    body: data
+                })
+                const reqResult = await result
+                const message = await result.json()
+                
+                document.getElementById("submitFlag").innerHTML = message["message"]
+                document.getElementById("submitFlag").style.display = "block"
+        
+                if (reqResult.status === 200) {
+                    document.getElementById("submitFlag").style.color = "#0a3755"
+                    document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
+                    await sleep(3000)
+                    location.reload(true)
+                } else {
+                    document.getElementById("submitFlag").style.color = "#D8000C"
+                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                    await sleep(3000)
+                }
+            }
+        
+            function cancelButtonFunction() {
+                submitButton.style.display = "none"
+                cancelButton.style.display = "none"
+                editButton.style.display = "block"
+                document.getElementById("image").disabled = true;
+        
+                for (let i = 0; i < inputFields.length; i++) {
+                    inputFields[i].value = inputFields[i].defaultValue
+                    inputFields[i].readOnly = true  
+                }
+            }
+        
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        </script>
+    </body>
+</html>
