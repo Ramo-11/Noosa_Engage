@@ -33,15 +33,16 @@
                 <% } %>
             </ul>
             <div class="profile-picture-container">
-                <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img" id="profile-pic" <%= userLoggedIn ? '' : 'style="pointer-events: none;"' %>>
-            
                 <% if (userLoggedIn) { %>
+                    <img src="<%= user.profilePicture ? user.profilePicture : '/images/DefaultProfilePic.jpg' %>" alt="Profile Picture" class="profile-img-clickable" id="profile-pic">
                     <div class="dropdown" id="dropdown-menu">
                         <ul>
                             <li class="profile"><a href="/profile">Profile</a></li>
                             <li class="logout"><a href="/logout">Log Out</a></li>
                         </ul>
                     </div>   
+                <% } else { %>
+                    <img src="/images/DefaultProfilePic.jpg" alt="Profile Picture" class="profile-img" id="profile-pic" %>>
                 <% } %>
             </div>
         </div>

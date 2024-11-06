@@ -56,10 +56,10 @@
                 const inputFields = document.getElementsByTagName("input")
                 let data = new FormData()
                 
-                data.append("fullName", inputFields[0].value)
-                data.append("email", inputFields[1].value)
-                if (inputFields[2] && inputFields[2].files != null && inputFields[2].files.length > 0) {
-                    data.append("picture", inputFields[2].files[0])
+                data.append("fullName", inputFields[1].value)
+                data.append("email", inputFields[2].value)
+                if (inputFields[2] && inputFields[3].files != null && inputFields[3].files.length > 0) {
+                    data.append("picture", inputFields[3].files[0])
                 }
         
                 const result = await fetch("/api/updateUserInfo", {

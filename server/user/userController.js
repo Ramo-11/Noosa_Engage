@@ -52,35 +52,34 @@ const getUser = async (req) => {
     }
 }
 
-async function getUserAppointments(req, res, next) {
+async function getUserData(req, res, next) {
     try {
-        const userId = req.session.userId;
-        const appointments = await Appointment.find({ customer: userId }).lean();
+        const userId = req.session.userId
 
-        req.session.user = { ...req.session.user, appointments: appointments }; // Explicitly set appointments
+        const [user, appointments, invoices] = await Promise.all([
+            User.findById(userId).select("fullName email profilePicture").lean(),
+            Appointment.find({ customer: userId }).lean(),
+            Invoice.find({ customer: userId }).lean()
+        ])
+
+        req.session.user = {
+            ...req.session.user,
+            fullName: user.fullName,
+            email: user.email,
+            profilePicture: user.profilePicture,
+            appointments: appointments,
+            invoices: invoices
+        }
         
-        next();
+        next()
     } catch (error) {
-        console.error(error);
-        return res.status(500).send({ message: "Error fetching appointments" });
-    }
-}
-
-async function getUserInvoices(req, res, next) {
-    try {
-        const userId = req.session.userId;
-        const invoices = await Invoice.find({ customer: userId }).lean();
-        req.session.user = { ...req.session.user, invoices: invoices }; // Explicitly set invoices
-
-        next(); 
-    } catch (error) {
-        console.error(error);
-        return res.status(500).send({ message: "Error fetching invoices" });
+        console.error("Error fetching user data:", error)
+        return res.status(500).send({ message: "Error fetching user data" })
     }
 }
 
 function renderHomePage(req, res) {
-    res.render("home", { user: req.session.user });
+    res.render("home", { user: req.session.user })
 }
 
 async function updateUser(req, res) {
@@ -91,9 +90,6 @@ async function updateUser(req, res) {
         generalLogger.error("Unable to update user. name [" + fullName + "] is not valid")
         return res.status(400).send({ message: "Unable to update user: name cannot be empty" })
     }
-
-    console.log(fullName)
-    console.log(email)
 
     if (!email || typeof email !== "string" || !validateEmail(email)) {
         generalLogger.error("Unable to update user. Email [" + email + "] is not valid")
@@ -136,8 +132,7 @@ async function updateUser(req, res) {
 module.exports = {
     getProfile,
     getUser,
-    getUserAppointments,
-    getUserInvoices,
+    getUserData,
     renderHomePage,
     updateUser
 }

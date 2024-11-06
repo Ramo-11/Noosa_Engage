@@ -17,8 +17,8 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     profilePicture: {
-        data: Buffer,
-        contentType: String
+        type: String,
+        default: "https://res.cloudinary.com/dqtle5upc/image/upload/v1655088388/default_user_icon_vr0gng.jpg"
     },
     address: {
         type: String,

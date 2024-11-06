@@ -53,3 +53,48 @@
     display: flex;
     gap: 50px;
 }
+@media (max-width: 768px) {
+    .profile-info {
+        width: 80%;
+        padding: 40px;
+    }
+
+    .editButton {
+        width: 30%;
+    }
+
+    .flexContainer {
+        gap: 20px;
+        flex-direction: column;
+    }
+
+    .profile-info .input, #image {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-info {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .editButton {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .submitButton, .cancelButton {
+        width: 100%;
+    }
+
+    .profile-info .input, #image {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .flexContainer {
+        flex-direction: column;
+        gap: 15px;
+    }
+}

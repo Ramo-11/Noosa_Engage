@@ -27,11 +27,18 @@ const sessionMiddleware = session({
 })
 
 const userMiddleware = async (req, res, next) => {
-    const userData = await getUser(req)
-    res.locals.user = userData.user
-    res.locals.userLoggedIn = userData.isLoggedIn
+    try {
+        const userData = await getUser(req) || {}
+        res.locals.user = userData.user || null
+        res.locals.userLoggedIn = !!userData.isLoggedIn
+    } catch (error) {
+        console.error("Error retrieving user data:", error)
+        res.locals.user = null
+        res.locals.userLoggedIn = false
+    }
     res.locals.currentRoute = req.path
     next()
 }
+
 
 module.exports = { sessionMiddleware, userMiddleware }
