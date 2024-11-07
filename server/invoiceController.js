@@ -4,12 +4,14 @@ const { generalLogger } = require('./utils/generalLogger')
 async function payInvoice(req, res) {
     const invoiceNumber = req.body.invoiceNumber
     try {
-        const invoiceToCancel = await Invoice.findOne({ invoiceNumber: invoiceNumber })
+        const invoice = await Invoice.findOne({ invoiceNumber: invoiceNumber })
+        invoice.isPaid = true
+        await invoice.save()
+
+        generalLogger.debug("Invoice with number ", invoiceNumber, " was marked as paid")
+        return res.status(200).send({ message: "Invoice was mark as paid" })
 
         // TODO: Implement payment processing logic here
-
-        generalLogger.debug("Invoice with number ", invoiceNumber, " was paid successfully")
-        return res.status(400).send({ message: "Not implemented yet" })
 
     } catch (err) {
         generalLogger.error("Error paying invoice with number ", invoiceNumber, ": ", err.message)
