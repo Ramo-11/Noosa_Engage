@@ -166,4 +166,69 @@ async function sendAppointmentConfirmationEmail(fullName, course, date, time, em
     })
 }
 
-module.exports = { sendEmail, sendSignupEmail, sendResetEmail, sendAppointmentConfirmationEmail }
+async function sendAppointmentCancellationEmail(fullName, course, date, time, email, res) {
+    let mailTransporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "noosa@noosaengage.com",
+            pass: process.env.EMAIL_PASSWORD
+        }
+    })
+
+    let clientEmail = `
+        <p>Dear ${fullName},</p>
+        <p>Your appointment has been cancelled successfully. Appointment details:</p>
+        <p><strong>Course:</strong> ${course}</p>
+        <p><strong>Date:</strong> ${date}<br></p>
+        <p><strong>Time:</strong> ${time}<br></p>
+        <p>Don't hesitate to schedule another appointment with us.</p>
+        <p>Sincerely,</p>
+        <p>Noosa Engage Team</p>
+        <p><strong>Phone:</strong> +15744064727<br>
+        <strong>Email:</strong> <a href="mailto:noosa@noosaengage.com">noosa@noosaengage.com</a><br>
+        <strong>Website:</strong> <a href="https://www.noosaengage.com">www.noosaengage.com</a></p>
+    `
+
+    let adminEmail = `
+    <p>Appointment Cancelled:</p>
+    <p><strong>Full Name:</strong> ${fullName}</p>
+    <p><strong>Course:</strong> ${course}</p>
+    <p><strong>Date:</strong> ${date}<br></p>
+    <p><strong>Time:</strong> ${time}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    `
+
+    let userDetails = {
+        from: "noosa@noosaengage.com",
+        to: email,
+        subject: `Appointment Cancellation for class ${course}`,
+        html: clientEmail
+    }
+
+    mailTransporter.sendMail(userDetails, (error) => {
+        if (error) {
+            generalLogger.error("Cannot send email to user: ", error)
+        } else {
+            generalLogger.info("User email was sent successfully")
+        }
+    })
+
+    let adminDetails = {
+        from: "noosa@noosaengage.com",
+        to: "noosa@noosaengage.com",
+        subject: `Appointment Cancelled for ${fullName}`,
+        html: adminEmail
+    }
+
+    mailTransporter.sendMail(adminDetails, (error) => {
+        if (error) {
+            generalLogger.error("Cannot send email to Noosa Engage: ", error)
+            return res.status(400).send({ message: "Appointment email was not sent" })
+        } else {
+            generalLogger.info("Admin email was sent successfully.")
+            return res.status(200).send({ message: "Appointment was cancelled" })
+        }
+    })
+}
+
+module.exports = { sendEmail, sendSignupEmail, sendResetEmail, sendAppointmentConfirmationEmail, sendAppointmentCancellationEmail }

@@ -1,9 +1,7 @@
-const nodemailer = require('nodemailer')
 const User = require('../models/User')
 const Appointment = require('../models/Appointment')
 const { generalLogger } = require('./utils/generalLogger')
-const validateEmail = require('./utils/emailValidator')
-const { sendAppointmentConfirmationEmail } = require('./mail')
+const { sendAppointmentConfirmationEmail, sendAppointmentCancellationEmail } = require('./mail')
 
 async function processAppointmentRequest(req, res) {
     try {
@@ -33,6 +31,10 @@ async function cancelAppointment(req, res) {
         const appointmentToCancel = await Appointment.findById(appointmentId)
         appointmentToCancel.status = "Cancelled"
         await appointmentToCancel.save()
+
+        const user = await User.findById(appointmentToCancel.customer)
+
+        sendAppointmentCancellationEmail(user.fullName, appointmentToCancel.courseName, appointmentToCancel.appointmentDate, appointmentToCancel.appointmentTime, user.email, res)
 
         generalLogger.debug("Appointment with id ", appointmentId, " was cancelled successfully")
         return res.status(200).send({ message: "Appointment was cancelled successfully" })
