@@ -51,7 +51,7 @@
                                 </div>
                                 <p class="invoice-status"><strong>Status:</strong> <%= invoice.isPaid ? "Paid" : "Not Paid" %></p>
                                 <% if (invoice.isPaid === false) { %>
-                                    <button class="payInvoiceButton" id="payInvoiceButton" onclick="payInvoice('<%= invoice.invoiceNumber %>')">Mark as Paid</button>
+                                    <button class="payInvoiceButton" id="payInvoiceButton" onclick="window.location.href='/pay?invoice=<%= invoice.invoiceNumber %>'">Pay</button>
                                 <% } %>
                             </div>                            
                         <% }) %>
@@ -92,7 +92,6 @@
                 })
             })
 
-            const reqResult = await result
             const message = await result.json()
 
             document.getElementById("appointmentFlag").innerHTML = message["message"]
@@ -133,7 +132,6 @@
                 })
             })
 
-            const reqResult = await result
             const message = await result.json()
 
             document.getElementById("invoiceFlag").innerHTML = message["message"]

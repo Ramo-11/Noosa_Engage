@@ -5,12 +5,12 @@ const invoiceSchema = new mongoose.Schema({
     invoiceNumber: {
         type: String,
         required: true,
-        unique: true,  // Ensure invoice number is unique
+        unique: true,
         trim: true
     },
     customer: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',  // Reference to the User model
+        ref: 'User',
         required: true
     },
     sessionDate: {

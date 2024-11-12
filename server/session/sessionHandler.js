@@ -52,13 +52,13 @@ async function loginUser(req, res) {
         const user = await User.findOne({ email })
         if (!user) {
             generalLogger.error("Error logging in: user not found")
-            return res.status(401).send({ message: "Invalid email" })
+            return res.status(401).send({ message: "User not found" })
         }
 
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) {
             generalLogger.error("Error logging in: incorrect password")
-            return res.status(401).send({ message: "Invalid password" })
+            return res.status(401).send({ message: "Incorrect password" })
         }
 
         req.session.userLoggedIn = true

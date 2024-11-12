@@ -66,13 +66,12 @@
                     method: "POST",
                     body: data
                 })
-                const reqResult = await result
                 const message = await result.json()
                 
                 document.getElementById("submitFlag").innerHTML = message["message"]
                 document.getElementById("submitFlag").style.display = "block"
         
-                if (reqResult.status === 200) {
+                if (result.status === 200) {
                     document.getElementById("submitFlag").style.color = "#0a3755"
                     document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
                     await sleep(3000)
