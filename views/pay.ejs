@@ -12,85 +12,121 @@
             <div class="title-div">
                 <h1>Make a Payment</h1>
             </div>
-            <form class="payment-form" id="payment-form">
-                <div id="payment-element">
-                    <!--Stripe.js injects the Payment Element-->
+            <div class="payment-form">
+                <h1>Payment Details</h1>
+                <p class="submitFlag" id="submitFlag" hidden></p>
+                <div class="input-field">
+                    <label for="card-number">Card Number</label>
+                    <div id="card-number" class="input"></div>
                 </div>
-                <button id="submit">
-                    <div class="spinner hidden" id="spinner"></div>
-                    <span id="button-text">Pay now</span>
-                </button>
-                <div id="payment-message" class="hidden"></div>
-            </form>
+                <div class="input-field">
+                    <label for="card-expiry">Expiration Date</label>
+                    <div id="card-expiry" class="input"></div>
+                </div>
+                <div class="input-field">
+                    <label for="card-cvc">CVC</label>
+                    <div id="card-cvc" class="input"></div>
+                </div>
+                <div class="input-field">
+                    <label for="card-postal-code">ZIP Code</label>
+                    <div id="card-postal-code" class="input"></div>
+                </div>                
+                <button class="submitButton" id="submitButton" onclick="submitPayment()">Submit Payment</button>
+            </div>            
         </div>
         <%- include("./partials/footer.ejs") %>
 
         <script>
-            const stripe = Stripe("<%= stripePublicKey %>");
-            let elements;
+            const urlParams = new URLSearchParams(window.location.search)
+            const invoiceNumber = urlParams.get('invoice')
+            const stripe = Stripe("<%= stripePublicKey %>")
+            const elements = stripe.elements()
+            const cardNumber = elements.create('cardNumber');
+            const cardExpiry = elements.create('cardExpiry');
+            const cardCvc = elements.create('cardCvc');
+            const cardPostalCode = elements.create('postalCode');
+            cardNumber.mount('#card-number');
+            cardExpiry.mount('#card-expiry');
+            cardCvc.mount('#card-cvc');
+            cardPostalCode.mount('#card-postal-code');
 
-            document.addEventListener("DOMContentLoaded", async () => {
-                const urlParams = new URLSearchParams(window.location.search)
-                const invoiceNumber = urlParams.get('invoice');
+            async function submitPayment() {
+                disableSubmitButton();
 
                 const response = await fetch("/api/payInvoice", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ invoiceNumber })
                 })
-                const data = await response.json()
 
+                const data = await response.json()
                 if (response.status !== 200) {
-                    displayError(data.message)
-                    return;
+                    document.getElementById("submitFlag").innerHTML = "Error paying invoice: " + data.message
+                    document.getElementById("submitFlag").style.color = "#D8000C"
+                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                    document.getElementById("submitFlag").style.display = "block"
+                    enableSubmitButton()
+                    return
                 }
 
-                const appearance = { theme: 'stripe' };
-                elements = stripe.elements({ appearance, clientSecret: data.clientSecret });
-                const paymentElement = elements.create("payment", { layout: "tabs" });
-                paymentElement.mount("#payment-element");
-            });
-
-            document.getElementById("payment-form").addEventListener("submit", async (event) => {
-                event.preventDefault()
-                disableSubmitButton()
-
-                const { error } = await stripe.confirmPayment({
-                    elements,
-                    confirmParams: {
-                        return_url: "http://localhost:3000/payment-success",  // Set your success URL here
+                const { error } = await stripe.confirmCardPayment(data.clientSecret, {
+                    payment_method: {
+                        card: cardNumber,
+                        billing_details: {
+                            address: {
+                                postal_code: cardPostalCode
+                            }
+                        }
                     }
                 })
 
-                if (error) {
-                    displayError(error.message)
-                    enableSubmitButton()
-                } else {
-                    displaySuccess("Payment successful!")
-                }
-            })
+                document.getElementById("submitFlag").style.display = "block"
 
-            // Helper functions to show error and success messages
-            function displayError(message) {
-                const messageDiv = document.getElementById("payment-message")
-                messageDiv.classList.remove("hidden")
-                messageDiv.innerText = "Error: " + message
+                if (!error) {
+                    const result = await fetch("/api/confirmInvoicePayment", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ invoiceNumber })
+                    })
+                    
+                    const message = await result.json()
+
+                    document.getElementById("submitFlag").innerHTML = message["message"]
+
+                    if (result.status === 200) {
+                        document.getElementById("submitFlag").style.color = "#0a3755"
+                        document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
+                        await sleep(3000);
+                        window.location.href = "/"
+                    }
+                    else {
+                        document.getElementById("submitFlag").style.color = "#D8000C"
+                        document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                        enableSubmitButton()
+                    }
+                } else {
+                    document.getElementById("submitFlag").innerHTML = "Error: " + error.message
+                    document.getElementById("submitFlag").style.color = "#D8000C"
+                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                    enableSubmitButton()
+                }
             }
 
-            function displaySuccess(message) {
-                const messageDiv = document.getElementById("payment-message")
-                messageDiv.classList.remove("hidden")
-                messageDiv.innerText = message
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms))
             }
 
             function disableSubmitButton() {
-                document.getElementById("submit").disabled = true
+                document.getElementById("submitButton").disabled = true
+                document.getElementById("submitButton").style.backgroundColor = "#b7dffa"
+                document.getElementById("submitButton").style.cursor = "default"
             }
 
             function enableSubmitButton() {
-                document.getElementById("submit").disabled = false
+                document.getElementById("submitButton").disabled = false
+                document.getElementById("submitButton").style.backgroundColor = "#0a3755"
+                document.getElementById("submitButton").style.cursor = "pointer"
             }
-
         </script>
     </body>
 </html>

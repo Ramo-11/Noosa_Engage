@@ -34,6 +34,7 @@ async function payInvoice(req, res) {
             description: 'Charge for ' + userEmail,
         })
 
+        generalLogger.debug("Payment intent created for invoice " + invoiceNumber)
         return res.status(200).send({ clientSecret: paymentIntent.client_secret })
     } catch (err) {
         generalLogger.error("Error creating payment intent for invoice " + invoiceNumber + ": " + err.message)
@@ -57,6 +58,7 @@ async function confirmInvoicePayment(req, res) {
         invoice.isPaid = true
         await invoice.save()
 
+        generalLogger.info("Invoice " + invoiceNumber + " has been marked as paid")
         return res.status(200).send({ message: "Invoice has been paid" })
     } catch (err) {
         generalLogger.error("Error confirming payment for invoice " + invoiceNumber + ": " + err.message)
