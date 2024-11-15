@@ -27,30 +27,35 @@ const getUser = async (req) => {
         return {
             isLoggedIn: false,
             user: null,
-        }
+            isAdmin: null,
+        };
     }
 
     try {
-        const user = await User.findById(req.session.userId)
+        const user = await User.findById(req.session.userId);
         if (!user) {
             return {
                 isLoggedIn: false,
                 user: null,
-            }
+                isAdmin: null,
+            };
         }
 
         return {
             isLoggedIn: true,
+            isAdmin: user.isAdmin, // Ensure this field exists in the database
             user: user,
-        }
+        };
     } catch (error) {
-        console.error('Error fetching user:', error)
+        console.error("Error fetching user:", error);
         return {
             isLoggedIn: false,
             user: null,
-        }
+            isAdmin: null,
+        };
     }
 }
+
 
 async function getUserData(req, res, next) {
     try {
@@ -61,7 +66,6 @@ async function getUserData(req, res, next) {
             Appointment.find({ customer: userId }).lean(),
             Invoice.find({ customer: userId }).lean()
         ])
-
         req.session.user = {
             ...req.session.user,
             fullName: user.fullName,

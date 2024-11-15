@@ -165,7 +165,44 @@ async function sendAppointmentConfirmationEmail(fullName, course, date, time, em
         }
     })
 }
+async function sendNewInvoiceConfirmationEmail(fullName, invoiceNumber, hours, price, email, res) {
+    let mailTransporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "noosa@noosaengage.com",
+            pass: process.env.EMAIL_PASSWORD
+        }
+    })
 
+    let clientEmail = `
+        <p>Dear ${fullName},</p>
+        <p>A new invoice has been posted for you</p>
+        <p><strong>hours:</strong> ${hours}</p>
+        <p><strong>price per hour:</strong> ${price}<br></p>
+        <p>Please pay the invoice online on noosaengage.com/home</p>
+        <p>Sincerely,</p>
+        <p>Noosa Engage Team</p>
+        <p><strong>Phone:</strong> +15744064727<br>
+        <strong>Email:</strong> <a href="mailto:noosa@noosaengage.com">noosa@noosaengage.com</a><br>
+        <strong>Website:</strong> <a href="https://www.noosaengage.com">www.noosaengage.com</a></p>
+    `
+
+    let userDetails = {
+        from: "noosa@noosaengage.com",
+        to: email,
+        subject: `New Invoice ${invoiceNumber}`,
+        html: clientEmail
+    }
+
+    mailTransporter.sendMail(userDetails, (error) => {
+        if (error) {
+            generalLogger.error("Cannot send email to user: ", error)
+        } else {
+            generalLogger.info("User email was sent successfully")
+        }
+    })
+
+}
 async function sendAppointmentCancellationEmail(fullName, course, date, time, email, res) {
     let mailTransporter = nodemailer.createTransport({
         service: "gmail",
@@ -231,4 +268,4 @@ async function sendAppointmentCancellationEmail(fullName, course, date, time, em
     })
 }
 
-module.exports = { sendEmail, sendSignupEmail, sendResetEmail, sendAppointmentConfirmationEmail, sendAppointmentCancellationEmail }
+module.exports = { sendEmail, sendSignupEmail, sendResetEmail, sendAppointmentConfirmationEmail, sendAppointmentCancellationEmail, sendNewInvoiceConfirmationEmail }

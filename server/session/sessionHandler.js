@@ -10,6 +10,13 @@ function isAuthenticated(req, res, next) {
     res.redirect("/login")
 }
 
+function AuthinticateisAdmin(req, res, next) {
+    if (req.session.isUserAdmin) {
+        return next()
+    }
+    res.redirect("/");
+}
+
 function renderUserHomePageIfAuthenticated(req, res, next) {
     if (req.session.userLoggedIn) {
         return res.redirect("/home");
@@ -116,6 +123,7 @@ module.exports = {
     loginUser,
     signupUser,
     isAuthenticated,
+    AuthinticateisAdmin,
     renderUserHomePageIfAuthenticated,
     renderLandingPageIfNotAuthenticated
 }

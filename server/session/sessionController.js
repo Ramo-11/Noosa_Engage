@@ -29,12 +29,18 @@ const sessionMiddleware = session({
 const userMiddleware = async (req, res, next) => {
     try {
         const userData = await getUser(req) || {}
-        res.locals.user = userData.user || null
-        res.locals.userLoggedIn = !!userData.isLoggedIn
+        res.locals.user = userData.user || null;
+        res.locals.userLoggedIn = !!userData.isLoggedIn;
+        res.locals.isUserAdmin = !!userData.isAdmin;
+        
+        if (!req.session) req.session = {};
+        req.session.userLoggedIn = !!userData.isLoggedIn;
+        req.session.isUserAdmin = !!userData.isAdmin;
     } catch (error) {
         console.error("Error retrieving user data:", error)
         res.locals.user = null
         res.locals.userLoggedIn = false
+        res.locals.isUserAdmin = null
     }
     res.locals.currentRoute = req.path
     next()

@@ -3,6 +3,8 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const Invoice = require("../models/Invoice")
 const User = require("../models/User")
 const { generalLogger } = require('./utils/generalLogger')
+const { sendNewInvoiceConfirmationEmail } = require('./mail')
+
 
 async function payInvoice(req, res) {
     const { invoiceNumber }  = req.body
@@ -65,5 +67,52 @@ async function confirmInvoicePayment(req, res) {
         return res.status(500).send({ message: err.message })
     }
 }
+async function processNewInvoiceRequest(req, res) {
+    try {
+        const { invoiceNumber, hours, price, total, dueDate, sessionDate, user } = await validateNewInvoiceRequest(req)
+        
+        const newInvoice = new Invoice({
+            customer: user._id,
+            invoiceNumber: invoiceNumber,
+            hours: hours,
+            price: price,
+            total: total,
+            dueDate: dueDate,
+            sessionDate: sessionDate,
+        })
 
-module.exports = { payInvoice, confirmInvoicePayment }
+        await newInvoice.save()
+
+        sendNewInvoiceConfirmationEmail(user.fullName, invoiceNumber, hours, price, user.email, res)
+        return res.status(200).send({ message: "Invoice was scheduled successfully" })
+
+    } catch (err) {
+        generalLogger.error("Error creating invoice:", err.message)
+        return res.status(400).send({ message: err.message })
+    }
+}
+
+async function validateNewInvoiceRequest(req) {
+    try {
+        const { invoiceNumber, hours, price, email, total, dueDate, sessionDate } = req.body;
+
+        if (!invoiceNumber || !hours || !price || !email || !dueDate || !sessionDate) {
+            throw new Error("Error: All fields must be completed");
+        }
+        
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            throw new Error("User not found");
+        }
+        return { invoiceNumber, hours, price, total, dueDate, sessionDate, user };
+
+    } catch (error) {
+        console.error("Error during invoice validation:", error.message);
+        
+        throw error;
+    }
+}
+
+
+module.exports = { payInvoice, confirmInvoicePayment, processNewInvoiceRequest }

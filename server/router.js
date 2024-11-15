@@ -5,9 +5,9 @@ const { sendEmail } = require("./mail")
 const { processAppointmentRequest, cancelAppointment } = require("./appointmentController")
 const renderCoursePage = require("./courseController")
 const { getUserData, renderHomePage, updateUser } = require("./user/userController")
-const { renderLandingPageIfNotAuthenticated, renderUserHomePageIfAuthenticated, isAuthenticated, logout, loginUser, signupUser } = require("./session/sessionHandler")
+const { renderLandingPageIfNotAuthenticated, renderUserHomePageIfAuthenticated, isAuthenticated, logout, loginUser, signupUser, AuthinticateisAdmin } = require("./session/sessionHandler")
 const { validateResetCode, renderUpdatePassword, resetPassword, updatePassword } = require("./passwordController")
-const { payInvoice, confirmInvoicePayment } = require("./invoiceController")
+const { payInvoice, confirmInvoicePayment, processNewInvoiceRequest} = require("./invoiceController")
 const multer = require("./pictureHandlers/multer");
 
 // *********** GET requests **********
@@ -28,6 +28,7 @@ route.get("/signup", (req, res) => res.render("signup"))
 route.get('/logout', logout);
 route.get("/forgotpassword", (req, res) => res.render("forgotpassword"))
 route.get('/updatepassword', validateResetCode, renderUpdatePassword);
+route.get('/createInvoice', AuthinticateisAdmin, (req, res) => res.render("createinvoice"))
 
 // *********** POST requests **********
 route.post("/api/sendEmail", sendEmail)
@@ -38,6 +39,7 @@ route.post("/api/signup", signupUser)
 route.post('/api/forgotPassword', resetPassword)
 route.post('/api/updatePassword', updatePassword)
 route.post('/api/payInvoice', payInvoice)
+route.post('/api/createinvoice', processNewInvoiceRequest)
 route.post('/api/confirmInvoicePayment', confirmInvoicePayment)
 route.post("/api/updateUserInfo", isAuthenticated, multer.single("picture"), updateUser)
 

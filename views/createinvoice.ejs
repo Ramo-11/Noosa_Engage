@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Create Invoice</title>
+        <link rel="stylesheet" href="/styles/general.css">
+        <link rel="stylesheet" href="/styles/createinvoice.css">
+        <link rel="shortcut icon" href="/images/Logo-white.png">
+    </head>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-XEW6Y9S2YM');
+    </script>
+    <body>
+        <%- include("./partials/nav.ejs") %>
+        <div class="main-content">
+            <div class="title-div">
+                <h1>Create Invoice</h1>
+            </div>
+            <div class="createinvoice-form">
+                <h1>New Invoice</h1>
+                <p class="submitFlag" id="submitFlag" hidden></p>
+                <div class="submitter-name">
+                    <input type="number" id="invoiceNumber" class="input" placeholder="Invoice Number" min="0" step="1">
+                </div>
+                <div class="submitter-email">
+                    <input type="text" id="email" class="input" placeholder="Email" maxlength="50">
+                </div>
+                <div class="submitter-name">
+                    <input type="number" id="hours" class="input" placeholder="Hours" min="0" step="1">
+                </div>
+                <div class="submitter-name">
+                    <input type="number" id="price" class="input" placeholder="Proce Per Hour" min="0" step="1">
+                </div>
+                <div class="submitter-sessionDate">
+                    <input type="date" id="sessionDate" class="input" placeholder="Session Date">
+                </div>
+                
+                <div class="submitter-dueDate">
+                    <input type="date" id="dueDate" class="input" placeholder="Due Date">
+                </div>
+                
+                <button class="submitButton" id="submitButton" onclick="validateAndSubmitCreateInvoice()">Submit</button>
+            </div>
+        </div>
+        <%- include("./partials/footer.ejs") %>
+        <script>
+            function validateAndSubmitCreateInvoice() {
+                const invoiceNumber = document.getElementById("invoiceNumber").value.trim();
+                const hours = document.getElementById("hours").value.trim();
+                const price = document.getElementById("price").value.trim();
+                const email = document.getElementById("email").value.trim();
+                const sessionDate = document.getElementById("sessionDate").value.trim();
+                const dueDate = document.getElementById("dueDate").value.trim();
+
+                if (!invoiceNumber || !hours || !price || !email || !sessionDate || !dueDate) {
+                    document.getElementById("submitFlag").innerHTML = "All fields are required";
+                    document.getElementById("submitFlag").style.color = "#D8000C";
+                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA";
+                    document.getElementById("submitFlag").style.display = "block";
+                    return;
+                }
+
+                submitCreateInvoice();
+            }
+
+            async function submitCreateInvoice() {
+                disableSubmitButton();
+                const invoiceNumber = document.getElementById("invoiceNumber").value;
+                const hours = document.getElementById("hours").value;
+                const price = document.getElementById("price").value;
+                const email = document.getElementById("email").value;
+                const sessionDate = document.getElementById("sessionDate").value
+                const dueDate = document.getElementById("dueDate").value
+                const total = hours * price;
+        
+                const result = await fetch("/api/createinvoice", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify ({
+                        invoiceNumber,
+                        hours,
+                        price,
+                        total,
+                        email,
+                        dueDate,
+                        sessionDate
+                    })
+                });
+    
+                const message = await result.json();
+    
+                document.getElementById("submitFlag").innerHTML = message["message"];
+                document.getElementById("submitFlag").style.display = "block";
+                
+                if (result.status === 200) {
+                    document.getElementById("submitFlag").style.color = "#0a3755";
+                    document.getElementById("submitFlag").style.backgroundColor = "#b7dffa";
+                    await sleep(3000);
+                    window.location.href = "/home";
+                }
+                else {
+                    document.getElementById("submitFlag").style.color = "#D8000C";
+                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA";
+                    enableSubmitButton();
+                    await sleep(3000);
+                }
+    
+                function sleep(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                }
+    
+                function disableSubmitButton() {
+                    document.getElementById("submitButton").disabled = true;
+                    document.getElementById("submitButton").style.backgroundColor = "#b7dffa";
+                    document.getElementById("submitButton").style.cursor = "default";
+                }
+
+                function enableSubmitButton() {
+                    document.getElementById("submitButton").disabled = false;
+                    document.getElementById("submitButton").style.backgroundColor = "#0a3755";
+                    document.getElementById("submitButton").style.cursor = "pointer";
+                }
+            }
+        </script>
+    </body>
+</html>
