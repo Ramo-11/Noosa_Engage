@@ -1,5 +1,11 @@
 const express = require("express")
 require('dotenv').config()
+if (process.env.NODE_ENV != "production") {
+    process.env.STRIPE_PUBLIC_KEY = process.env.STRIPE_PUBLIC_KEY_TEST
+} else {
+    process.env.STRIPE_PUBLIC_KEY = process.env.STRIPE_PUBLIC_KEY_PROD
+}
+
 const route = express.Router()
 const { sendEmail } = require("./mail")
 const { processAppointmentRequest, cancelAppointment } = require("./appointmentController")

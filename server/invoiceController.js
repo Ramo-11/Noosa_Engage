@@ -1,4 +1,10 @@
 require('dotenv').config()
+if (process.env.NODE_ENV != "production") {
+    process.env.STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY_TEST
+} else {
+    process.env.STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY_PROD
+}
+
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const Invoice = require("../models/Invoice")
 const User = require("../models/User")
