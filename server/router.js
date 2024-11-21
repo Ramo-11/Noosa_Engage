@@ -11,7 +11,7 @@ const { sendEmail } = require("./mail")
 const { processAppointmentRequest, cancelAppointment } = require("./appointmentController")
 const renderCoursePage = require("./courseController")
 const { getUserData, renderHomePage, updateUser } = require("./user/userController")
-const { renderLandingPageIfNotAuthenticated, renderUserHomePageIfAuthenticated, isAuthenticated, logout, loginUser, signupUser, AuthinticateisAdmin } = require("./session/sessionHandler")
+const { renderLandingPageIfNotAuthenticated, renderUserHomePageIfAuthenticated, isAuthenticated, logout, loginUser, signupUser, authenticateIsAdmin } = require("./session/sessionHandler")
 const { validateResetCode, renderUpdatePassword, resetPassword, updatePassword } = require("./passwordController")
 const { payInvoice, confirmInvoicePayment, processNewInvoiceRequest} = require("./invoiceController")
 const multer = require("./pictureHandlers/multer");
@@ -32,22 +32,22 @@ route.get("/pay", isAuthenticated, (req, res) => {
 route.get("/home", renderLandingPageIfNotAuthenticated, getUserData, renderHomePage);
 route.get("/signup", (req, res) => res.render("signup"))
 route.get('/logout', logout);
-route.get("/forgotpassword", (req, res) => res.render("forgotpassword"))
-route.get('/updatepassword', validateResetCode, renderUpdatePassword);
-route.get('/createInvoice', AuthinticateisAdmin, (req, res) => res.render("createinvoice"))
+route.get("/forgot-password", (req, res) => res.render("forgot-password"))
+route.get('/update-password', validateResetCode, renderUpdatePassword);
+route.get('/create-invoice', authenticateIsAdmin, (req, res) => res.render("create-invoice"))
 
 // *********** POST requests **********
-route.post("/api/sendEmail", sendEmail)
-route.post("/api/scheduleAppointment", processAppointmentRequest)
-route.post("/api/cancelAppointment", cancelAppointment)
+route.post("/api/send-email", sendEmail)
+route.post("/api/schedule-appointment", processAppointmentRequest)
+route.post("/api/cancel-appointment", cancelAppointment)
 route.post("/api/login", loginUser)
 route.post("/api/signup", signupUser)
-route.post('/api/forgotPassword', resetPassword)
-route.post('/api/updatePassword', updatePassword)
-route.post('/api/payInvoice', payInvoice)
-route.post('/api/createinvoice', processNewInvoiceRequest)
-route.post('/api/confirmInvoicePayment', confirmInvoicePayment)
-route.post("/api/updateUserInfo", isAuthenticated, multer.single("picture"), updateUser)
+route.post('/api/forgot-password', resetPassword)
+route.post('/api/update-password', updatePassword)
+route.post('/api/pay-invoice', payInvoice)
+route.post('/api/create-invoice', processNewInvoiceRequest)
+route.post('/api/confirm-invoice-payment', confirmInvoicePayment)
+route.post("/api/update-user-info", isAuthenticated, multer.single("picture"), updateUser)
 
 
 module.exports = route

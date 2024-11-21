@@ -62,7 +62,7 @@
                     data.append("picture", inputFields[3].files[0])
                 }
         
-                const result = await fetch("/api/updateUserInfo", {
+                const result = await fetch("/api/update-user-info", {
                     method: "POST",
                     body: data
                 })

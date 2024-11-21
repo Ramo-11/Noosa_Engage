@@ -53,7 +53,7 @@
             async function submitPayment() {
                 disableSubmitButton();
 
-                const response = await fetch("/api/payInvoice", {
+                const response = await fetch("/api/pay-invoice", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ invoiceNumber })
@@ -83,7 +83,7 @@
                 document.getElementById("submitFlag").style.display = "block"
 
                 if (!error) {
-                    const result = await fetch("/api/confirmInvoicePayment", {
+                    const result = await fetch("/api/confirm-invoice-payment", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ invoiceNumber })

@@ -13,32 +13,13 @@
             <h1>Home</h1>
         </div>
         <div class="sections">
-            <div class="section appointments">
-                <h2>Your Appointments</h2>
-                <p class="appointmentFlag" id="appointmentFlag" hidden></p>
-                <% if (user.appointments && user.appointments.length > 0) { %>
-                    <div class="appointments-container">
-                        <% user.appointments.forEach(appointment => { %>
-                            <div class="appointment-item <%= appointment.status %>">
-                                <div class="appointment-details">
-                                    <p><strong>Subject:</strong> <%= appointment.courseName %></p>
-                                    <p><strong>Date:</strong> <%= appointment.appointmentDate %></p>
-                                    <p><strong>Time:</strong> <%= appointment.appointmentTime %></p>
-                                </div>
-                                <p class="appointment-status"><strong>Status:</strong> <%= appointment.status %></p>
-                                <% if (appointment.status === 'Scheduled') { %>
-                                    <button class="cancelAppointmentButton" id="cancelAppointmentButton" onclick="cancelAppointment('<%= appointment._id %>')">Cancel</button>
-                                <% } %>
-                            </div>                            
-                        <% }) %>
-                    </div>
-                <% } else { %>
-                    <p>You have no upcoming appointments.</p>
-                <% } %>
-            </div>
-    
             <div class="section invoices">
                 <h2>Your Invoices</h2>
+                <div class="filter-buttons">
+                    <button class="filter-button active" data-filter="all" onclick="filterInvoices('all')">All</button>
+                    <button class="filter-button" data-filter="paid" onclick="filterInvoices('paid')">Paid</button>
+                    <button class="filter-button" data-filter="unpaid" onclick="filterInvoices('unpaid')">Unpaid</button>
+                </div>
                 <p class="invoiceFlag" id="invoiceFlag" hidden></p>
                 <% if (user.invoices && user.invoices.length > 0) { %>
                     <div class="invoices-container">
@@ -58,6 +39,35 @@
                     </div>
                 <% } else { %>
                     <p>You have no invoices at the moment.</p>
+                <% } %>
+            </div>
+            <div class="section appointments">
+                <h2>Your Appointments</h2>
+                <div class="filter-buttons">
+                    <button class="filter-button active" data-filter="all" onclick="filterAppointments('all')">All</button>
+                    <button class="filter-button" data-filter="Scheduled" onclick="filterAppointments('Scheduled')">Scheduled</button>
+                    <button class="filter-button" data-filter="Completed" onclick="filterAppointments('Completed')">Completed</button>
+                    <button class="filter-button" data-filter="Cancelled" onclick="filterAppointments('Cancelled')">Cancelled</button>
+                </div>
+                <p class="appointmentFlag" id="appointmentFlag" hidden></p>
+                <% if (user.appointments && user.appointments.length > 0) { %>
+                    <div class="appointments-container">
+                        <% user.appointments.forEach(appointment => { %>
+                            <div class="appointment-item <%= appointment.status %>">
+                                <div class="appointment-details">
+                                    <p><strong>Subject:</strong> <%= appointment.courseName %></p>
+                                    <p><strong>Date:</strong> <%= appointment.appointmentDate %></p>
+                                    <p><strong>Time:</strong> <%= appointment.appointmentTime %></p>
+                                </div>
+                                <p class="appointment-status"><strong>Status:</strong> <%= appointment.status %></p>
+                                <% if (appointment.status === 'Scheduled') { %>
+                                    <button class="cancelAppointmentButton" id="cancelAppointmentButton" onclick="cancelAppointment('<%= appointment._id %>')">Cancel</button>
+                                <% } %>
+                            </div>                            
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <p>You have no upcoming appointments.</p>
                 <% } %>
             </div>
         </div>
@@ -82,7 +92,7 @@
 
             disableButton("cancelAppointmentButton")
     
-            const result = await fetch("/api/cancelAppointment", {
+            const result = await fetch("/api/cancel-appointment", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -122,7 +132,7 @@
 
             disableButton("payInvoiceButton")
     
-            const result = await fetch("/api/payInvoice", {
+            const result = await fetch("/api/pay-invoice", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -165,6 +175,54 @@
             document.getElementById(buttonId).disabled = false
             document.getElementById(buttonId).style.backgroundColor = "#0a3755"
             document.getElementById(buttonId).style.cursor = "pointer"
+        }
+
+        function filterAppointments() {
+            const filter = document.getElementById("appointmentFilter").value;
+            const items = document.querySelectorAll(".appointment-item");
+
+            items.forEach(item => {
+                const status = item.classList.contains("Scheduled")
+                    ? "Scheduled"
+                    : item.classList.contains("Completed")
+                    ? "Completed"
+                    : "Cancelled";
+
+                item.style.display = filter === "all" || status === filter ? "flex" : "none";
+            });
+        }
+
+        function filterAppointments(filter) {
+            const buttons = document.querySelectorAll(".appointments .filter-button")
+            buttons.forEach(button => {
+                button.classList.toggle("active", button.getAttribute("data-filter") === filter)
+            })
+
+            const items = document.querySelectorAll(".appointment-item")
+            items.forEach(item => {
+                const status = item.classList.contains("Scheduled")
+                    ? "Scheduled"
+                    : item.classList.contains("Completed")
+                    ? "Completed"
+                    : "Cancelled"
+
+                item.style.display = filter === "all" || status === filter ? "flex" : "none"
+            })
+        }
+
+        function filterInvoices(filter) {
+            const buttons = document.querySelectorAll(".invoices .filter-button")
+            buttons.forEach(button => {
+                button.classList.toggle("active", button.getAttribute("data-filter") === filter)
+            })
+
+            const items = document.querySelectorAll(".invoice-item")
+            items.forEach(item => {
+                const isPaid = item.classList.contains("true")
+                const status = isPaid ? "paid" : "unpaid"
+
+                item.style.display = filter === "all" || status === filter ? "flex" : "none"
+            })
         }
     </script> 
 </body>

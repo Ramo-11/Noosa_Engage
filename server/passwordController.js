@@ -10,7 +10,7 @@ function validateResetCode(req, res, next) {
 }
 
 function renderUpdatePassword(req, res) {
-    res.render('updatepassword', { code: req.query.code });
+    res.render('update-password', { code: req.query.code });
 }
 
 async function resetPassword(req, res) {

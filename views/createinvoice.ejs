@@ -76,7 +76,7 @@
                 const dueDate = document.getElementById("dueDate").value
                 const total = hours * price;
         
-                const result = await fetch("/api/createinvoice", {
+                const result = await fetch("/api/create-invoice", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
