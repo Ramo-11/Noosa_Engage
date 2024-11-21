@@ -2,10 +2,10 @@ const mongoose = require("mongoose")
 const { generalLogger } = require("../utils/generalLogger")
 
 const connectDB = async() => {
-    if (process.env.NODE_ENV === "production") {
-        process.env.MONGODB_URI = process.env.MONGODB_URI_PROD
-    } else {
+    if (process.env.NODE_ENV !== "production") {
         process.env.MONGODB_URI = process.env.MONGODB_URI_DEV
+    } else {
+        process.env.MONGODB_URI = process.env.MONGODB_URI_PROD
     }
     
     try {
