@@ -84,7 +84,7 @@ async function sendResetEmail(email, fullName, resetCode) {
         html: `
             <p>Dear ${fullName},</p>
             <p>You requested a password reset. Please click the link below to reset your password:</p>
-            <p><a href="${baseUrl}/update-password?code=${resetCode}">Reset Password</a></p>
+            <p><a href="${baseUrl}/updatepassword?code=${resetCode}">Reset Password</a></p>
             <p>If you did not request this, please ignore this email.</p>
             <p>Best regards,</p>
             <p>Noosa Engage Team</p>
@@ -165,7 +165,7 @@ async function sendAppointmentConfirmationEmail(fullName, course, date, time, em
         }
     })
 }
-async function sendNewInvoiceConfirmationEmail(fullName, invoiceNumber, hours, price, email, res) {
+async function sendNewInvoiceConfirmationEmail(fullName, invoiceNumber, hours, price, total, email, res) {
     let mailTransporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -178,13 +178,23 @@ async function sendNewInvoiceConfirmationEmail(fullName, invoiceNumber, hours, p
         <p>Dear ${fullName},</p>
         <p>A new invoice has been posted for you</p>
         <p><strong>hours:</strong> ${hours}</p>
-        <p><strong>price per hour:</strong> ${price}<br></p>
-        <p>Please pay the invoice online on noosaengage.com/home</p>
+        <p><strong>price per hour: $</strong> ${price}<br></p>
+        <p><strong>total: $</strong> ${total}<br></p>
+        <p>Please pay the invoice online on noosaengage.com</p>
         <p>Sincerely,</p>
         <p>Noosa Engage Team</p>
         <p><strong>Phone:</strong> +15744064727<br>
         <strong>Email:</strong> <a href="mailto:noosa@noosaengage.com">noosa@noosaengage.com</a><br>
         <strong>Website:</strong> <a href="https://www.noosaengage.com">www.noosaengage.com</a></p>
+    `
+
+    let adminEmail = `
+    <p>New Invoice</p>
+    <p><strong>Full Name:</strong> ${fullName}</p>
+    <p><strong>Hours:</strong> ${hours}</p>
+    <p><strong>Price per hour:</strong> ${price}<br></p>
+    <p><strong>Total:</strong> ${total}</p>
+    <p><strong>Email:</strong> ${email}</p>
     `
 
     let userDetails = {
@@ -199,6 +209,22 @@ async function sendNewInvoiceConfirmationEmail(fullName, invoiceNumber, hours, p
             generalLogger.error("Cannot send email to user: ", error)
         } else {
             generalLogger.info("User email was sent successfully")
+        }
+    })
+    let adminDetails = {
+        from: "noosa@noosaengage.com",
+        to: "noosa@noosaengage.com",
+        subject: `New Invoice: ${fullName}`,
+        html: adminEmail
+    }
+
+    mailTransporter.sendMail(adminDetails, (error) => {
+        if (error) {
+            generalLogger.error("Cannot send email to Noosa Engage: ", error)
+            return res.status(400).send({ message: "Invoice email was not sent" })
+        } else {
+            generalLogger.info("Admin email was sent successfully")
+            return res.status(200).send({ message: "Invoice was created" })
         }
     })
 

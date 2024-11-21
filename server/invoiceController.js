@@ -89,7 +89,7 @@ async function processNewInvoiceRequest(req, res) {
 
         await newInvoice.save()
 
-        sendNewInvoiceConfirmationEmail(user.fullName, invoiceNumber, hours, price, user.email, res)
+        sendNewInvoiceConfirmationEmail(user.fullName, invoiceNumber, hours, price, total, user.email, res)
         return res.status(200).send({ message: "Invoice was scheduled successfully" })
 
     } catch (err) {
