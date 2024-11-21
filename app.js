@@ -11,6 +11,7 @@ const { sessionMiddleware, userMiddleware } = require("./server/session/sessionC
 // ********** Initialization **************
 const app = express()
 require('dotenv').config()
+generalLogger.info("Running in " + process.env.NODE_ENV + " mode")
 connectDB()
 
 app.use(bodyParser.json())

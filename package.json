@@ -5,11 +5,14 @@
   "main": "app.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon app.js",
-    "start": "node app.js"
+    "start": "cross-env NODE_ENV=production node app.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Ramo-11/Noosa_Engage.git"
+  },
+  "engine": {
+    "node": ">=16.0.0"
   },
   "author": "Omar Abdelalim",
   "license": "ISC",
@@ -24,10 +27,11 @@
     "express": "^4.19.2",
     "express-session": "^1.18.1",
     "flatpickr": "^4.6.13",
-    "mongodb": "^6.8.0",
-    "mongoose": "^8.6.0",
+    "mongodb": "^5.1.0",
+    "mongoose": "^6.7.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.7.3",
+    "stripe": "^17.4.0",
     "winston": "^3.8.2"
   },
   "devDependencies": {
