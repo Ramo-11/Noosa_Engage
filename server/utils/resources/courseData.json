@@ -1,4 +1,11 @@
 {
+    "all": {
+        "className": "All",
+        "courseImage": "all.webp",
+        "classDescription": "A collection of many courses, depends on the student's needs.",
+        "exampleTopics": ["Math", "Science", "Computer Science"],
+        "bestFor": "Students who need assistance in multiple subjects."
+    },
     "algebra": {
         "className": "Algebra",
         "courseImage": "Algebra.webp",
