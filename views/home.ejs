@@ -16,9 +16,9 @@
             <div class="section invoices">
                 <h2>Your Invoices</h2>
                 <div class="filter-buttons">
-                    <button class="filter-button active" data-filter="all" onclick="filterInvoices('all')">All</button>
+                    <button class="filter-button" data-filter="all" onclick="filterInvoices('all')">All</button>
                     <button class="filter-button" data-filter="paid" onclick="filterInvoices('paid')">Paid</button>
-                    <button class="filter-button" data-filter="unpaid" onclick="filterInvoices('unpaid')">Unpaid</button>
+                    <button class="filter-button active" data-filter="unpaid" onclick="filterInvoices('unpaid')">Unpaid</button>
                 </div>
                 <p class="invoiceFlag" id="invoiceFlag" hidden></p>
                 <% if (user.invoices && user.invoices.length > 0) { %>
@@ -44,8 +44,8 @@
             <div class="section appointments">
                 <h2>Your Appointments</h2>
                 <div class="filter-buttons">
-                    <button class="filter-button active" data-filter="all" onclick="filterAppointments('all')">All</button>
-                    <button class="filter-button" data-filter="Scheduled" onclick="filterAppointments('Scheduled')">Scheduled</button>
+                    <button class="filter-button" data-filter="all" onclick="filterAppointments('all')">All</button>
+                    <button class="filter-button active" data-filter="Scheduled" onclick="filterAppointments('Scheduled')">Scheduled</button>
                     <button class="filter-button" data-filter="Completed" onclick="filterAppointments('Completed')">Completed</button>
                     <button class="filter-button" data-filter="Cancelled" onclick="filterAppointments('Cancelled')">Cancelled</button>
                 </div>
@@ -79,14 +79,19 @@
 
     <%- include("./partials/footer.ejs") %>
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            filterInvoices('unpaid')
+            filterAppointments('Scheduled')
+        })
+
         async function cancelAppointment(appointmentId) {
-            if (!confirm("Are you sure you want to cancel this appointment?")) return;
+            if (!confirm("Are you sure you want to cancel this appointment?")) return
 
             if (!appointmentId) {
-                document.getElementById("appointmentFlag").innerHTML = "Unable to cancel appointment";
-                document.getElementById("appointmentFlag").style.color = "#D8000C";
-                document.getElementById("appointmentFlag").style.backgroundColor = "#FFBABA";
-                document.getElementById("appointmentFlag").style.display = "block";
+                document.getElementById("appointmentFlag").innerHTML = "Unable to cancel appointment"
+                document.getElementById("appointmentFlag").style.color = "#D8000C"
+                document.getElementById("appointmentFlag").style.backgroundColor = "#FFBABA"
+                document.getElementById("appointmentFlag").style.display = "block"
                 return;
             }
 
@@ -123,10 +128,10 @@
 
         async function payInvoice(invoiceNumber) {
             if (!invoiceNumber) {
-                document.getElementById("invoiceFlag").innerHTML = "Unable to pay invoice. Contact support";
-                document.getElementById("invoiceFlag").style.color = "#D8000C";
-                document.getElementById("invoiceFlag").style.backgroundColor = "#FFBABA";
-                document.getElementById("invoiceFlag").style.display = "block";
+                document.getElementById("invoiceFlag").innerHTML = "Unable to pay invoice. Contact support"
+                document.getElementById("invoiceFlag").style.color = "#D8000C"
+                document.getElementById("invoiceFlag").style.backgroundColor = "#FFBABA"
+                document.getElementById("invoiceFlag").style.display = "block"
                 return;
             }
 
