@@ -84,7 +84,7 @@ async function sendResetEmail(email, fullName, resetCode) {
         html: `
             <p>Dear ${fullName},</p>
             <p>You requested a password reset. Please click the link below to reset your password:</p>
-            <p><a href="${baseUrl}/updatepassword?code=${resetCode}">Reset Password</a></p>
+            <p><a href="${baseUrl}/update-password?code=${resetCode}">Reset Password</a></p>
             <p>If you did not request this, please ignore this email.</p>
             <p>Best regards,</p>
             <p>Noosa Engage Team</p>
