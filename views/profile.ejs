@@ -1,103 +1,171 @@
 <html lang="en">
-    <head>
-        <title>Profile</title>
-        <link rel="stylesheet" href="/styles/general.css">
-        <link rel="stylesheet" href="/styles/profile.css">
-        <link rel="shortcut icon" href="/images/Logo-white.png">
-    </head>
-
-    <body>
-        <%- include("./partials/nav.ejs") %>
-        <div class="main-content">
-            <div class="title-div">
-                <h1>Profile</h1>
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/profile.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+    <div class="main-content">
+        <div class="title-div">
+            <h1>Profile</h1>
+        </div>
+        <div class="profile-info">
+            <p class="submitFlag" id="submitFlag" hidden></p>
+            <button class="editButton" id="editButton" onclick="editButtonFunction()">Edit</button>
+            <button class="changePasswordButton" id="changePasswordButton" onclick="openChangePasswordModal()">Change Password</button>
+            <div class="inputField">
+                <h2>Full Name</h2>
+                <input type="text" class="input" value="<%=user.fullName%>" readonly>
             </div>
-            <div class="profile-info">
-                <p class="submitFlag" id="submitFlag" hidden></p>
-                <button class="editButton" id="editButton" onclick="editButtonFunction()">Edit</button>
-                <div class="inputField">
-                    <h2>Full Name</h2>
-                    <input type="text" class="input" value="<%=user.fullName%>" readonly>
-                </div>
-                <div class="inputField">
-                    <h2>Email</h2>
-                    <input type="text" class="input" value="<%=user.email%>" readonly>
-                </div>
-                <div class="inputField">
-                    <h2>Profile Picture</h2>
-                    <input type="file" name='image' id='image' readonly>
-                </div>
-                <div class="flexContainer">
-                    <button class="submitButton" id="submitButton" onclick="submitButtonFunction()" hidden>Submit</button>
-                    <button class="cancelButton" id="cancelButton" onclick="cancelButtonFunction()" hidden>Cancel</button>
-                </div>
+            <div class="inputField">
+                <h2>Email</h2>
+                <input type="text" class="input" value="<%=user.email%>" readonly>
+            </div>
+            <div class="inputField">
+                <h2>Profile Picture</h2>
+                <input type="file" name='image' id='image' readonly>
+            </div>
+            <div class="flexContainer">
+                <button class="submitButton" id="submitButton" onclick="submitButtonFunction()" hidden>Submit</button>
+                <button class="cancelButton" id="cancelButton" onclick="cancelButtonFunction()" hidden>Cancel</button>
             </div>
         </div>
-        <%- include("./partials/footer.ejs") %>
-        <script>
-            var inputFields = document.getElementsByTagName("input")
+    </div>
+
+    <div id="changePasswordModal" class="modal" hidden>
+        <div class="modal-content">
+            <h2>Change Password</h2>
+            <p id="passwordChangeMessage" class="submitFlag" hidden></p>
+            <form id="changePasswordForm">
+                <div class="inputField">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" required>
+                </div>
+                <div class="inputField">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" required>
+                </div>
+                <div class="inputField">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+                <div class="flexContainer">
+                    <button type="button" onclick="submitPasswordChange()">Submit</button>
+                    <button type="button" onclick="closeChangePasswordModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <%- include("./partials/footer.ejs") %>
+    <script>
+        var inputFields = document.getElementsByTagName("input")
+        document.getElementById("image").disabled = true;
+        var submitButton = document.getElementById("submitButton")
+        var editButton = document.getElementById("editButton")
+        var cancelButton = document.getElementById("cancelButton")
+    
+        function editButtonFunction() {
+            submitButton.style.display = "block"
+            cancelButton.style.display = "block"
+            editButton.style.display = "none"
+            document.getElementById("image").disabled = false;
+    
+            for (let i = 0; i < inputFields.length; i++) {
+                inputFields[i].readOnly = false
+            }
+        }
+    
+        async function submitButtonFunction() {
+            const inputFields = document.getElementsByTagName("input")
+            let data = new FormData()
+            
+            data.append("fullName", inputFields[1].value)
+            data.append("email", inputFields[2].value)
+            if (inputFields[2] && inputFields[3].files != null && inputFields[3].files.length > 0) {
+                data.append("picture", inputFields[3].files[0])
+            }
+    
+            const result = await fetch("/api/update-user-info", {
+                method: "POST",
+                body: data
+            })
+            const message = await result.json()
+            
+            document.getElementById("submitFlag").innerHTML = message["message"]
+            document.getElementById("submitFlag").style.display = "block"
+    
+            if (result.status === 200) {
+                document.getElementById("submitFlag").style.color = "#0a3755"
+                document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
+                await sleep(3000)
+                location.reload(true)
+            } else {
+                document.getElementById("submitFlag").style.color = "#D8000C"
+                document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                await sleep(3000)
+            }
+        }
+    
+        function cancelButtonFunction() {
+            submitButton.style.display = "none"
+            cancelButton.style.display = "none"
+            editButton.style.display = "block"
             document.getElementById("image").disabled = true;
-            var submitButton = document.getElementById("submitButton")
-            var editButton = document.getElementById("editButton")
-            var cancelButton = document.getElementById("cancelButton")
-        
-            function editButtonFunction() {
-                submitButton.style.display = "block"
-                cancelButton.style.display = "block"
-                editButton.style.display = "none"
-                document.getElementById("image").disabled = false;
-        
-                for (let i = 0; i < inputFields.length; i++) {
-                    inputFields[i].readOnly = false
-                }
+    
+            for (let i = 0; i < inputFields.length; i++) {
+                inputFields[i].value = inputFields[i].defaultValue
+                inputFields[i].readOnly = true  
             }
-        
-            async function submitButtonFunction() {
-                const inputFields = document.getElementsByTagName("input")
-                let data = new FormData()
-                
-                data.append("fullName", inputFields[1].value)
-                data.append("email", inputFields[2].value)
-                if (inputFields[2] && inputFields[3].files != null && inputFields[3].files.length > 0) {
-                    data.append("picture", inputFields[3].files[0])
-                }
-        
-                const result = await fetch("/api/update-user-info", {
-                    method: "POST",
-                    body: data
-                })
-                const message = await result.json()
-                
-                document.getElementById("submitFlag").innerHTML = message["message"]
-                document.getElementById("submitFlag").style.display = "block"
-        
-                if (result.status === 200) {
-                    document.getElementById("submitFlag").style.color = "#0a3755"
-                    document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
-                    await sleep(3000)
-                    location.reload(true)
-                } else {
-                    document.getElementById("submitFlag").style.color = "#D8000C"
-                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
-                    await sleep(3000)
-                }
+        }
+    
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function openChangePasswordModal() {
+            document.getElementById("changePasswordModal").hidden = false;
+        }
+
+        function closeChangePasswordModal() {
+            document.getElementById("changePasswordModal").hidden = true;
+            document.getElementById("changePasswordForm").reset();
+            document.getElementById("passwordChangeMessage").hidden = true;
+        }
+
+        async function submitPasswordChange() {
+            const currentPassword = document.getElementById("currentPassword").value;
+            const newPassword = document.getElementById("newPassword").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (newPassword !== confirmPassword) {
+                displayMessage("Passwords do not match!", "error");
+                return;
             }
-        
-            function cancelButtonFunction() {
-                submitButton.style.display = "none"
-                cancelButton.style.display = "none"
-                editButton.style.display = "block"
-                document.getElementById("image").disabled = true;
-        
-                for (let i = 0; i < inputFields.length; i++) {
-                    inputFields[i].value = inputFields[i].defaultValue
-                    inputFields[i].readOnly = true  
-                }
+
+            const response = await fetch("/api/change-password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ currentPassword, newPassword })
+            });
+
+            const message = await response.json();
+            if (response.status === 200) {
+                displayMessage(message.message, "success");
+                setTimeout(closeChangePasswordModal, 3000);
+            } else {
+                displayMessage(message.message, "error");
             }
-        
-            function sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
-        </script>
-    </body>
+        }
+
+        function displayMessage(text, type) {
+            const messageElement = document.getElementById("passwordChangeMessage");
+            messageElement.innerHTML = text;
+            messageElement.hidden = false;
+            messageElement.style.color = type === "success" ? "#0a3755" : "#D8000C";
+            messageElement.style.backgroundColor = type === "success" ? "#b7dffa" : "#FFBABA";
+        }
+    </script>
+</body>
 </html>
