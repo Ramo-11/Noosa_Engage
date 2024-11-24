@@ -67,7 +67,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
-    background-color: white;
+    background: white;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -79,9 +79,16 @@
     flex-direction: column;
 }
 
+.passwordChangeMessage {
+    margin: 5px 0;
+}
+
+.modal h2 {
+    margin-bottom: 10px;
+}
 input {
     width: 100%;
-    padding: 8px;
+    padding: 15px;
     margin: 8px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -92,13 +99,13 @@ input {
     padding: 8px 12px;
     border: none;
     border-radius: 4px;
-    background-color: #007BFF;
+    background-color: #0a3755;
     color: white;
     cursor: pointer;
 }
 
 .flexContainer button:hover {
-    background-color: #0a3755;
+    background-color: #be7303;
 }
 
 @media (max-width: 768px) {

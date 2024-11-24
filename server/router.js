@@ -12,7 +12,7 @@ const { processAppointmentRequest, cancelAppointment } = require("./appointmentC
 const renderCoursePage = require("./courseController")
 const { getUserData, renderHomePage, updateUser } = require("./user/userController")
 const { renderLandingPageIfNotAuthenticated, renderUserHomePageIfAuthenticated, isAuthenticated, logout, loginUser, signupUser, authenticateIsAdmin } = require("./session/sessionHandler")
-const { validateResetCode, renderUpdatePassword, resetPassword, updatePassword } = require("./passwordController")
+const { validateResetCode, renderUpdatePassword, resetPassword, updatePassword, ChangePassword } = require("./passwordController")
 const { payInvoice, confirmInvoicePayment, processNewInvoiceRequest} = require("./invoiceController")
 const multer = require("./pictureHandlers/multer");
 
@@ -46,6 +46,7 @@ route.post('/api/forgot-password', resetPassword)
 route.post('/api/update-password', updatePassword)
 route.post('/api/pay-invoice', payInvoice)
 route.post('/api/create-invoice', processNewInvoiceRequest)
+route.post('/api/change-password', ChangePassword)
 route.post('/api/confirm-invoice-payment', confirmInvoicePayment)
 route.post("/api/update-user-info", isAuthenticated, multer.single("picture"), updateUser)
 

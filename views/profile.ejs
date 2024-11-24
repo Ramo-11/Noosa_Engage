@@ -37,7 +37,7 @@
     <div id="changePasswordModal" class="modal" hidden>
         <div class="modal-content">
             <h2>Change Password</h2>
-            <p id="passwordChangeMessage" class="submitFlag" hidden></p>
+            <p id="passwordChangeMessage" class="passordSubmitFlag" hidden></p>
             <form id="changePasswordForm">
                 <div class="inputField">
                     <label for="currentPassword">Current Password</label>
@@ -139,15 +139,32 @@
             const newPassword = document.getElementById("newPassword").value;
             const confirmPassword = document.getElementById("confirmPassword").value;
 
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                displayMessage("Missing Required Fields!", "error");
+                return;
+            }
+
             if (newPassword !== confirmPassword) {
                 displayMessage("Passwords do not match!", "error");
+                return;
+            }
+
+            const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
+            if (!passwordPattern.test(newPassword)) {
+                document.getElementById("passwordChangeMessage").innerHTML = "Password must be at least 6 characters long and include at least one letter and one number";
+                document.getElementById("passwordChangeMessage").style.color = "#D8000C";
+                document.getElementById("passwordChangeMessage").style.backgroundColor = "#FFBABA";
+                document.getElementById("passwordChangeMessage").style.display = "block";
                 return;
             }
 
             const response = await fetch("/api/change-password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ currentPassword, newPassword })
+                body: JSON.stringify({ 
+                    currentPassword, 
+                    newPassword 
+                })
             });
 
             const message = await response.json();

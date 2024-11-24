@@ -60,7 +60,41 @@ async function updatePassword(req, res) {
     }
 }
 
+async function ChangePassword(req, res) {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.session.userId;
+
+    if (!currentPassword || !newPassword) {
+        return res.status(400).send({ message: "Missing required fields" });
+    }
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).send({ message: "User not found" });
+        }
+
+        const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+        if (!isPasswordValid) {
+            return res.status(400).send({ message: "Current password is incorrect" });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        user.password = hashedPassword;
+        await user.save();
+
+        res.status(200).send({ message: "Password updated successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred while updating the password" });
+    }
+}
+
+
+
 module.exports = {
+    ChangePassword,
     validateResetCode,
     renderUpdatePassword,
     resetPassword,
