@@ -15,13 +15,6 @@
     align-self: flex-end;
     text-align: center;
     width: 15%;
-    margin-top: 10px;
-    margin-bottom: -40px;
-}
-.changePasswordButton {
-    align-self: flex-end;
-    text-align: center;
-    width: 15%;
 }
 
 .profile-info .input {
@@ -60,54 +53,6 @@
     display: flex;
     gap: 50px;
 }
-
-.modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    background: white;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    width: 300px;
-}
-
-.modal-content {
-    display: flex;
-    flex-direction: column;
-}
-
-.passwordChangeMessage {
-    margin: 5px 0;
-}
-
-.modal h2 {
-    margin-bottom: 10px;
-}
-input {
-    width: 100%;
-    padding: 15px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.flexContainer button {
-    margin: 5px;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    background-color: #0a3755;
-    color: white;
-    cursor: pointer;
-}
-
-.flexContainer button:hover {
-    background-color: #be7303;
-}
-
 @media (max-width: 768px) {
     .profile-info {
         width: 80%;
@@ -115,9 +60,6 @@ input {
     }
 
     .editButton {
-        width: 30%;
-    }
-    .changePasswordButton {
         width: 30%;
     }
 
@@ -138,10 +80,6 @@ input {
     }
 
     .editButton {
-        width: 100%;
-        margin-top: 10px;
-    }
-    .changePasswordButton {
         width: 100%;
         margin-top: 10px;
     }
