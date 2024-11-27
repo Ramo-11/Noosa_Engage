@@ -4,6 +4,7 @@ const Invoice = require("../../models/Invoice");
 const { generalLogger } = require("../utils/generalLogger")
 const validateEmail = require('../utils/emailValidator')
 const cloudinary = require("../pictureHandlers/cloudinary")
+const bcrypt = require('bcrypt')
 
 const getProfile = async (req, res) => {
     if (!req.session || !req.session.userId) {
@@ -43,7 +44,7 @@ const getUser = async (req) => {
 
         return {
             isLoggedIn: true,
-            isAdmin: user.isAdmin, // Ensure this field exists in the database
+            isAdmin: user.isAdmin,
             user: user,
         };
     } catch (error) {
@@ -88,50 +89,54 @@ function renderHomePage(req, res) {
 
 async function updateUser(req, res) {
     const userId = req.session.userId;
-    const { fullName, email } = req.body
+    const { fullName, email, newPassword } = req.body;
 
     if (!fullName) {
-        generalLogger.error("Unable to update user. name [" + fullName + "] is not valid")
-        return res.status(400).send({ message: "Unable to update user: name cannot be empty" })
+        generalLogger.error("Unable to update user. name [" + fullName + "] is not valid");
+        return res.status(400).send({ message: "Unable to update user: name cannot be empty" });
     }
 
     if (!email || typeof email !== "string" || !validateEmail(email)) {
-        generalLogger.error("Unable to update user. Email [" + email + "] is not valid")
-        return res.status(400).send({ message: "Unable to update user: email is invalid" })
+        generalLogger.error("Unable to update user. Email [" + email + "] is not valid");
+        return res.status(400).send({ message: "Unable to update user: email is invalid" });
+    }
+
+    if (newPassword && newPassword.trim() === "") {
+        return res.status(400).send({ message: "Password cannot be empty" });
     }
 
     try {
+        const updates = { fullName, email };
+
+        if (newPassword) {
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            updates.password = hashedPassword;
+        }
+
         if (req.file != undefined) {
-            const picture = req.file.path
-            const user_ = await User.findById(userId)
-            const result = await cloudinary.uploader.upload(picture, { folder: user_.name })
+            const picture = req.file.path;
+            const user_ = await User.findById(userId);
+            const result = await cloudinary.uploader.upload(picture, { folder: user_.name });
 
-            await User.findByIdAndUpdate(userId, {
-                fullName,
-                email,
-                profilePicture: result.secure_url,
-                cloudinary_id: result.public_id
-            })
-        }
-        else {
-            await User.findByIdAndUpdate(userId, {
-                fullName,
-                email
-            })
+            updates.profilePicture = result.secure_url;
+            updates.cloudinary_id = result.public_id;
         }
 
-        generalLogger.info("user was updated successfully")
-        return res.status(200).send({ message: "Success: user was updated successfully" })
+        await User.findByIdAndUpdate(userId, updates);
+
+        generalLogger.info("User was updated successfully");
+        return res.status(200).send({ message: "Success: user was updated successfully" });
     } catch (error) {
         if (error.codeName == "DuplicateKey") {
-            generalLogger.error("Unable to update user. Email [" + email + "] is already being used")
-            return res.status(400).send({ message: "Unable to update user: email is already being used" })
+            generalLogger.error("Unable to update user. Email [" + email + "] is already being used");
+            return res.status(400).send({ message: "Unable to update user: email is already being used" });
         } else {
-            generalLogger.error("Error in updating user. Error: " + error)
-            return res.status(400).send({ message: "Unable to update user" })
-        }        
+            generalLogger.error("Error in updating user. Error: " + error);
+            return res.status(400).send({ message: "Unable to update user" });
+        }
     }
 }
+
 
 module.exports = {
     getProfile,

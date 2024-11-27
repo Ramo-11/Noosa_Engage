@@ -43,6 +43,26 @@ textarea {
     font-size: 17px;
 }
 
+.links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    font-size: 14px;
+}
+
+.links a {
+    text-decoration: none;
+    color: #0a3755;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.links a:hover {
+    color: #aab9c3;
+}
+
 .submitFlag {
     margin-top: -30px;
     margin-bottom: -30px;

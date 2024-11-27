@@ -39,7 +39,7 @@ async function sendEmail(req, res) {
 }
 
 async function sendSignupEmail(user) {
-    const { email, fullName } = user;  // Extract user info
+    const { email, fullName } = user
 
     let mailTransporter = nodemailer.createTransport({
         service: "gmail",
