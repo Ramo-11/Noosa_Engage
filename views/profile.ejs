@@ -27,6 +27,11 @@
                     <h2>Profile Picture</h2>
                     <input type="file" name='image' id='image' readonly>
                 </div>
+                <div class="inputField">
+                    <h2>Password</h2>
+                    <input type="password" class="input" id="newPassword" placeholder="New Password" readonly>
+                    <small class="helperText">Enter a new password only if you want to change it.</small>
+                </div>
                 <div class="flexContainer">
                     <button class="submitButton" id="submitButton" onclick="submitButtonFunction()" hidden>Submit</button>
                     <button class="cancelButton" id="cancelButton" onclick="cancelButtonFunction()" hidden>Cancel</button>
@@ -36,7 +41,7 @@
         <%- include("./partials/footer.ejs") %>
         <script>
             var inputFields = document.getElementsByTagName("input")
-            document.getElementById("image").disabled = true;
+            document.getElementById("image").disabled = true
             var submitButton = document.getElementById("submitButton")
             var editButton = document.getElementById("editButton")
             var cancelButton = document.getElementById("cancelButton")
@@ -45,7 +50,7 @@
                 submitButton.style.display = "block"
                 cancelButton.style.display = "block"
                 editButton.style.display = "none"
-                document.getElementById("image").disabled = false;
+                document.getElementById("image").disabled = false
         
                 for (let i = 0; i < inputFields.length; i++) {
                     inputFields[i].readOnly = false
@@ -56,10 +61,15 @@
                 const inputFields = document.getElementsByTagName("input")
                 let data = new FormData()
                 
-                data.append("fullName", inputFields[1].value)
-                data.append("email", inputFields[2].value)
-                if (inputFields[2] && inputFields[3].files != null && inputFields[3].files.length > 0) {
+                data.append("fullName", inputFields[1].value);
+                data.append("email", inputFields[2].value);
+                if (inputFields[3] && inputFields[3].files != null && inputFields[3].files.length > 0) {
                     data.append("picture", inputFields[3].files[0])
+                }
+                
+                const newPassword = document.getElementById("newPassword").value;
+                if (newPassword) {
+                    data.append("newPassword", newPassword);
                 }
         
                 const result = await fetch("/api/update-user-info", {
@@ -87,16 +97,16 @@
                 submitButton.style.display = "none"
                 cancelButton.style.display = "none"
                 editButton.style.display = "block"
-                document.getElementById("image").disabled = true;
+                document.getElementById("image").disabled = true
         
                 for (let i = 0; i < inputFields.length; i++) {
                     inputFields[i].value = inputFields[i].defaultValue
-                    inputFields[i].readOnly = true  
+                    inputFields[i].readOnly = true
                 }
             }
         
             function sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
+                return new Promise(resolve => setTimeout(resolve, ms))
             }
         </script>
     </body>

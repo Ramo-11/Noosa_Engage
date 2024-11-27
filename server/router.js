@@ -1,8 +1,11 @@
 const express = require("express")
 require('dotenv').config()
+const { generalLogger } = require("./utils/generalLogger")
 if (process.env.NODE_ENV !== "production") {
+    generalLogger.info("Running in development mode")
     process.env.STRIPE_PUBLIC_KEY = process.env.STRIPE_PUBLIC_KEY_TEST
 } else {
+    generalLogger.info("Running in production mode")
     process.env.STRIPE_PUBLIC_KEY = process.env.STRIPE_PUBLIC_KEY_PROD
 }
 

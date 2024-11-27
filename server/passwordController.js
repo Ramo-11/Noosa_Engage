@@ -2,7 +2,6 @@ const User = require('../models/User')
 const { sendResetEmail } = require('./mail')
 const crypto = require('crypto')
 const validateEmail = require('./utils/emailValidator')
-const bcrypt = require('bcrypt')
 
 function validateResetCode(req, res, next) {
     if (!req.query.code) return res.status(400).send('Invalid reset code.');
