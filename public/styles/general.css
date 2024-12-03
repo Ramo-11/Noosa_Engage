@@ -73,6 +73,33 @@ a {
     border-radius: 3px 3px 3px 3px;
 }
 
+.submitter-password, .submitter-password-confirm {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#password, #confirmedPassword {
+    flex: 1;
+}
+
+#togglePassword, #togglePasswordConfirm {
+    margin-left: 10px;
+    color: #ffffff;
+    background-color: #0f3755;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+#togglePassword:hover, #togglePasswordConfirm:hover {
+    background-color: #be7303;
+    transform: scale(1.05);
+}
+
+#togglePassword:active, #togglePasswordConfirm:active {
+    background-color: #be7303;
+}
+
 @media (max-width: 430px) {
     body {
         display: flex;

@@ -30,9 +30,11 @@
                 </div>
                 <div class="submitter-password">
                     <input type="password" id="password" name="password" placeholder="New Password">
+                    <button type="button" id="togglePassword" onclick="togglePassword(this)">Show</button>
                 </div>
                 <div class="submitter-password-confirm">
                     <input type="password" id="confirmedPassword" name="confirmedPassword" placeholder="Confirm Password">
+                    <button type="button" id="togglePasswordConfirm" onclick="toggleConfirmedPassword(this)">Show</button>
                 </div>
                 <button class="submitButton" id="submitButton" onclick="validateAndSubmitSignup()">Submit</button>
                 <div class="links">
@@ -42,6 +44,28 @@
         </div>
         <%- include("./partials/footer.ejs") %>
         <script>
+            function togglePassword(button) {
+                const passwordField = document.getElementById('password');
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    button.textContent = 'Hide';
+                } else {
+                    passwordField.type = 'password';
+                    button.textContent = 'Show';
+                }
+            }
+
+            function toggleConfirmedPassword(button) {
+                const passwordField = document.getElementById('confirmedPassword');
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    button.textContent = 'Hide';
+                } else {
+                    passwordField.type = 'password';
+                    button.textContent = 'Show';
+                }
+            }
+
             function validateAndSubmitSignup() {
                 const name = document.getElementById("name").value.trim();
                 const email = document.getElementById("email").value.trim();
