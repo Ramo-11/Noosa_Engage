@@ -89,7 +89,7 @@ function renderHomePage(req, res) {
 
 async function updateUser(req, res) {
     const userId = req.session.userId;
-    const { fullName, email, newPassword } = req.body;
+    const { fullName, email, phoneNumber, newPassword } = req.body;
 
     if (!fullName) {
         generalLogger.error("Unable to update user. name [" + fullName + "] is not valid");
@@ -101,12 +101,17 @@ async function updateUser(req, res) {
         return res.status(400).send({ message: "Unable to update user: email is invalid" });
     }
 
+    if (!phoneNumber) {
+        generalLogger.error("Unable to update user. phone number [" + phoneNumber + "] is not valid");
+        return res.status(400).send({ message: "Unable to update user: phone number cannot be empty" });
+    }
+
     if (newPassword && newPassword.trim() === "") {
         return res.status(400).send({ message: "Password cannot be empty" });
     }
 
     try {
-        const updates = { fullName, email };
+        const updates = { fullName, email, phoneNumber };
 
         if (newPassword) {
             const hashedPassword = await bcrypt.hash(newPassword, 10);

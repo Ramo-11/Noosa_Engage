@@ -24,6 +24,10 @@
                     <input type="text" class="input" value="<%=user.email%>" readonly>
                 </div>
                 <div class="inputField">
+                    <h2>Phone Number</h2>
+                    <input type="text" class="input" value="<%=user.phoneNumber%>" readonly>
+                </div>
+                <div class="inputField">
                     <h2>Profile Picture</h2>
                     <input type="file" name='image' id='image' readonly>
                 </div>
@@ -63,8 +67,9 @@
                 
                 data.append("fullName", inputFields[1].value);
                 data.append("email", inputFields[2].value);
-                if (inputFields[3] && inputFields[3].files != null && inputFields[3].files.length > 0) {
-                    data.append("picture", inputFields[3].files[0])
+                data.append("phoneNumber", inputFields[3].value);
+                if (inputFields[4] && inputFields[4].files != null && inputFields[4].files.length > 0) {
+                    data.append("picture", inputFields[4].files[0])
                 }
                 
                 const newPassword = document.getElementById("newPassword").value;
