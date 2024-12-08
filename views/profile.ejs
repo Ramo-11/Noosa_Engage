@@ -62,8 +62,20 @@
             }
         
             async function submitButtonFunction() {
+
+                console.log("Hi I am here")
                 const inputFields = document.getElementsByTagName("input")
                 let data = new FormData()
+
+                const password = document.getElementById("newPassword").value.trim();
+                const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
+                if (password && !passwordPattern.test(password)) {
+                    document.getElementById("submitFlag").innerHTML = "Password must be at least 6 characters long and include at least one letter and one number";
+                    document.getElementById("submitFlag").style.color = "#D8000C";
+                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA";
+                    document.getElementById("submitFlag").style.display = "block";
+                    return;
+                }
                 
                 data.append("fullName", inputFields[1].value);
                 data.append("email", inputFields[2].value);
@@ -103,6 +115,10 @@
                 cancelButton.style.display = "none"
                 editButton.style.display = "block"
                 document.getElementById("image").disabled = true
+
+                const submitFlag = document.getElementById("submitFlag");
+                submitFlag.style.display = "none";
+                submitFlag.innerHTML = "";
         
                 for (let i = 0; i < inputFields.length; i++) {
                     inputFields[i].value = inputFields[i].defaultValue
