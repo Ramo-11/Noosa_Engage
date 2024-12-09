@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const { sendResetEmail } = require('./mail')
 const crypto = require('crypto')
+const bcrypt = require('bcrypt');
 const validateEmail = require('./utils/emailValidator')
 
 function validateResetCode(req, res, next) {
