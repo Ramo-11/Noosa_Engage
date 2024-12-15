@@ -73,6 +73,7 @@ async function confirmInvoicePayment(req, res) {
         return res.status(500).send({ message: err.message })
     }
 }
+
 async function processNewInvoiceRequest(req, res) {
     try {
         const { invoiceNumber, hours, price, total, dueDate, sessionDate, user } = await validateNewInvoiceRequest(req)
