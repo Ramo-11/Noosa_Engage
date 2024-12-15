@@ -27,6 +27,7 @@
                             <div class="invoice-item <%= invoice.isPaid %>">
                                 <div class="invoice-details">
                                     <p><strong>Invoice Number:</strong> <%= invoice.invoiceNumber %></p>
+                                    <p><strong>Session Date:</strong> <%= new Date(invoice.sessionDate).toLocaleDateString("en-US") %></p>
                                     <p><strong>Due Date:</strong> <%= new Date(invoice.dueDate).toLocaleDateString("en-US") %></p>
                                     <p><strong>Total:</strong> $<%= invoice.total %></p>
                                 </div>
