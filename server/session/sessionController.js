@@ -43,6 +43,7 @@ const userMiddleware = async (req, res, next) => {
         res.locals.isUserAdmin = null
     }
     res.locals.currentRoute = req.path
+    res.locals.shopUrl = process.env.SHOP_URL;
     next()
 }
 
