@@ -25,13 +25,14 @@
                     <li class="schedule"><a href="/schedule">Schedule</a></li>
                     <li><a href="/staff">Staff</a></li>
                     <li><a href="/contact">Contact us</a></li>
+                    <li><a href="<%= shopUrl %>" target="_blank">Shop</a></li>
                 <% } else { %>
                     <li><a href="/staff">Staff</a></li>
                     <li><a href="/contact">Contact us</a></li>
+                    <li><a href="<%= shopUrl %>" target="_blank">Shop</a></li>
                     <li class="login"><a href="/login">Log In</a></li>
                     <li class="signup"><a href="/signup">Sign Up</a></li>
                 <% } %>
-                <li><a href="<%= shopUrl %>" target="_blank">Shop</a></li>
             </ul>
             <div class="profile-picture-container">
                 <% if (userLoggedIn) { %>
