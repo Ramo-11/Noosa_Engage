@@ -1,113 +1,460 @@
-<html>
-    <head>
-        <title>Contact us</title>
-        <link rel="stylesheet" href="/styles/general.css">
-        <link rel="stylesheet" href="/styles/contact.css">
-        <link rel="shortcut icon" href="/images/Logo-white.png">
-    </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Noosa Engage</title>
+    <meta name="description" content="Get in touch with Noosa Engage. Contact our tutoring experts for questions about our services, pricing, or to schedule a consultation.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/nav.css">
+    <link rel="stylesheet" href="/styles/contact.css">
+    <link rel="stylesheet" href="/styles/footer.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XEW6Y9S2YM"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-XEW6Y9S2YM');
     </script>
-    <body>
-        <%- include("./partials/nav.ejs") %>
-        <div class="main-content">
-            <div class="title-div">
-                <h1>Get in touch</h1>
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+    
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="contact-hero">
+            <div class="contact-hero-content">
+                <h1 class="contact-hero-title">Get in Touch</h1>
+                <p class="contact-hero-subtitle">
+                    Have questions about our tutoring services? Need help getting started? 
+                    We're here to help you succeed in your educational journey.
+                </p>
             </div>
-            <div class="contact-form">
-                <h1>Contact Us</h1>
-                <p class="submitFlag" id="submitFlag" hidden></p>
-                <div class="submitter-name">
-                    <input type="text" id="name" class="input" placeholder="Full Name" maxlength="50">
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <div class="contact-container">
+                <!-- Contact Form -->
+                <div class="contact-form-card">
+                    <h2 class="contact-form-title">Send Us a Message</h2>
+                    <p class="contact-form-subtitle">
+                        Fill out the form below and we'll get back to you within 24 hours. 
+                        We're excited to help you achieve your academic goals.
+                    </p>
+
+                    <!-- Alert Message -->
+                    <div id="contactAlert" class="contact-alert" style="display: none;">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="alertMessage"></span>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <form class="contact-form" id="contactForm">
+                        <!-- Full Name -->
+                        <div class="form-group">
+                            <label for="fullName" class="form-label">Full Name *</label>
+                            <input 
+                                type="text" 
+                                id="fullName" 
+                                name="fullName" 
+                                class="form-input" 
+                                placeholder="Enter your full name"
+                                required
+                                maxlength="50"
+                            >
+                            <div class="form-error" id="fullNameError" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address *</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                class="form-input" 
+                                placeholder="Enter your email address"
+                                required
+                                maxlength="50"
+                            >
+                            <div class="form-error" id="emailError" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <!-- Subject -->
+                        <div class="form-group">
+                            <label for="subject" class="form-label">Subject *</label>
+                            <input 
+                                type="text" 
+                                id="subject" 
+                                name="subject" 
+                                class="form-input" 
+                                placeholder="What's this about?"
+                                required
+                                maxlength="100"
+                            >
+                            <div class="form-error" id="subjectError" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <!-- Message -->
+                        <div class="form-group">
+                            <label for="description" class="form-label">Message *</label>
+                            <textarea 
+                                id="description" 
+                                name="description" 
+                                class="form-textarea" 
+                                placeholder="Tell us more about your question or how we can help you..."
+                                required
+                                rows="6"
+                            ></textarea>
+                            <div class="form-error" id="descriptionError" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="contact-submit" id="submitButton">
+                            <span id="buttonText">Send Message</span>
+                            <div class="spinner" id="buttonSpinner" style="display: none;"></div>
+                        </button>
+                    </form>
                 </div>
-                <div class="submitter-email">
-                    <input type="text" id="email" class="input" placeholder="Email" maxlength="50">
+
+                <!-- Contact Info -->
+                <div class="contact-info">
+                    <h2 class="contact-info-title">Contact Information</h2>
+                    <p class="contact-info-subtitle">
+                        Prefer to reach out directly? Here are all the ways you can connect with us.
+                    </p>
+
+                    <div class="contact-methods">
+                        <!-- Phone -->
+                        <div class="contact-method">
+                            <div class="contact-method-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-method-content">
+                                <h3>Phone</h3>
+                                <p><a href="tel:+15744064727">+1 (574) 406-4727</a></p>
+                                <p>Available 7 days a week</p>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="contact-method">
+                            <div class="contact-method-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-method-content">
+                                <h3>Email</h3>
+                                <p><a href="mailto:noosa@noosaengage.com">noosa@noosaengage.com</a></p>
+                                <p>We respond within 24 hours</p>
+                            </div>
+                        </div>
+
+                        <!-- Website -->
+                        <div class="contact-method">
+                            <div class="contact-method-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="contact-method-content">
+                                <h3>Website</h3>
+                                <p><a href="https://www.noosaengage.com" target="_blank">www.noosaengage.com</a></p>
+                                <p>Online tutoring platform</p>
+                            </div>
+                        </div>
+
+                        <!-- Social Media -->
+                        <div class="contact-method">
+                            <div class="contact-method-icon">
+                                <i class="fas fa-share-alt"></i>
+                            </div>
+                            <div class="contact-method-content">
+                                <h3>Follow Us</h3>
+                                <p>
+                                    <a href="https://www.facebook.com/noosaengage" target="_blank">Facebook</a> • 
+                                    <a href="https://www.instagram.com/noosaengage" target="_blank">Instagram</a> • 
+                                    <a href="https://www.linkedin.com/company/noosa-engage/" target="_blank">LinkedIn</a>
+                                </p>
+                                <p>Stay updated with our latest news</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="submitter-subject">
-                    <input type="text" id="subject" class="input" placeholder="Subject" maxlength="50"><br><br>
-                </div>
-                <div>
-                    <textarea type="text" class="input" id="description" placeholder="Talk about your request"></textarea>
-                </div>
-                <button class="submitButton" id="submitButton" onclick="validateAndSubmitContactPage()">Submit</button>
             </div>
-        </div>
-        <%- include("./partials/footer.ejs") %>
-        <script>
-            function validateAndSubmitContactPage() {
-                const name = document.getElementById("name").value.trim()
-                const email = document.getElementById("email").value.trim()
-                const subject = document.getElementById("name").value.trim()
-                const description = document.getElementById("description").value.trim()
+        </section>
 
-                if (!name || !email || !subject || !description) {
-                    document.getElementById("submitFlag").innerHTML = "All fields are required"
-                    document.getElementById("submitFlag").style.color = "#D8000C"
-                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
-                    document.getElementById("submitFlag").style.display = "block"
-                    return
-                }
+        <!-- FAQ Section -->
+        <section class="contact-faq">
+            <div class="contact-faq-container">
+                <h2 class="faq-title">Frequently Asked Questions</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            How quickly can I start tutoring sessions?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                You can typically start within 24-48 hours of signing up. We'll match you with the right tutor based on your subject needs and schedule preferences.
+                            </div>
+                        </div>
+                    </div>
 
-                submitContactPage()
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            What technology do I need for online sessions?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                You just need a computer or tablet with a reliable internet connection, webcam, and microphone. We'll provide all the necessary software and digital tools for your sessions.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            Can I change or reschedule my sessions?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Yes! We understand that schedules can change. You can reschedule sessions with 24 hours notice to avoid any cancellation fees.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            Do you offer a free trial session?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                We offer a consultation call to discuss your needs and match you with the right tutor. Contact us to learn about current promotional offers for new students.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <%- include("./partials/footer.ejs") %>
+
+    <!-- JavaScript -->
+    <script src="/js/navigation.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        // Form validation and submission
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const description = document.getElementById('description').value.trim();
+            
+            // Clear previous errors
+            clearErrors();
+            
+            // Validate inputs
+            let hasErrors = false;
+            
+            if (!fullName || fullName.length < 2) {
+                showFieldError('fullName', 'Please enter your full name');
+                hasErrors = true;
             }
-            async function submitContactPage() {
-                disableSubmitButton()
-                const fullName = document.getElementById("name").value
-                const email = document.getElementById("email").value
-                const subject = document.getElementById("subject").value
-                const description = document.getElementById("description").value
-        
-                const result = await fetch("/api/send-email", {
-                    method: "POST",
+            
+            if (!validateEmail(email)) {
+                showFieldError('email', 'Please enter a valid email address');
+                hasErrors = true;
+            }
+            
+            if (!subject || subject.length < 5) {
+                showFieldError('subject', 'Please enter a subject (at least 5 characters)');
+                hasErrors = true;
+            }
+            
+            if (!description || description.length < 10) {
+                showFieldError('description', 'Please enter a message (at least 10 characters)');
+                hasErrors = true;
+            }
+            
+            if (hasErrors) return;
+            
+            // Submit form
+            await submitContact(fullName, email, subject, description);
+        });
+
+        async function submitContact(fullName, email, subject, description) {
+            const submitButton = document.getElementById('submitButton');
+            const buttonText = document.getElementById('buttonText');
+            const buttonSpinner = document.getElementById('buttonSpinner');
+            
+            // Show loading state
+            submitButton.disabled = true;
+            buttonText.style.display = 'none';
+            buttonSpinner.style.display = 'block';
+            
+            try {
+                const response = await fetch('/api/send-email', {
+                    method: 'POST',
                     headers: {
-                        "Content-Type": "application/json"
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify ({
-                        fullName,
-                        email,
-                        subject,
-                        description
-                    })
-                })
-    
-                const message = await result.json()
-    
-                document.getElementById("submitFlag").innerHTML = message["message"]
-                document.getElementById("submitFlag").style.display = "block"
+                    body: JSON.stringify({ fullName, email, subject, description })
+                });
                 
-                if (result.status === 200) {
-                    document.getElementById("submitFlag").style.color = "#0a3755"
-                    document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
-                    await sleep(3000)
-                    location.reload(true)
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showAlert('success', result.message);
+                    document.getElementById('contactForm').reset();
+                    setTimeout(() => {
+                        document.getElementById('contactAlert').style.display = 'none';
+                    }, 5000);
+                } else {
+                    showAlert('error', result.message);
                 }
-                else {
-                    document.getElementById("submitFlag").style.color = "#D8000C"
-                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
-                    enableSubmitButton()
-                    await sleep(3000)
-                }
-        
-                function sleep(ms) {
-                    return new Promise(resolve => setTimeout(resolve, ms));
-                }
-    
-                function disableSubmitButton() {
-                    document.getElementById("submitButton").disabled = true
-                    document.getElementById("submitButton").style.backgroundColor = "#b7dffa"
-                    document.getElementById("submitButton").style.cursor = "default"
-                }
-
-                function enableSubmitButton() {
-                    document.getElementById("submitButton").disabled = false
-                    document.getElementById("submitButton").style.backgroundColor = "#0a3755"
-                    document.getElementById("submitButton").style.cursor = "pointer"
-                }
+            } catch (error) {
+                showAlert('error', 'An error occurred. Please try again.');
+            } finally {
+                resetButton();
             }
-        </script>
-    </body>
+        }
+
+        function resetButton() {
+            const submitButton = document.getElementById('submitButton');
+            const buttonText = document.getElementById('buttonText');
+            const buttonSpinner = document.getElementById('buttonSpinner');
+            
+            submitButton.disabled = false;
+            buttonText.style.display = 'block';
+            buttonSpinner.style.display = 'none';
+        }
+
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function showAlert(type, message) {
+            const alert = document.getElementById('contactAlert');
+            const alertMessage = document.getElementById('alertMessage');
+            const icon = alert.querySelector('i');
+            
+            alert.className = `contact-alert ${type}`;
+            alertMessage.textContent = message;
+            
+            if (type === 'success') {
+                icon.className = 'fas fa-check-circle';
+            } else {
+                icon.className = 'fas fa-exclamation-circle';
+            }
+            
+            alert.style.display = 'flex';
+        }
+
+        function showFieldError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorDiv = document.getElementById(fieldId + 'Error');
+            const errorSpan = errorDiv.querySelector('span');
+            
+            field.style.borderColor = 'var(--error-color)';
+            errorSpan.textContent = message;
+            errorDiv.style.display = 'flex';
+        }
+
+        function clearErrors() {
+            const fields = ['fullName', 'email', 'subject', 'description'];
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                const errorDiv = document.getElementById(fieldId + 'Error');
+                
+                field.style.borderColor = 'var(--border-color)';
+                errorDiv.style.display = 'none';
+            });
+            
+            const alert = document.getElementById('contactAlert');
+            alert.style.display = 'none';
+        }
+
+        function toggleFAQ(button) {
+            const faqItem = button.parentElement;
+            const answer = faqItem.querySelector('.faq-answer');
+            const isActive = button.classList.contains('active');
+            
+            // Close all other FAQs
+            document.querySelectorAll('.faq-question.active').forEach(activeButton => {
+                if (activeButton !== button) {
+                    activeButton.classList.remove('active');
+                    activeButton.parentElement.querySelector('.faq-answer').classList.remove('active');
+                }
+            });
+            
+            // Toggle current FAQ
+            if (isActive) {
+                button.classList.remove('active');
+                answer.classList.remove('active');
+            } else {
+                button.classList.add('active');
+                answer.classList.add('active');
+            }
+        }
+
+        // Real-time validation
+        document.getElementById('fullName').addEventListener('input', function() {
+            if (this.value.trim() && this.value.trim().length >= 2) {
+                this.style.borderColor = 'var(--success-color)';
+                document.getElementById('fullNameError').style.display = 'none';
+            }
+        });
+
+        document.getElementById('email').addEventListener('input', function() {
+            if (this.value.trim() && validateEmail(this.value.trim())) {
+                this.style.borderColor = 'var(--success-color)';
+                document.getElementById('emailError').style.display = 'none';
+            }
+        });
+
+        document.getElementById('subject').addEventListener('input', function() {
+            if (this.value.trim() && this.value.trim().length >= 5) {
+                this.style.borderColor = 'var(--success-color)';
+                document.getElementById('subjectError').style.display = 'none';
+            }
+        });
+
+        document.getElementById('description').addEventListener('input', function() {
+            if (this.value.trim() && this.value.trim().length >= 10) {
+                this.style.borderColor = 'var(--success-color)';
+                document.getElementById('descriptionError').style.display = 'none';
+            }
+        });
+    </script>
+</body>
 </html>

@@ -1,155 +1,218 @@
-<html>
-    <head>
-        <title>Home</title>
-        <link rel="stylesheet" href="/styles/general.css">
-        <link rel="stylesheet" href="/styles/index.css">
-        <link rel="shortcut icon" href="/images/Logo-white.png">
-    </head>
-    <!-- Google tag (gtag.js) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noosa Engage - Professional Online Tutoring</title>
+    <meta name="description" content="Expert online tutoring in Math, Science, Computer Science, and more. Personalized learning with experienced instructors.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/nav.css">
+    <link rel="stylesheet" href="/styles/index.css">
+    <link rel="stylesheet" href="/styles/footer.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XEW6Y9S2YM"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-XEW6Y9S2YM');
     </script>
-    <body>
-        <%- include("./partials/nav.ejs") %>
-        <div class="main-content">
-            <div class="title-div">
-                <h1>Noosa Engage</h1>
-            </div>
-            <div class="intro-div">
-                <img src="/images/logo.png" alt="Site logo">
-                <div class="text-div">
-                    <hr>
-                    <h1>Who We Are</h1>
-                    <hr>
-                    <p>Noosa Engage is an online tutoring platform that is dedicated
-                        to enhancing students' knowledge in Math, Science, Computer Science,
-                        and other subjects. We provide tutoring sessions for students in all levels.
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+    
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">Master Your Subjects with Expert Online Tutoring</h1>
+                    <p class="hero-subtitle">
+                        Personalized learning experiences in Math, Science, Computer Science, and more. 
+                        Connect with experienced instructors who care about your success.
                     </p>
-                    <button class="button_to_register"><a class="schedule" href="/schedule">Register Now</a></button>
+                    <div class="hero-cta">
+                        <a href="/schedule" class="btn btn-accent btn-lg">
+                            <i class="fas fa-calendar-plus"></i>
+                            Start Learning Today
+                        </a>
+                        <a href="/prices" class="btn btn-outline btn-lg">
+                            <i class="fas fa-info-circle"></i>
+                            View Pricing
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="/images/logo.png" alt="Noosa Engage - Online Tutoring Platform" loading="eager">
                 </div>
             </div>
-            <hr>
-            <h1 class="styled-header">Our Tutoring Expertise Covers These Subjects</h1>
-            <div class="classes-div">
-                <div>
-                    <a href="/courses/introduction-to-programming">
-                        <img src="/images/Programming.webp" alt="Programming picture">
-                        <div class="class-text">
-                            <h1>Programming</h1>
-                        </div>
-                    </a>
-                </div>
-                <div>
-                    <a href="/courses/oop">
-                        <img src="/images/OOP.webp" alt="OOP picture">
-                        <div class="class-text">
-                            <h1>Object-Oriented Programming</h1>
-                        </div>
-                    </a>
-                </div>
-                <div>
-                    <a href="/courses/data-structures-algorithms">
-                        <img src="/images/DS_and_Algorithms.webp" alt="DS_and_Algorithms picture">
-                        <div class="class-text">
-                            <h1>Data Structures and Algorithms</h1>
-                        </div>
-                    </a>
-                </div>
-                <div>
-                    <a href="/courses/web-development">
-                        <img src="/images/Web_Dev.webp" alt="Web_Dev picture">
-                        <div class="class-text">
-                            <h1>Web Development</h1>
-                        </div>
-                    </a>
-                </div>
-                <div>
-                    <a href="/courses/databases">
-                        <img src="/images/Databases.webp" alt="Databases picture">
-                        <div class="class-text">
-                            <h1>Databases</h1>
-                        </div>
-                    </a>
-                </div>
-                <div>
-                    <a href="/courses/arabic">
-                        <img src="/images/Arabic.webp" alt="Arabic picture">
-                        <div class="class-text">
-                            <h1>Arabic</h1>
-                        </div>
-                    </a>
-                </div>
-                <div>
-                    <a href="/courses/quran">
-                        <img src="/images/Quran.webp" alt="Quran picture">
-                        <div class="class-text">
-                            <h1>Quran</h1>
-                        </div>
-                    </a>
-                </div>
-                <div>
-                    <a href="/courses/pre-algebra">
-                        <img src="/images/Pre-Algebra.webp" alt="Pre-Algebra picture">
-                        <div class="class-text">
-                            <h1>Pre-Algebra</h1>
-                        </div>
-                    </a>
-                </div>
-                <div>
-                    <a href="/courses/algebra">
-                        <img src="/images/Algebra.webp" alt="Algebra picture">
-                        <div class="class-text">
-                            <h1>Algebra</h1>
-                        </div>
-                    </a>
-                </div>
-                <div>
-                    <a href="/courses/geometry">
-                        <img src="/images/Geometry.webp" alt="Geometry picture">
-                        <div class="class-text">
-                            <h1>Geometry</h1>
-                        </div>
-                    </a>
-                </div>
-                <div>
-                    <a href="/courses/pre-calculus">
-                        <img src="/images/Pre-Calculus.webp" alt="Pre-Calculus picture">
-                        <div class="class-text">
-                            <h1>Pre-Calculus</h1>
-                        </div>
-                    </a>
-                </div>
-                <div>
-                    <a href="/courses/chemistry">
-                        <img src="/images/Chemistry.webp" alt="Chemistry picture">
-                        <div class="class-text">
-                            <h1>Chemistry</h1>
-                        </div>
-                    </a>
-                </div>
-                <div>
-                    <a href="/courses/physics">
-                        <img src="/images/Physics.webp" alt="Physics picture">
-                        <div class="class-text">
-                            <h1>Physics</h1>
-                        </div>
-                    </a>
-                </div>
-                <div>
-                    <a href="/courses/all">
-                        <img src="/images/all.webp" alt="All picture">
-                        <div class="class-text">
-                            <h1>All</h1>
-                        </div>
-                    </a>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section">
+            <div class="about-content">
+                <h2 class="about-title">Why Choose Noosa Engage?</h2>
+                <p class="about-description">
+                    We're dedicated to enhancing students' knowledge across multiple subjects with personalized, 
+                    one-on-one tutoring sessions. Our experienced instructors work with students at all levels, 
+                    from elementary through college and beyond, ensuring everyone gets the support they need to succeed.
+                </p>
+                
+                <!-- Stats -->
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Students Helped</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">14</span>
+                        <span class="stat-label">Subjects Covered</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Expert Instructors</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">98%</span>
+                        <span class="stat-label">Success Rate</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <%- include("./partials/footer.ejs") %>
-    </body>
+        </section>
+
+        <!-- Courses Section -->
+        <section class="courses-section">
+            <div class="courses-header">
+                <h2 class="courses-title">Our Tutoring Expertise</h2>
+                <p class="courses-subtitle">
+                    Comprehensive support across a wide range of subjects, 
+                    tailored to your learning style and academic goals.
+                </p>
+            </div>
+            
+            <div class="courses-grid">
+                <!-- Programming -->
+                <a href="/courses/introduction-to-programming" class="course-card">
+                    <div class="course-image">
+                        <img src="/images/Programming.webp" alt="Programming Tutoring" loading="lazy">
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-name">Programming</h3>
+                        <p class="course-description">Learn coding fundamentals and advanced concepts</p>
+                    </div>
+                </a>
+
+                <!-- Object-Oriented Programming -->
+                <a href="/courses/oop" class="course-card">
+                    <div class="course-image">
+                        <img src="/images/OOP.webp" alt="Object-Oriented Programming" loading="lazy">
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-name">Object-Oriented Programming</h3>
+                        <p class="course-description">Master OOP principles and design patterns</p>
+                    </div>
+                </a>
+
+                <!-- Data Structures & Algorithms -->
+                <a href="/courses/data-structures-algorithms" class="course-card">
+                    <div class="course-image">
+                        <img src="/images/DS_and_Algorithms.webp" alt="Data Structures and Algorithms" loading="lazy">
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-name">Data Structures & Algorithms</h3>
+                        <p class="course-description">Optimize your problem-solving skills</p>
+                    </div>
+                </a>
+
+                <!-- Web Development -->
+                <a href="/courses/web-development" class="course-card">
+                    <div class="course-image">
+                        <img src="/images/Web_Dev.webp" alt="Web Development" loading="lazy">
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-name">Web Development</h3>
+                        <p class="course-description">Build modern websites and applications</p>
+                    </div>
+                </a>
+
+                <!-- Databases -->
+                <a href="/courses/databases" class="course-card">
+                    <div class="course-image">
+                        <img src="/images/Databases.webp" alt="Database Management" loading="lazy">
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-name">Databases</h3>
+                        <p class="course-description">Master SQL and database design</p>
+                    </div>
+                </a>
+
+                <!-- Mathematics -->
+                <a href="/courses/algebra" class="course-card">
+                    <div class="course-image">
+                        <img src="/images/Algebra.webp" alt="Algebra Tutoring" loading="lazy">
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-name">Mathematics</h3>
+                        <p class="course-description">From Pre-Algebra to Pre-Calculus</p>
+                    </div>
+                </a>
+
+                <!-- Sciences -->
+                <a href="/courses/chemistry" class="course-card">
+                    <div class="course-image">
+                        <img src="/images/Chemistry.webp" alt="Chemistry Tutoring" loading="lazy">
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-name">Sciences</h3>
+                        <p class="course-description">Chemistry, Physics, and more</p>
+                    </div>
+                </a>
+
+                <!-- Languages -->
+                <a href="/courses/arabic" class="course-card">
+                    <div class="course-image">
+                        <img src="/images/Arabic.webp" alt="Arabic Language" loading="lazy">
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-name">Languages</h3>
+                        <p class="course-description">Arabic language and Quran studies</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Excel in Your Studies?</h2>
+                <p class="cta-description">
+                    Join hundreds of students who have improved their grades and confidence 
+                    with our personalized tutoring approach.
+                </p>
+                <a href="/schedule" class="cta-button">
+                    <i class="fas fa-rocket"></i>
+                    Get Started Now
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <%- include("./partials/footer.ejs") %>
+
+    <!-- JavaScript -->
+    <script src="/js/navigation.js"></script>
+    <script src="/js/main.js"></script>
+</body>
 </html>
