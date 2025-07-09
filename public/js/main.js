@@ -14,7 +14,7 @@ function initializeApp() {
     // Initialize tooltips
     initializeTooltips();
     
-    // Add loading states to all forms
+    // Add loading states to all forms (except those with custom handling)
     addFormLoadingStates();
     
     // Initialize intersection observer for animations
@@ -156,7 +156,8 @@ function initializeTooltips() {
 }
 
 function addFormLoadingStates() {
-    const forms = document.querySelectorAll('form');
+    // Only add loading states to forms that don't have custom submit handling
+    const forms = document.querySelectorAll('form:not([data-custom-submit])');
     forms.forEach(form => {
         form.addEventListener('submit', function() {
             const submitButton = this.querySelector('button[type="submit"], .submitButton');
@@ -320,7 +321,7 @@ function showNotification(message, type = 'info', duration = 5000) {
                 notification.remove();
             }
         }, 300);
-    }, duration);
+    }, 300);
 }
 
 function getNotificationIcon(type) {
@@ -345,8 +346,8 @@ window.AppUtils = {
 };
 
 // Add CSS for animations
-const style = document.createElement('style');
-style.textContent = `
+const styleSheet = document.createElement('style');
+styleSheet.textContent = `
     .course-card,
     .card,
     .stat-item {
@@ -381,4 +382,4 @@ style.textContent = `
         }
     }
 `;
-document.head.appendChild(style);
+document.head.appendChild(styleSheet);
