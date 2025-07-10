@@ -83,13 +83,6 @@
                                 Dashboard
                             </a>
                         <% } %>
-                        <% if (isUserAdmin) { %>
-                            <div class="dropdown-divider"></div>
-                            <a href="/create-invoice" class="dropdown-item">
-                                <i class="fas fa-file-invoice dropdown-icon"></i>
-                                Create Invoice
-                            </a>
-                        <% } %>
                         <div class="dropdown-divider"></div>
                         <a href="/logout" class="dropdown-item">
                             <i class="fas fa-sign-out-alt dropdown-icon"></i>
@@ -128,9 +121,6 @@
                     <li><a href="/schedule" class="mobile-nav-link">Schedule</a></li>
                     <li><a href="/home" class="mobile-nav-link">Dashboard</a></li>
                     <li><a href="/profile" class="mobile-nav-link">Profile</a></li>
-                    <% if (isUserAdmin) { %>
-                        <li><a href="/create-invoice" class="mobile-nav-link">Create Invoice</a></li>
-                    <% } %>
                 <% } %>
                 <li><a href="/staff" class="mobile-nav-link">Our Team</a></li>
                 <li><a href="/contact" class="mobile-nav-link">Contact</a></li>

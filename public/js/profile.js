@@ -1,298 +1,313 @@
-// Profile Page JavaScript
-document.addEventListener('DOMContentLoaded', function() {
-    let isEditing = false;
-    const originalValues = {};
+// Profile page JavaScript
+const originalValues = {
+    fullName: document.getElementById('fullName')?.value || '',
+    email: document.getElementById('email')?.value || '',
+    phoneNumber: document.getElementById('phoneNumber')?.value || ''
+};
 
-    // Form submission handler
-    document.getElementById('profileForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        submitButtonFunction();
-    });
-
-    // File input change handler
-    document.getElementById('profilePicture').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        const fileLabel = document.getElementById('fileLabel');
-        
-        if (file) {
-            fileLabel.textContent = file.name;
-            
-            // Preview image
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('avatarPreview').src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        } else {
-            fileLabel.textContent = 'Choose profile picture';
-        }
-    });
-
-    // Make functions global so onclick handlers can access them
-    window.editButtonFunction = editButtonFunction;
-    window.cancelButtonFunction = cancelButtonFunction;
-    window.initiatePasswordReset = initiatePasswordReset;
-
-    function editButtonFunction() {
-        isEditing = true;
-        const inputs = document.querySelectorAll('.form-input, .file-input');
-        const editButton = document.getElementById('editButton');
-        const formActions = document.getElementById('formActions');
-
-        // Store original values
-        inputs.forEach(input => {
-            if (input.type !== 'file') {
-                originalValues[input.id] = input.value;
-            }
-        });
-
-        // Enable editing
-        inputs.forEach(input => {
-            input.readOnly = false;
-            input.disabled = false;
-        });
-
-        // Update UI
-        editButton.style.display = 'none';
-        formActions.style.display = 'flex';
-
-        // Clear any alerts
-        hideAlert();
+// Form validation and submission
+document.getElementById('profileForm')?.addEventListener('submit', async function(e) {
+    console.log('Profile form submitted');
+    e.preventDefault();
+    
+    const formData = new FormData();
+    formData.append('fullName', document.getElementById('fullName').value.trim());
+    formData.append('email', document.getElementById('email').value.trim());
+    formData.append('phoneNumber', document.getElementById('phoneNumber').value.trim());
+    
+    const fileInput = document.getElementById('profilePicture');
+    if (fileInput.files[0]) {
+        formData.append('picture', fileInput.files[0]);
     }
+    
+    // Clear previous errors
+    clearErrors();
+    
+    // Validate inputs
+    let hasErrors = false;
+    
+    const fullName = formData.get('fullName');
+    const email = formData.get('email');
+    const phoneNumber = formData.get('phoneNumber');
+    
+    if (!fullName || fullName.length < 2) {
+        showFieldError('fullName', 'Please enter your full name (at least 2 characters)');
+        hasErrors = true;
+    }
+    
+    if (!validateEmail(email)) {
+        showFieldError('email', 'Please enter a valid email address');
+        hasErrors = true;
+    }
+    
+    if (!phoneNumber) {
+        showFieldError('phoneNumber', 'Please enter your phone number');
+        hasErrors = true;
+    }
+    
+    // Only proceed to API call if validation passes
+    if (hasErrors) {
+        console.log('Validation failed, not submitting form');
+        return;
+    }
+    
+    // Submit form - button loading starts here
+    await submitProfile(formData);
+});
 
-    async function submitButtonFunction() {
-        const submitButton = document.getElementById('submitButton');
-        const buttonText = document.getElementById('buttonText');
-        const buttonSpinner = document.getElementById('buttonSpinner');
-
-        // Validate form
-        if (!validateForm()) {
-            return;
+async function submitProfile(formData) {
+    console.log('Submitting profile update...');
+    const submitButton = document.getElementById('submitButton');
+    
+    // Store original button content for proper reset
+    const originalButtonHTML = submitButton.innerHTML;
+    
+    console.log("blabla")
+    // Show loading state
+    setButtonLoading(true);
+    console.log("blabla2")
+    
+    try {
+        const response = await fetch('/api/update-user-info', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            showAlert('success', result.message);
+            // Update original values after successful update
+            originalValues.fullName = document.getElementById('fullName').value.trim();
+            originalValues.email = document.getElementById('email').value.trim();
+            originalValues.phoneNumber = document.getElementById('phoneNumber').value.trim();
+            
+            // Reset file input and exit edit mode
+            const fileInput = document.getElementById('profilePicture');
+            fileInput.value = '';
+            
+            exitEditMode();
+        } else {
+            showAlert('error', result.message);
         }
+    } catch (error) {
+        console.error('Profile update error:', error);
+        showAlert('error', 'An error occurred. Please try again.');
+    } finally {
+        // Always reset button regardless of outcome
+        setButtonLoading(false);
+    }
+}
 
-        // Show loading state
+function setButtonLoading(isLoading) {
+    console.log('Setting button loading state:', isLoading);
+    const submitButton = document.getElementById('submitButton');
+    
+    if (isLoading) {
         submitButton.disabled = true;
-        buttonText.style.display = 'none';
-        buttonSpinner.style.display = 'block';
+        submitButton.classList.add('loading');
+        submitButton.innerHTML = `
+            <span style="display: none;">
+                <i class="fas fa-save"></i>
+                Update Profile
+            </span>
+            <div class="spinner" style="display: block;"></div>
+        `;
+    } else {
+        submitButton.disabled = false;
+        submitButton.classList.remove('loading');
+        submitButton.innerHTML = `
+            <span id="buttonText">
+                <i class="fas fa-save"></i>
+                Update Profile
+            </span>
+            <div class="spinner" id="buttonSpinner" style="display: none;"></div>
+        `;
+    }
+}
 
-        try {
-            const formData = new FormData();
-            
-            // Add form data
-            formData.append('fullName', document.getElementById('fullName').value.trim());
-            formData.append('email', document.getElementById('email').value.trim());
-            formData.append('phoneNumber', document.getElementById('phoneNumber').value.trim());
-            
-            // Add profile picture if selected
-            const profilePicture = document.getElementById('profilePicture').files[0];
-            if (profilePicture) {
-                formData.append('picture', profilePicture);
-            }
-
-            const response = await fetch('/api/update-user-info', {
-                method: 'POST',
-                body: formData
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                showAlert('success', result.message);
-                setTimeout(() => {
-                    location.reload(true);
-                }, 2000);
-            } else {
-                showAlert('error', result.message);
-            }
-        } catch (error) {
-            console.error('Profile update error:', error);
-            showAlert('error', 'An error occurred. Please try again.');
-        } finally {
-            resetButton();
+function toggleEditMode() {
+    const editButton = document.getElementById('editButton');
+    const formActions = document.getElementById('formActions');
+    const fileInput = document.getElementById('profilePicture');
+    const inputs = ['fullName', 'email', 'phoneNumber'];
+    
+    // Hide edit button, show form actions
+    editButton.style.display = 'none';
+    formActions.style.display = 'flex';
+    
+    // Enable file input
+    fileInput.disabled = false;
+    
+    // Make inputs editable
+    inputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.removeAttribute('readonly');
+            input.classList.add('editable');
         }
+    });
+    
+    // Update subtitle
+    const subtitle = document.querySelector('.card-subtitle');
+    if (subtitle) {
+        subtitle.textContent = 'Update your personal information and settings';
     }
+}
 
-    function cancelButtonFunction() {
-        isEditing = false;
-        const inputs = document.querySelectorAll('.form-input, .file-input');
-        const editButton = document.getElementById('editButton');
-        const formActions = document.getElementById('formActions');
-        const fileLabel = document.getElementById('fileLabel');
-
-        // Restore original values
-        inputs.forEach(input => {
-            if (input.type !== 'file') {
-                input.value = originalValues[input.id] || '';
-                input.readOnly = true;
-            } else {
-                input.disabled = true;
-                input.value = '';
-            }
-        });
-
-        // Reset file label
-        fileLabel.textContent = 'Choose profile picture';
-
-        // Update UI
-        editButton.style.display = 'flex';
-        formActions.style.display = 'none';
-
-        // Clear errors and alerts
-        clearErrors();
-        hideAlert();
-    }
-
-    function validateForm() {
-        clearErrors();
-        let isValid = true;
-
-        const fullName = document.getElementById('fullName').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const phoneNumber = document.getElementById('phoneNumber').value.trim();
-
-        // Validate full name
-        if (!fullName || fullName.length < 2) {
-            showFieldError('fullName', 'Please enter a valid full name');
-            isValid = false;
+function exitEditMode() {
+    const editButton = document.getElementById('editButton');
+    const formActions = document.getElementById('formActions');
+    const fileInput = document.getElementById('profilePicture');
+    const inputs = ['fullName', 'email', 'phoneNumber'];
+    
+    // Show edit button, hide form actions
+    editButton.style.display = 'flex';
+    formActions.style.display = 'none';
+    
+    // Disable file input
+    fileInput.disabled = true;
+    
+    // Make inputs readonly
+    inputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.setAttribute('readonly', true);
+            input.classList.remove('editable');
         }
-
-        // Validate email
-        if (!validateEmail(email)) {
-            showFieldError('email', 'Please enter a valid email address');
-            isValid = false;
-        }
-
-        // Validate phone number (optional)
-        if (phoneNumber && !validatePhone(phoneNumber)) {
-            showFieldError('phoneNumber', 'Please enter a valid phone number');
-            isValid = false;
-        }
-
-        return isValid;
+    });
+    
+    // Update subtitle
+    const subtitle = document.querySelector('.card-subtitle');
+    if (subtitle) {
+        subtitle.textContent = 'View and manage your personal information';
     }
+    
+    // Always reset button when exiting edit mode
+    setButtonLoading(false);
+}
 
-    function validateEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+function cancelEdit() {
+    // Reset form to original values
+    resetForm();
+    
+    // Clear any errors
+    clearErrors();
+    
+    // Exit edit mode (this also resets the button)
+    exitEditMode();
+}
+
+function resetForm() {
+    // Reset form fields to original values
+    document.getElementById('fullName').value = originalValues.fullName;
+    document.getElementById('email').value = originalValues.email;
+    document.getElementById('phoneNumber').value = originalValues.phoneNumber;
+    document.getElementById('profilePicture').value = '';
+    
+    // Clear any errors
+    clearErrors();
+}
+
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function showAlert(type, message) {
+    const alert = document.getElementById('profileAlert');
+    const alertMessage = document.getElementById('alertMessage');
+    const icon = alert?.querySelector('i');
+    
+    if (!alert || !alertMessage || !icon) return;
+    
+    alert.className = `profile-alert ${type}`;
+    alertMessage.textContent = message;
+    
+    // Update icon based on type
+    if (type === 'success') {
+        icon.className = 'fas fa-check-circle';
+    } else if (type === 'error') {
+        icon.className = 'fas fa-exclamation-circle';
+    } else {
+        icon.className = 'fas fa-info-circle';
     }
-
-    function validatePhone(phone) {
-        const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-        return phoneRegex.test(phone.replace(/\s/g, ''));
+    
+    alert.style.display = 'flex';
+    
+    // Auto-hide after 5 seconds for non-success messages
+    if (type !== 'success') {
+        setTimeout(() => {
+            alert.style.display = 'none';
+        }, 5000);
     }
+}
 
-    function showAlert(type, message) {
-        const alert = document.getElementById('profileAlert');
-        const alertMessage = document.getElementById('alertMessage');
-        const icon = alert.querySelector('i');
+function showFieldError(fieldId, message) {
+    const field = document.getElementById(fieldId);
+    const errorDiv = document.getElementById(fieldId + 'Error');
+    const errorSpan = errorDiv?.querySelector('span');
+    
+    if (!field || !errorDiv || !errorSpan) return;
+    
+    field.classList.add('error');
+    errorSpan.textContent = message;
+    errorDiv.style.display = 'flex';
+}
+
+function clearErrors() {
+    const fields = ['fullName', 'email', 'phoneNumber'];
+    fields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        const errorDiv = document.getElementById(fieldId + 'Error');
         
-        alert.className = `profile-alert ${type}`;
-        alertMessage.textContent = message;
-        
-        if (type === 'success') {
-            icon.className = 'fas fa-check-circle';
-        } else if (type === 'error') {
-            icon.className = 'fas fa-exclamation-circle';
-        } else {
-            icon.className = 'fas fa-info-circle';
+        if (field && errorDiv) {
+            field.classList.remove('error');
+            errorDiv.style.display = 'none';
         }
-        
-        alert.style.display = 'flex';
-    }
-
-    function hideAlert() {
-        const alert = document.getElementById('profileAlert');
+    });
+    
+    const alert = document.getElementById('profileAlert');
+    if (alert) {
         alert.style.display = 'none';
     }
+}
 
-    function showFieldError(fieldId, message) {
-        const field = document.getElementById(fieldId);
-        const errorDiv = document.getElementById(fieldId + 'Error');
-        const errorSpan = errorDiv.querySelector('span');
-        
-        field.classList.add('error');
-        errorSpan.textContent = message;
-        errorDiv.style.display = 'flex';
+// Real-time validation
+document.getElementById('fullName')?.addEventListener('input', function() {
+    const name = this.value.trim();
+    if (name && name.length >= 2) {
+        this.classList.remove('error');
+        const fullNameError = document.getElementById('fullNameError');
+        if (fullNameError) fullNameError.style.display = 'none';
     }
+});
 
-    function clearFieldError(fieldId) {
-        const field = document.getElementById(fieldId);
-        const errorDiv = document.getElementById(fieldId + 'Error');
-        
-        field.classList.remove('error');
-        errorDiv.style.display = 'none';
+document.getElementById('email')?.addEventListener('input', function() {
+    const email = this.value.trim();
+    if (email && validateEmail(email)) {
+        this.classList.remove('error');
+        const emailError = document.getElementById('emailError');
+        if (emailError) emailError.style.display = 'none';
     }
+});
 
-    function clearErrors() {
-        const fields = ['fullName', 'email', 'phoneNumber'];
-        fields.forEach(fieldId => {
-            clearFieldError(fieldId);
-        });
+document.getElementById('phoneNumber')?.addEventListener('input', function() {
+    const phone = this.value.trim();
+    if (phone) {
+        this.classList.remove('error');
+        const phoneError = document.getElementById('phoneNumberError');
+        if (phoneError) phoneError.style.display = 'none';
     }
+});
 
-    function resetButton() {
-        const submitButton = document.getElementById('submitButton');
-        const buttonText = document.getElementById('buttonText');
-        const buttonSpinner = document.getElementById('buttonSpinner');
-        
-        submitButton.disabled = false;
-        buttonText.style.display = 'flex';
-        buttonSpinner.style.display = 'none';
+// File input preview
+document.getElementById('profilePicture')?.addEventListener('change', function() {
+    const fileName = this.files[0]?.name;
+    const label = this.nextElementSibling?.querySelector('span');
+    if (fileName && label) {
+        label.textContent = fileName;
+    } else if (label) {
+        label.textContent = 'Choose a new profile picture';
     }
-
-    // Password Reset Function
-    async function initiatePasswordReset() {
-        const button = document.querySelector('.btn-password-reset');
-        const originalText = button.innerHTML;
-        
-        try {
-            // Show loading state
-            button.disabled = true;
-            button.innerHTML = '<div class="spinner"></div> Sending...';
-            
-            const response = await fetch('/api/request-password-reset', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: document.getElementById('email').value.trim()
-                })
-            });
-            
-            const result = await response.json();
-            
-            if (response.ok) {
-                showAlert('success', 'Password reset email sent! Check your inbox for instructions.');
-            } else {
-                showAlert('error', result.message || 'Failed to send reset email. Please try again.');
-            }
-        } catch (error) {
-            console.error('Password reset error:', error);
-            showAlert('error', 'An error occurred. Please try again.');
-        } finally {
-            // Reset button
-            button.disabled = false;
-            button.innerHTML = originalText;
-        }
-    }
-
-    // Real-time validation
-    document.getElementById('fullName').addEventListener('input', function() {
-        if (this.value.trim() && this.value.trim().length >= 2) {
-            clearFieldError('fullName');
-        }
-    });
-
-    document.getElementById('email').addEventListener('input', function() {
-        if (this.value.trim() && validateEmail(this.value.trim())) {
-            clearFieldError('email');
-        }
-    });
-
-    document.getElementById('phoneNumber').addEventListener('input', function() {
-        if (!this.value.trim() || validatePhone(this.value.trim())) {
-            clearFieldError('phoneNumber');
-        }
-    });
 });
