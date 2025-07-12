@@ -19,7 +19,7 @@
 }
 
 .dashboard-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 3rem 2rem;
     display: grid;
@@ -85,7 +85,7 @@
 .items-grid {
     display: grid;
     gap: 1.5rem;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 }
 
 .item-card {
@@ -402,6 +402,26 @@
     font-size: 0.875rem;
     color: var(--text-secondary);
     margin: 0;
+}
+
+.filter-count {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.125rem 0.375rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+    margin-left: 0.25rem;
+}
+
+.filter-tab.active .filter-count {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.filter-tab:not(.active) .filter-count {
+    background: var(--primary-color);
+    color: white;
 }
 
 @keyframes slideIn {

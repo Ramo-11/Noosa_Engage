@@ -281,7 +281,7 @@
 }
 
 .faq-question:hover {
-    background: var(--background-secondary);
+    background: var(--accent-color);
 }
 
 .faq-question.active {

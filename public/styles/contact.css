@@ -299,7 +299,7 @@
 }
 
 .faq-question:hover {
-    background: var(--background);
+    background: var(--accent-color);
 }
 
 .faq-question.active {

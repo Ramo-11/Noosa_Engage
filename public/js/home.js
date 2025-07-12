@@ -9,8 +9,58 @@ function initializeHomePage() {
     filterInvoices('unpaid');
     filterAppointments('Scheduled');
     
+    // Add counts to filter tabs
+    updateFilterCounts();
+    
     // Add loading states to action buttons
     addLoadingStates();
+}
+
+// Add this new function:
+function updateFilterCounts() {
+    // Update invoice counts
+    const invoiceCards = document.querySelectorAll('#invoicesGrid .item-card');
+    if (invoiceCards.length > 0) {
+        const invoiceCounts = { all: invoiceCards.length, paid: 0, unpaid: 0 };
+        invoiceCards.forEach(card => {
+            if (card.dataset.status === 'paid') invoiceCounts.paid++;
+            if (card.dataset.status === 'unpaid') invoiceCounts.unpaid++;
+        });
+        
+        const invoiceSection = document.querySelector('#invoicesGrid').closest('.dashboard-section');
+        updateSectionCounts(invoiceSection, invoiceCounts);
+    }
+    
+    // Update appointment counts
+    const appointmentCards = document.querySelectorAll('#appointmentsGrid .item-card');
+    if (appointmentCards.length > 0) {
+        const appointmentCounts = { all: appointmentCards.length, Scheduled: 0, Completed: 0, Cancelled: 0 };
+        appointmentCards.forEach(card => {
+            const status = card.dataset.status;
+            if (appointmentCounts.hasOwnProperty(status)) appointmentCounts[status]++;
+        });
+        
+        const appointmentSection = document.querySelector('#appointmentsGrid').closest('.dashboard-section');
+        updateSectionCounts(appointmentSection, appointmentCounts);
+    }
+}
+
+function updateSectionCounts(section, counts) {
+    const filterTabs = section.querySelectorAll('.filter-tab[data-filter]');
+    filterTabs.forEach(tab => {
+        const filter = tab.dataset.filter;
+        const count = counts[filter] || 0;
+        
+        // Remove existing count
+        const existingCount = tab.querySelector('.filter-count');
+        if (existingCount) existingCount.remove();
+        
+        // Add new count
+        const countSpan = document.createElement('span');
+        countSpan.className = 'filter-count';
+        countSpan.textContent = count;
+        tab.appendChild(countSpan);
+    });
 }
 
 function filterInvoices(status) {
