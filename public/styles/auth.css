@@ -103,17 +103,26 @@
     right: 0.75rem;
     top: 50%;
     transform: translateY(-50%);
-    background: none;
+    background: none !important;
     border: none;
     color: var(--text-secondary);
     cursor: pointer;
-    padding: 0.25rem;
+    padding: 0;
     font-size: 0.9rem;
-    transition: var(--transition);
+    transition: color 0.2s ease;
+    z-index: 10;
+    height: 32px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
 }
 
 .password-toggle:hover {
     color: var(--primary-color);
+    background: none !important;
+    transform: translateY(-50%);
 }
 
 .password-strength {
@@ -291,6 +300,16 @@
     .auth-title {
         font-size: 1.75rem;
     }
+    
+    /* Hide password toggle on mobile */
+    .password-toggle {
+        display: none;
+    }
+    
+    /* Remove right padding from password input on mobile */
+    .password-container .form-input {
+        padding-right: 1rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -307,12 +326,20 @@
         width: 50px;
         height: 50px;
     }
+    
+    /* Ensure password toggle stays hidden on smaller mobile */
+    .password-toggle {
+        display: none;
+    }
 }
 
 /* Focus and accessibility improvements */
 .form-input:focus-visible,
 .auth-button:focus-visible,
 .password-toggle:focus-visible {
-    outline: 2px solid var(--primary-color);
     outline-offset: 2px;
+}
+
+.password-toggle:active {
+    transform: translateY(-50%); /* Keep in same position when clicked */
 }
