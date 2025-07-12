@@ -315,9 +315,14 @@
     
     .team-image-container {
         width: 100%;
-        height: 300px;
+        height: 350px;
         min-width: auto;
     }
+
+    .team-image {
+        object-fit: contain;
+        object-position: center top;
+    }  
     
     .team-content {
         padding: 1.5rem;
@@ -351,7 +356,7 @@
     }
     
     .team-image-container {
-        height: 250px;
+        height: 300px;
     }
     
     .team-content {
