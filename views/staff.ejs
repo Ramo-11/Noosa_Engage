@@ -1,96 +1,239 @@
-<html>
-    <head>
-        <title>Staff</title>
-        <link rel="stylesheet" href="/styles/general.css" />
-        <link rel="stylesheet" href="/styles/staff.css" />
-        <link rel="shortcut icon" href="/images/Logo-white.png" />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-        />
-    </head>
-    <body>
-        <%- include("./partials/nav.ejs") %>
-
-        <div class="main-content">
-            <div class="title-div">
-                <h1>Our Team</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Expert Team - Noosa Engage</title>
+    <meta name="description" content="Meet our experienced tutoring team. Expert instructors in Math, Science, Computer Science, and more, dedicated to your academic success.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/nav.css">
+    <link rel="stylesheet" href="/styles/staff.css">
+    <link rel="stylesheet" href="/styles/footer.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+    
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="team-hero">
+            <div class="team-hero-content">
+                <h1 class="team-hero-title">Meet Our Expert Team</h1>
+                <p class="team-hero-subtitle">
+                    Experienced educators and industry professionals dedicated to helping you achieve your academic goals through personalized, one-on-one instruction.
+                </p>
             </div>
-            <div class="staff-container">
-                <div class="card">
-                    <img src="/images/Mostafa.png" alt="Photo of Mostafa" />
-                    <div class="card-info">
-                        <h2>Mostafa Abdulaleem</h2>
-                        <h3>Embedded Software Engineer</h3>
-                        <p>
-                            Bachelors Degree in Electrical Engineering from
-                            Purdue University.
-                        </p>
-                        <p>
-                            Tested concentration sensors, power distribution
-                            system design, and taught various subjects.
-                        </p>
-                        <p>
-                            Experience at teaching science for students of all ages.
-                        </p>
-                        <a
-                            href="https://www.linkedin.com/in/mostafa-abdulaleem-649303179"
-                            target="_blank"
-                            ><i class="fab fa-linkedin-in"></i
-                        ></a>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <div class="team-container">
+                <div class="team-grid">
+
+                    <!-- Omar Abdelalim -->
+                    <div class="team-card">
+                        <div class="team-image-container">
+                            <img src="/images/Omar.webp" alt="Omar Abdelalim - Staff Software Engineer" class="team-image" loading="lazy">
+                        </div>
+                        <div class="team-content">
+                            <h2 class="team-name">Omar Abdelalim</h2>
+                            <p class="team-role">Staff Software Engineer & Computer Science Tutor</p>
+                            
+                            <div class="team-credentials">
+                                <div class="credential-item">
+                                    <i class="fas fa-graduation-cap credential-icon"></i>
+                                    <span>Master's Degree in Computer Science from Purdue University</span>
+                                </div>
+                                <div class="credential-item">
+                                    <i class="fas fa-graduation-cap credential-icon"></i>
+                                    <span>Bachelor's Degree in Computer Engineering from Purdue University</span>
+                                </div>
+                                <div class="credential-item">
+                                    <i class="fas fa-briefcase credential-icon"></i>
+                                    <span>Staff Software Engineer at Stryker</span>
+                                </div>
+                                <div class="credential-item">
+                                    <i class="fas fa-university credential-icon"></i>
+                                    <span>2 years of university-level Computer Science teaching experience</span>
+                                </div>
+                            </div>
+                            
+                            <p class="team-bio">
+                                Brings real-world software development experience to help students master programming concepts and computer science fundamentals.
+                            </p>
+                            
+                            <div class="team-social">
+                                <a href="https://www.linkedin.com/in/omar-abdelalim11" target="_blank" class="social-link" aria-label="Omar's LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mostafa Abdulaleem -->
+                    <div class="team-card">
+                        <div class="team-image-container">
+                            <img src="/images/Mostafa.png" alt="Mostafa Abdulaleem - Embedded Software Engineer" class="team-image" loading="lazy">
+                        </div>
+                        <div class="team-content">
+                            <h2 class="team-name">Mostafa Abdulaleem</h2>
+                            <p class="team-role">Embedded Software Engineer & Math/Science Tutor</p>
+                            
+                            <div class="team-credentials">
+                                <div class="credential-item">
+                                    <i class="fas fa-graduation-cap credential-icon"></i>
+                                    <span>Bachelor's Degree in Electrical Engineering from Purdue University</span>
+                                </div>
+                                <div class="credential-item">
+                                    <i class="fas fa-flask credential-icon"></i>
+                                    <span>Experience in power distribution system design and sensor testing</span>
+                                </div>
+                                <div class="credential-item">
+                                    <i class="fas fa-chalkboard-teacher credential-icon"></i>
+                                    <span>Extensive experience teaching science to students of all ages</span>
+                                </div>
+                            </div>
+                            
+                            <p class="team-bio">
+                                Specializes in making complex mathematical and scientific concepts accessible and engaging for students at all levels.
+                            </p>
+                            
+                            <div class="team-social">
+                                <a href="https://www.linkedin.com/in/mostafa-abdulaleem-649303179" target="_blank" class="social-link" aria-label="Mostafa's LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hanan Mahmoud -->
+                    <div class="team-card">
+                        <div class="team-image-container">
+                            <img src="/images/Hanan.png" alt="Hanan Mahmoud - Quran Teacher" class="team-image" loading="lazy">
+                        </div>
+                        <div class="team-content">
+                            <h2 class="team-name">Hanan Mahmoud</h2>
+                            <p class="team-role">Quran & Arabic Language Instructor</p>
+                            
+                            <div class="team-credentials">
+                                <div class="credential-item">
+                                    <i class="fas fa-user-tie credential-icon"></i>
+                                    <span>Dean of Smoo Institution for Quran and Sunna Teachers, Saudi Arabia</span>
+                                </div>
+                                <div class="credential-item">
+                                    <i class="fas fa-certificate credential-icon"></i>
+                                    <span>Diploma in Quran and Sunna Teaching from Teeba University, Medina</span>
+                                </div>
+                                <div class="credential-item">
+                                    <i class="fas fa-certificate credential-icon"></i>
+                                    <span>Diploma in Teaching Quran to Non-Arabic Speakers from Ain Shams University</span>
+                                </div>
+                                <div class="credential-item">
+                                    <i class="fas fa-clock credential-icon"></i>
+                                    <span>20+ years experience teaching AL-QA'IDAH AL-NOURANIA and Quran</span>
+                                </div>
+                            </div>
+                            
+                            <p class="team-bio">
+                                Dedicated to teaching Quranic studies and Arabic language with patience and expertise, helping students of all backgrounds connect with Islamic teachings.
+                            </p>
+                            
+                            <div class="team-social">
+                                <!-- Contact info could be added here if available -->
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="card">
-                    <img src="/images/Omar.jpeg" alt="Photo of Omar" />
-                    <div class="card-info">
-                        <h2>Omar Abdelalim</h2>
-                        <h3>Sr. Software Engineer</h3>
-                        <p>
-                            Masters Degree in Computer Science from Purdue University.
+        <!-- Specialties Section -->
+        <section class="team-specialties">
+            <div class="team-container">
+                <h2 class="specialties-title">Our Teaching Specialties</h2>
+                <div class="specialties-grid">
+                    <div class="specialty-card">
+                        <div class="specialty-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h3 class="specialty-title">Computer Science & Programming</h3>
+                        <p class="specialty-description">
+                            From basic programming concepts to advanced algorithms, data structures, and software development practices.
                         </p>
-                        <p>
-                            Bachelors Degree in Computer Engineering from Purdue University.
-                        </p>
-                        <p>
-                            Senior Software Engineer at Stryker. 
-                        </p>
-                        <p>
-                            Taught University Level Computer Science Courses for 2 years.
-                        </p>
-                        <a
-                            href="https://www.linkedin.com/in/omar-abdelalim11"
-                            target="_blank"
-                            ><i class="fab fa-linkedin-in"></i
-                        ></a>
-                        <a href="https://www.omarengineer.com" target="_blank"
-                            ><i class="fa fa-desktop"></i
-                        ></a>
                     </div>
-                </div>
 
-                <div class="card">
-                    <img src="/images/Hanan.png" alt="Hijab Icon" />
-                    <div class="card-info">
-                        <h2>Hanan Mahmoud</h2>
-                        <h3>Quran Teacher</h3>
-                        <p>
-                            Dean of Smoo Institution to Graduate Quran and Sunna Teachers in Saudi Arabia.
+                    <div class="specialty-card">
+                        <div class="specialty-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h3 class="specialty-title">Mathematics & Engineering</h3>
+                        <p class="specialty-description">
+                            Comprehensive math tutoring from pre-algebra through calculus, plus engineering mathematics and problem-solving.
                         </p>
-                        <p>
-                            Diploma in Quran and Sunna Teaching from Teeba University in Medina, Saudi Arabia.
+                    </div>
+
+                    <div class="specialty-card">
+                        <div class="specialty-icon">
+                            <i class="fas fa-atom"></i>
+                        </div>
+                        <h3 class="specialty-title">Sciences</h3>
+                        <p class="specialty-description">
+                            Physics, chemistry, Biology, and other scientific subjects taught with real-world applications and clear explanations.
                         </p>
-                        <p>
-                            Diploma in Teaching Quran and Sunnah to Non Arabic Speakers from Ain Shams University in Egypt.
+                    </div>
+
+                    <div class="specialty-card">
+                        <div class="specialty-icon">
+                            <i class="fas fa-mosque"></i>
+                        </div>
+                        <h3 class="specialty-title">Islamic Studies & Arabic</h3>
+                        <p class="specialty-description">
+                            Quran recitation, Islamic teachings, and Arabic language instruction for students of all levels.
                         </p>
-                        <p>
-                            More than 20 years of experience in Teaching AL-QA’IDAH AL-NOURANIA and Quran to all levels.
+                    </div>
+
+                    <div class="specialty-card">
+                        <div class="specialty-icon">
+                            <i class="fas fa-atom"></i>
+                        </div>
+                        <h3 class="specialty-title">Languages</h3>
+                        <p class="specialty-description">
+                            English, Spanish, Arabic, and other languages taught with a focus on communication skills and cultural understanding.
                         </p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <%- include("./partials/footer.ejs") %>
-    </body>
+        <!-- CTA Section -->
+        <section class="team-cta-section">
+            <div class="team-cta-content">
+                <h2 class="team-cta-title">Ready to Learn with Our Expert Team?</h2>
+                <p class="team-cta-subtitle">
+                    Schedule a session with one of our experienced instructors and start your learning journey today.
+                </p>
+                <a href="/schedule" class="team-cta-button">
+                    <i class="fas fa-calendar-plus"></i>
+                    Schedule Your Session
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <%- include("./partials/footer.ejs") %>
+
+    <!-- JavaScript -->
+    <script src="/js/navigation.js"></script>
+    <script src="/js/main.js"></script>
+</body>
 </html>

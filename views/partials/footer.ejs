@@ -1,20 +1,103 @@
-<html>
-    <head>
-        <link rel="stylesheet" href="/styles/general.css">
-        <link rel="stylesheet" href="/styles/footer.css">
-        <script src="https://kit.fontawesome.com/256321248c.js" crossorigin="anonymous"></script>
-    </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footer</title>
+    <link rel="stylesheet" href="/styles/footer.css">
+</head>
+<body>
+    <footer>
+        <div class="footer-container">
+            <!-- Main Footer Content -->
+            <div class="footer-main">
+                <!-- Brand Column -->
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="/images/Logo-white.png" alt="Noosa Engage Logo">
+                        <span class="footer-logo-text">Noosa Engage</span>
+                    </div>
+                    <p class="footer-description">
+                        Expert online tutoring in Math, Science, Computer Science, and more. 
+                        Personalized one-on-one sessions designed to help students achieve their academic goals.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/noosaengage" target="_blank" class="social-link" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/noosaengage" target="_blank" class="social-link" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/company/noosa-engage/" target="_blank" class="social-link" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
 
-    <body>
-        <footer>
-            <div class="footer-div">
-                <h1>Follow us on Social Media</h1>
-                <div class="social-media">
-                    <li><a target="_blank" href="https://www.facebook.com/noosaengage"><i class="fab fa-facebook"></i></a></li>
-                    <li><a target="_blank" href="https://www.instagram.com/noosaengage"><i class="fab fa-instagram"></i></a></li>
-                    <li><a target="_blank" href="https://www.linkedin.com/company/noosa-engage/"><i class="fab fa-linkedin-in"></i></a></li>
+                <!-- Quick Links -->
+                <div class="footer-column">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="/prices"><i class="fas fa-tag"></i> Pricing</a></li>
+                        <li><a href="/staff"><i class="fas fa-users"></i> Our Team</a></li>
+                        <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                        <% if (userLoggedIn) { %>
+                            <li><a href="/schedule"><i class="fas fa-calendar-plus"></i> Schedule</a></li>
+                            <li><a href="/home"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <% } else { %>
+                            <li><a href="/login"><i class="fas fa-sign-in-alt"></i> Sign In</a></li>
+                            <li><a href="/signup"><i class="fas fa-user-plus"></i> Sign Up</a></li>
+                        <% } %>
+                    </ul>
+                </div>
+
+                <!-- Subjects -->
+                <div class="footer-column">
+                    <h3 class="footer-title">Subjects</h3>
+                    <ul class="footer-links">
+                        <li><a href="/courses/introduction-to-programming"><i class="fas fa-code"></i> Programming</a></li>
+                        <li><a href="/courses/algebra"><i class="fas fa-calculator"></i> Mathematics</a></li>
+                        <li><a href="/courses/chemistry"><i class="fas fa-flask"></i> Sciences</a></li>
+                        <li><a href="/courses/arabic"><i class="fas fa-language"></i> Arabic</a></li>
+                        <li><a href="/courses/quran"><i class="fas fa-mosque"></i> Quran</a></li>
+                        <li><a href="/courses/web-development"><i class="fas fa-globe"></i> Web Development</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="footer-column">
+                    <h3 class="footer-title">Contact Info</h3>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+1 (574) 406-4727</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>noosa@noosaengage.com</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-globe"></i>
+                        <span>www.noosaengage.com</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Available 7 days a week</span>
+                    </div>
                 </div>
             </div>
-        </footer>
-    </body>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    <p>&copy; <%= new Date().getFullYear() %> Noosa Engage. All rights reserved.</p>
+                </div>
+                <div class="footer-legal">
+                    <a href="/privacy-policy">Privacy Policy</a>
+                    <a href="/terms-of-service">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
 </html>

@@ -1,134 +1,179 @@
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Profile</title>
-        <link rel="stylesheet" href="/styles/general.css">
-        <link rel="stylesheet" href="/styles/profile.css">
-        <link rel="shortcut icon" href="/images/Logo-white.png">
-    </head>
-
-    <body>
-        <%- include("./partials/nav.ejs") %>
-        <div class="main-content">
-            <div class="title-div">
-                <h1>Profile</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Noosa Engage</title>
+    <meta name="description" content="Manage your Noosa Engage profile and account settings.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/nav.css">
+    <link rel="stylesheet" href="/styles/profile.css">
+    <link rel="stylesheet" href="/styles/footer.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+    
+    <main class="main-content">
+        <div class="profile-container">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <% if (user.profilePicture) { %>
+                        <img src="<%= user.profilePicture %>" alt="Profile Picture" class="avatar-image">
+                    <% } else { %>
+                        <div class="avatar-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    <% } %>
+                </div>
+                <div class="profile-info">
+                    <h1 class="profile-name"><%= user.fullName %></h1>
+                    <p class="profile-email"><%= user.email %></p>
+                </div>
             </div>
-            <div class="profile-info">
-                <p class="submitFlag" id="submitFlag" hidden></p>
-                <button class="editButton" id="editButton" onclick="editButtonFunction()">Edit</button>
-                <div class="inputField">
-                    <h2>Full Name</h2>
-                    <input type="text" class="input" value="<%=user.fullName%>" readonly>
+
+            <!-- Alert Message -->
+            <div id="profileAlert" class="profile-alert" style="display: none;">
+                <i class="fas fa-info-circle"></i>
+                <span id="alertMessage"></span>
+            </div>
+
+            <!-- Profile Form -->
+            <div class="profile-card">
+                <div class="card-header">
+                    <div class="header-content">
+                        <h2 class="card-title">
+                            <i class="fas fa-user-edit"></i>
+                            Profile Information
+                        </h2>
+                        <p class="card-subtitle">View and manage your personal information</p>
+                    </div>
+                    <button type="button" class="edit-button" id="editButton" onclick="toggleEditMode()">
+                        <i class="fas fa-edit"></i>
+                        Edit Profile
+                    </button>
                 </div>
-                <div class="inputField">
-                    <h2>Email</h2>
-                    <input type="text" class="input" value="<%=user.email%>" readonly>
-                </div>
-                <div class="inputField">
-                    <h2>Phone Number</h2>
-                    <input type="text" class="input" value="<%=user.phoneNumber%>" readonly>
-                </div>
-                <div class="inputField">
-                    <h2>Profile Picture</h2>
-                    <input type="file" name='image' id='image' readonly>
-                </div>
-                <div class="inputField">
-                    <h2>Password</h2>
-                    <input type="password" class="input" id="newPassword" placeholder="New Password" readonly>
-                    <small class="helperText">Enter a new password only if you want to change it.</small>
-                </div>
-                <div class="flexContainer">
-                    <button class="submitButton" id="submitButton" onclick="submitButtonFunction()" hidden>Submit</button>
-                    <button class="cancelButton" id="cancelButton" onclick="cancelButtonFunction()" hidden>Cancel</button>
-                </div>
+
+                <form class="profile-form" id="profileForm" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName" class="form-label">
+                                <i class="fas fa-user"></i>
+                                Full Name
+                            </label>
+                            <input 
+                                type="text" 
+                                id="fullName" 
+                                name="fullName" 
+                                class="form-input" 
+                                value="<%= user.fullName %>"
+                                required
+                                maxlength="50"
+                                readonly
+                            >
+                            <div class="form-error" id="fullNameError" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">
+                                <i class="fas fa-envelope"></i>
+                                Email Address
+                            </label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                class="form-input" 
+                                value="<%= user.email %>"
+                                required
+                                maxlength="50"
+                                readonly
+                            >
+                            <div class="form-error" id="emailError" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneNumber" class="form-label">
+                            <i class="fas fa-phone"></i>
+                            Phone Number
+                        </label>
+                        <input 
+                            type="tel" 
+                            id="phoneNumber" 
+                            name="phoneNumber" 
+                            class="form-input" 
+                            value="<%= user.phoneNumber || '' %>"
+                            placeholder="Enter your phone number"
+                            readonly
+                        >
+                        <div class="form-error" id="phoneNumberError" style="display: none;">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profilePicture" class="form-label">
+                            <i class="fas fa-image"></i>
+                            Profile Picture
+                        </label>
+                        <div class="file-input-container" id="fileInputContainer">
+                            <input 
+                                type="file" 
+                                id="profilePicture" 
+                                name="picture" 
+                                class="file-input"
+                                accept="image/*"
+                                disabled
+                            >
+                            <label for="profilePicture" class="file-input-label">
+                                <i class="fas fa-upload"></i>
+                                <span>Choose a new profile picture</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions" id="formActions" style="display: none;">
+                        <button type="button" class="btn-cancel" onclick="cancelEdit()">
+                            <i class="fas fa-times"></i>
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-submit" id="submitButton">
+                            <span id="buttonText">
+                                <i class="fas fa-save"></i>
+                                Update Profile
+                            </span>
+                            <div class="spinner" id="buttonSpinner" style="display: none;"></div>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
-        <%- include("./partials/footer.ejs") %>
-        <script>
-            var inputFields = document.getElementsByTagName("input")
-            document.getElementById("image").disabled = true
-            var submitButton = document.getElementById("submitButton")
-            var editButton = document.getElementById("editButton")
-            var cancelButton = document.getElementById("cancelButton")
-        
-            function editButtonFunction() {
-                submitButton.style.display = "block"
-                cancelButton.style.display = "block"
-                editButton.style.display = "none"
-                document.getElementById("image").disabled = false
-        
-                for (let i = 0; i < inputFields.length; i++) {
-                    inputFields[i].readOnly = false
-                }
-            }
-        
-            async function submitButtonFunction() {
+    </main>
 
-                console.log("Hi I am here")
-                const inputFields = document.getElementsByTagName("input")
-                let data = new FormData()
+    <%- include("./partials/footer.ejs") %>
 
-                const password = document.getElementById("newPassword").value.trim();
-                const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
-                if (password && !passwordPattern.test(password)) {
-                    document.getElementById("submitFlag").innerHTML = "Password must be at least 6 characters long and include at least one letter and one number";
-                    document.getElementById("submitFlag").style.color = "#D8000C";
-                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA";
-                    document.getElementById("submitFlag").style.display = "block";
-                    return;
-                }
-                
-                data.append("fullName", inputFields[1].value);
-                data.append("email", inputFields[2].value);
-                data.append("phoneNumber", inputFields[3].value);
-                if (inputFields[4] && inputFields[4].files != null && inputFields[4].files.length > 0) {
-                    data.append("picture", inputFields[4].files[0])
-                }
-                
-                const newPassword = document.getElementById("newPassword").value;
-                if (newPassword) {
-                    data.append("newPassword", newPassword);
-                }
-        
-                const result = await fetch("/api/update-user-info", {
-                    method: "POST",
-                    body: data
-                })
-                const message = await result.json()
-                
-                document.getElementById("submitFlag").innerHTML = message["message"]
-                document.getElementById("submitFlag").style.display = "block"
-        
-                if (result.status === 200) {
-                    document.getElementById("submitFlag").style.color = "#0a3755"
-                    document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
-                    await sleep(3000)
-                    location.reload(true)
-                } else {
-                    document.getElementById("submitFlag").style.color = "#D8000C"
-                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
-                    await sleep(3000)
-                }
-            }
-        
-            function cancelButtonFunction() {
-                submitButton.style.display = "none"
-                cancelButton.style.display = "none"
-                editButton.style.display = "block"
-                document.getElementById("image").disabled = true
-
-                const submitFlag = document.getElementById("submitFlag");
-                submitFlag.style.display = "none";
-                submitFlag.innerHTML = "";
-        
-                for (let i = 0; i < inputFields.length; i++) {
-                    inputFields[i].value = inputFields[i].defaultValue
-                    inputFields[i].readOnly = true
-                }
-            }
-        
-            function sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms))
-            }
-        </script>
-    </body>
+    <!-- JavaScript -->
+    <script src="/js/navigation.js"></script>
+    <script src="/js/profile.js"></script>
+</body>
 </html>

@@ -1,121 +1,311 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Login</title>
-        <link rel="stylesheet" href="/styles/general.css">
-        <link rel="stylesheet" href="/styles/login.css">
-        <link rel="shortcut icon" href="/images/Logo-white.png">
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Noosa Engage</title>
+    <meta name="description" content="Sign in to your Noosa Engage account to access your tutoring dashboard and schedule sessions.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/nav.css">
+    <link rel="stylesheet" href="/styles/auth.css">
+    <link rel="stylesheet" href="/styles/footer.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XEW6Y9S2YM"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-XEW6Y9S2YM');
     </script>
-    <body>
-        <%- include("./partials/nav.ejs") %>
-        <div class="main-content">
-            <div class="title-div">
-                <h1>Login</h1>
-            </div>
-            <div class="login-form">
-                <h1>Welcome Back</h1>
-                <p class="submitFlag" id="submitFlag" hidden></p>
-                <div class="submitter-email">
-                    <input type="text" id="email" class="input" placeholder="Email" maxlength="50" required>
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+    
+    <main class="main-content">
+        <div class="auth-container">
+            <div class="auth-card">
+                <!-- Header -->
+                <div class="auth-header">
+                    <div class="auth-logo">
+                        <img src="/images/logo.png" alt="Noosa Engage Logo">
+                    </div>
+                    <h1 class="auth-title">Welcome Back</h1>
+                    <p class="auth-subtitle">Sign in to your account to continue your learning journey</p>
                 </div>
-                <div class="submitter-password">
-                    <input type="password" id="password" name="password" placeholder="Password" 
-                    required pattern="(?=.*\d)(?=.*[A-Z]).{6,}" 
-                    title="Password must be at least 6 characters long, include at least one number and one uppercase letter.">
-                    <button type="button" id="togglePassword" onclick="togglePassword(this)">Show</button>
-                </div>
-                <button class="submitButton" id="submitButton" onclick="validateAndSubmitLogin()">Submit</button>
 
-                <div class="links">
-                    <a href="/forgot-password" class="forgot-password-link">Forgot Password?</a>
-                    <a href="/signup" class="signup-link">Don't have an account? Sign up here</a>
+                <!-- Alert Message -->
+                <div id="authAlert" class="auth-alert" style="display: none;">
+                    <i class="fas fa-info-circle"></i>
+                    <span id="alertMessage"></span>
+                </div>
+
+                <!-- Login Form - Added data-custom-submit to prevent main.js interference -->
+                <form class="auth-form" id="loginForm" data-custom-submit="true">
+                    <!-- Email Field -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <div class="form-input-container">
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                class="form-input" 
+                                placeholder="Enter your email address"
+                                required
+                                autocomplete="email"
+                            >
+                        </div>
+                        <div class="form-error" id="emailError" style="display: none;">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span></span>
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="form-input-container password-container">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="form-input" 
+                                placeholder="Enter your password"
+                                required
+                                autocomplete="current-password"
+                            >
+                            <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                <i class="fas fa-eye" id="passwordIcon"></i>
+                            </button>
+                        </div>
+                        <div class="form-error" id="passwordError" style="display: none;">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span></span>
+                        </div>
+                        <div class="forgot-password-link">
+                            <a href="/forgot-password">Forgot your password?</a>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="auth-button" id="submitButton">
+                        <span id="buttonText">Sign In</span>
+                        <div class="spinner" id="buttonSpinner" style="display: none;"></div>
+                    </button>
+                </form>
+
+                <!-- Sign Up Link -->
+                <div class="auth-links">
+                    <p>Don't have an account?</p>
+                    <a href="/signup" class="auth-link">Create your account here</a>
                 </div>
             </div>
         </div>
-        <%- include("./partials/footer.ejs") %>
-        <script>
-            function togglePassword(button) {
-                const passwordField = document.getElementById('password');
-                if (passwordField.type === 'password') {
-                    passwordField.type = 'text';
-                    button.textContent = 'Hide';
-                } else {
-                    passwordField.type = 'password';
-                    button.textContent = 'Show';
-                }
+    </main>
+
+    <%- include("./partials/footer.ejs") %>
+
+    <!-- JavaScript -->
+    <script src="/js/navigation.js"></script>
+    <script>
+        // Form validation and submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            // Clear previous errors
+            clearErrors();
+            
+            // Validate inputs
+            if (!validateEmail(email)) {
+                showFieldError('email', 'Please enter a valid email address');
+                return;
             }
-
-            function validateAndSubmitLogin() {
-                const email = document.getElementById("email").value.trim().toLowerCase();
-                const password = document.getElementById("password").value.trim();
-
-                if (!email || !password) {
-                    document.getElementById("submitFlag").innerHTML = "Email and password are required";
-                    document.getElementById("submitFlag").style.color = "#D8000C";
-                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA";
-                    document.getElementById("submitFlag").style.display = "block";
-                    return;
-                }
-
-                submitLogin();
+            
+            if (!password) {
+                showFieldError('password', 'Password is required');
+                return;
             }
-            async function submitLogin() {
-                disableSubmitButton()
-                const email = document.getElementById("email").value
-                const password = document.getElementById("password").value
-        
-                const result = await fetch("/api/login", {
-                    method: "POST",
+            
+            // Submit form
+            await submitLogin(email, password);
+        });
+
+        async function submitLogin(email, password) {
+            const submitButton = document.getElementById('submitButton');
+            const buttonText = document.getElementById('buttonText');
+            const buttonSpinner = document.getElementById('buttonSpinner');
+            
+            // Store original button content for proper reset
+            const originalButtonHTML = submitButton.innerHTML;
+            
+            // Show loading state
+            submitButton.disabled = true;
+            submitButton.classList.add('loading');
+            buttonText.style.display = 'none';
+            buttonSpinner.style.display = 'block';
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
                     headers: {
-                        "Content-Type": "application/json"
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify ({
-                        email,
-                        password
-                    })
-                })
-    
-                const message = await result.json()
-    
-                document.getElementById("submitFlag").innerHTML = message["message"]
-                document.getElementById("submitFlag").style.display = "block"
+                    body: JSON.stringify({ email, password })
+                });
                 
-                if (result.status === 200) {
-                    document.getElementById("submitFlag").style.color = "#0a3755"
-                    document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
-                    await sleep(3000)
-                    window.location.href = "/"
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showAlert('success', result.message);
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1500);
+                } else {
+                    showAlert('error', result.message);
+                    resetButton(originalButtonHTML);
                 }
-                else {
-                    document.getElementById("submitFlag").style.color = "#D8000C"
-                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
-                    enableSubmitButton()
-                    await sleep(3000)
-                }
-    
-                function sleep(ms) {
-                    return new Promise(resolve => setTimeout(resolve, ms));
-                }
-    
-                function disableSubmitButton() {
-                    document.getElementById("submitButton").disabled = true
-                    document.getElementById("submitButton").style.backgroundColor = "#b7dffa"
-                    document.getElementById("submitButton").style.cursor = "default"
-                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showAlert('error', 'An error occurred. Please try again.');
+                resetButton(originalButtonHTML);
+            }
+        }
 
-                function enableSubmitButton() {
-                    document.getElementById("submitButton").disabled = false
-                    document.getElementById("submitButton").style.backgroundColor = "#0a3755"
-                    document.getElementById("submitButton").style.cursor = "pointer"
+        function resetButton(originalHTML = null) {
+            const submitButton = document.getElementById('submitButton');
+            const buttonText = document.getElementById('buttonText');
+            const buttonSpinner = document.getElementById('buttonSpinner');
+            
+            if (submitButton) {
+                // If original HTML is provided (in case main.js changed it), restore it
+                if (originalHTML) {
+                    submitButton.innerHTML = originalHTML;
+                    // Re-get references after innerHTML change
+                    const newButtonText = document.getElementById('buttonText');
+                    const newButtonSpinner = document.getElementById('buttonSpinner');
+                    if (newButtonText) newButtonText.style.display = 'block';
+                    if (newButtonSpinner) newButtonSpinner.style.display = 'none';
+                } else {
+                    // Normal reset
+                    if (buttonText) buttonText.style.display = 'block';
+                    if (buttonSpinner) buttonSpinner.style.display = 'none';
+                }
+                
+                submitButton.disabled = false;
+                submitButton.classList.remove('loading');
+            }
+        }
+
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon = document.getElementById(fieldId + 'Icon');
+            
+            if (field && icon) {
+                if (field.type === 'password') {
+                    field.type = 'text';
+                    icon.className = 'fas fa-eye-slash';
+                } else {
+                    field.type = 'password';
+                    icon.className = 'fas fa-eye';
                 }
             }
-        </script>
-    </body>
+        }
+
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function showAlert(type, message) {
+            const alert = document.getElementById('authAlert');
+            const alertMessage = document.getElementById('alertMessage');
+            const icon = alert.querySelector('i');
+            
+            if (alert && alertMessage && icon) {
+                alert.className = `auth-alert ${type}`;
+                alertMessage.textContent = message;
+                
+                // Update icon based on type
+                if (type === 'success') {
+                    icon.className = 'fas fa-check-circle';
+                } else if (type === 'error') {
+                    icon.className = 'fas fa-exclamation-circle';
+                } else {
+                    icon.className = 'fas fa-info-circle';
+                }
+                
+                alert.style.display = 'flex';
+                
+                // Auto-hide after 5 seconds for non-success messages
+                if (type !== 'success') {
+                    setTimeout(() => {
+                        alert.style.display = 'none';
+                    }, 5000);
+                }
+            }
+        }
+
+        function showFieldError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorDiv = document.getElementById(fieldId + 'Error');
+            const errorSpan = errorDiv?.querySelector('span');
+            
+            if (field && errorDiv && errorSpan) {
+                field.classList.add('error');
+                errorSpan.textContent = message;
+                errorDiv.style.display = 'flex';
+            }
+        }
+
+        function clearErrors() {
+            const fields = ['email', 'password'];
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                const errorDiv = document.getElementById(fieldId + 'Error');
+                
+                if (field && errorDiv) {
+                    field.classList.remove('error');
+                    errorDiv.style.display = 'none';
+                }
+            });
+            
+            const alert = document.getElementById('authAlert');
+            if (alert) {
+                alert.style.display = 'none';
+            }
+        }
+
+        // Real-time validation
+        document.getElementById('email')?.addEventListener('input', function() {
+            const email = this.value.trim();
+            if (email && validateEmail(email)) {
+                this.classList.remove('error');
+                document.getElementById('emailError').style.display = 'none';
+            }
+        });
+
+        document.getElementById('password')?.addEventListener('input', function() {
+            const password = this.value.trim();
+            if (password) {
+                this.classList.remove('error');
+                document.getElementById('passwordError').style.display = 'none';
+            }
+        });
+    </script>
+</body>
 </html>
