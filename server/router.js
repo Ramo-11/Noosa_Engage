@@ -32,7 +32,6 @@ route.get("/pay", isAuthenticated, (req, res) => {
 route.get("/home", renderLandingPageIfNotAuthenticated, getUserData, renderHomePage);
 route.get("/signup", (req, res) => res.render("signup"))
 route.get('/logout', logout);
-route.get('/create-invoice', authenticateIsAdmin, (req, res) => res.render("create-invoice"))
 route.get("/forgot-password", (req, res) => res.render("forgot-password"))
 
 // *********** POST requests **********
