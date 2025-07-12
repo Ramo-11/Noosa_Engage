@@ -3,32 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= className %> - Course Details</title>
+    <title><%= className %> Course - Noosa Engage</title>
+    <meta name="description" content="Learn <%= className %> with expert tutors at Noosa Engage. <%= classDescription %>">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/nav.css">
     <link rel="stylesheet" href="/styles/course.css">
+    <link rel="stylesheet" href="/styles/footer.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <%- include("./partials/nav.ejs") %>
 
-    <div class="class-container">
-        <div class="class-header">
-            <img src="/images/<%= courseImage %>" alt="<%= className %> image">
-            <h1><%= className %></h1>
-        </div>
-        <div class="class-content">
-            <p class="description"><%= classDescription %></p>
-            
-            <h2>Example Topics</h2>
-            <div class="topics-container">
-                <% exampleTopics.forEach(function(topic) { %>
-                    <div class="topic-item"><%= topic %></div>
-                <% }); %>
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="course-hero">
+            <div class="course-hero-content">
+                <div class="course-hero-image">
+                    <img src="/images/<%= courseImage %>" alt="<%= className %> Course" class="hero-image">
+                </div>
+                <div class="course-hero-text">
+                    <h1 class="course-title"><%= className %></h1>
+                    <p class="course-description"><%= classDescription %></p>
+                    <div class="course-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>Expert Instructors</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-video"></i>
+                            <span>Online Sessions</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Flexible Schedule</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <h2>Best For</h2>
-            <p class="best-for"><%= bestFor %></p>
-        </div>
-    </div>
+        <!-- Course Details Section -->
+        <section class="course-details">
+            <div class="course-container">
+                <!-- Topics Section -->
+                <div class="course-section">
+                    <div class="section-header">
+                        <i class="fas fa-list-ul section-icon"></i>
+                        <h2 class="section-title">What You'll Learn</h2>
+                    </div>
+                    <div class="topics-grid">
+                        <% exampleTopics.forEach(function(topic) { %>
+                            <div class="topic-card">
+                                <i class="fas fa-check-circle topic-icon"></i>
+                                <span class="topic-text"><%= topic %></span>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+
+                <!-- Best For Section -->
+                <div class="course-section">
+                    <div class="section-header">
+                        <i class="fas fa-target section-icon"></i>
+                        <h2 class="section-title">Perfect For</h2>
+                    </div>
+                    <div class="best-for-card">
+                        <p class="best-for-text"><%= bestFor %></p>
+                    </div>
+                </div>
+
+                <!-- CTA Section -->
+                <div class="course-cta">
+                    <div class="cta-content">
+                        <h3 class="cta-title">Ready to Start Learning?</h3>
+                        <p class="cta-subtitle">Join thousands of students who have improved their <%= className %> skills with our expert tutors.</p>
+                        <div class="cta-buttons">
+                            <a href="/schedule" class="cta-button primary">
+                                <i class="fas fa-calendar-plus"></i>
+                                Schedule a Session
+                            </a>
+                            <a href="/contact" class="cta-button secondary">
+                                <i class="fas fa-question-circle"></i>
+                                Ask Questions
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Related Courses Section -->
+        <section class="related-courses">
+            <div class="course-container">
+                <h2 class="related-title">Explore Other Courses</h2>
+                <div class="related-grid">
+                    <a href="/courses/all" class="related-card">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>All Subjects</span>
+                    </a>
+                    <a href="/courses/algebra" class="related-card">
+                        <i class="fas fa-calculator"></i>
+                        <span>Algebra</span>
+                    </a>
+                    <a href="/courses/physics" class="related-card">
+                        <i class="fas fa-atom"></i>
+                        <span>Physics</span>
+                    </a>
+                    <a href="/courses/introduction-to-programming" class="related-card">
+                        <i class="fas fa-code"></i>
+                        <span>Programming</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <%- include("./partials/footer.ejs") %>
+
+    <!-- JavaScript -->
+    <script src="/js/navigation.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 </html>

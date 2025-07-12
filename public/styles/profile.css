@@ -1,100 +1,462 @@
-@import url("https://fonts.googleapis.com/css?family=Nunito:400,900|Montserrat|Roboto");
+.form-input:read-only {
+    background: var(--background-secondary);
+    color: var(--text-secondary);
+    cursor: default;
+    border-color: var(--border-light);
+}
+
+.form-input.editable {
+    background: var(--background);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.edit-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.8rem;
+}
+
+.edit-button i {
+    font-size: 0.8rem;
+}
+
+.edit-button:hover {
+    background: var(--primary-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.profile-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Profile Header */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+    border-radius: var(--border-radius-xl);
+    color: white;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    background: var(--background-secondary);
+    flex-shrink: 0;
+}
+
+.avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 2rem;
+}
 
 .profile-info {
+    flex: 1;
+}
+
+.profile-name {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.profile-email {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* Profile Card */
+.profile-card {
+    background: var(--background);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+    max-width: 950px;
+    margin: 0 auto;
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--background-secondary) 0%, var(--background-tertiary) 100%);
+    padding: 2.5rem; /* Changed from 2rem */
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-content {
+    flex: 1;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.card-title i {
+    color: var(--primary-color);
+}
+
+.card-subtitle {
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Profile Form */
+.profile-form {
+    padding: 2.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 50px;
-    padding: 60px;
-    width: 60%;
-    height: 75%;
-    box-shadow: 2px 5px 20px rgba(119,119,119,0.5);
+    gap: 0.5rem;
+    margin-bottom: 1.5rem; /* Consistent spacing between all form groups */
 }
 
-.editButton {
-    align-self: flex-end;
-    text-align: center;
-    width: 15%;
+.form-label {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.profile-info .input {
-    width: 80%;
-    border: 0;
-    border-bottom: 1px solid #0a3755;
-    font-family: "Montserrat", sans-serif;
-    font-size: 15px;
-    color: #070707;
+.form-label i {
+    color: var(--primary-color);
+    width: 16px;
+    font-size: 0.875rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 0.95rem;
+    transition: var(--transition);
+    background: var(--background);
+    color: var(--text-primary);
+    font-family: inherit;
+}
+
+.form-input:focus {
     outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(10, 55, 85, 0.1);
 }
 
-.inputField {
+.form-input.error {
+    border-color: var(--error-color);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-error {
+    color: var(--error-color);
+    font-size: 0.8rem;
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
 }
 
-#image {
-    width: 80%;
-    border: 0;
-    border-bottom: 1px solid #0a3755;
+.form-error i {
+    font-size: 0.75rem;
 }
 
-.submitButton, .cancelButton {
-    padding: 7px 15px;
-    font-family: "Roboto", sans-serif;
-    font-size: 15px;
-    border: 0;
-    background: #0a3755;
-    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+/* File Input */
+.file-input-container {
+    position: relative;
+}
+
+.file-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.file-input-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--background-secondary);
+    color: var(--text-secondary);
     cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
 }
 
-.flexContainer {
+.file-input-label:hover {
+    border-color: var(--primary-color);
+    background: var(--background);
+    color: var(--primary-color);
+}
+
+.file-input-label i {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+}
+
+/* Form Actions */
+.form-actions {
     display: flex;
-    gap: 50px;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-light);
+    margin-top: 1.5rem;
 }
+
+.btn-cancel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--background-secondary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.875rem;
+}
+
+.btn-cancel:hover {
+    background: var(--background-tertiary);
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+}
+
+.btn-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.875rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-submit:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--primary-light), var(--accent-color));
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-submit.loading {
+    pointer-events: none;
+}
+
+.btn-submit #buttonText {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Alert Styling */
+.profile-alert {
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.profile-alert.success {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.profile-alert.error {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.profile-alert.warning {
+    background: #fffbeb;
+    color: #d97706;
+    border: 1px solid #fed7aa;
+}
+
+.profile-alert i {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+/* Loading Animation */
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .profile-info {
-        width: 80%;
-        padding: 40px;
+    .profile-container {
+        padding: 1rem;
     }
-
-    .editButton {
-        width: 30%;
+    
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
     }
-
-    .flexContainer {
-        gap: 20px;
+    
+    .profile-name {
+        font-size: 1.75rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
         flex-direction: column;
     }
-
-    .profile-info .input, #image {
-        width: 100%;
+    
+    .btn-cancel,
+    .btn-submit {
+        justify-content: center;
+    }
+    
+    .card-header {
+        padding: 1.5rem;
+    }
+    
+    .profile-form {
+        padding: 1.5rem;
     }
 }
 
 @media (max-width: 480px) {
-    .profile-info {
-        width: 100%;
-        padding: 20px;
+    .profile-container {
+        padding: 0.5rem;
     }
-
-    .editButton {
-        width: 100%;
-        margin-top: 10px;
+    
+    .profile-header {
+        padding: 1rem;
     }
-
-    .submitButton, .cancelButton {
-        width: 100%;
+    
+    .profile-name {
+        font-size: 1.5rem;
     }
-
-    .profile-info .input, #image {
-        width: 100%;
-        font-size: 14px;
+    
+    .profile-avatar {
+        width: 60px;
+        height: 60px;
     }
+    
+    .card-title {
+        font-size: 1.25rem;
+    }
+    
+    .card-header {
+        padding: 1rem;
+    }
+    
+    .profile-form {
+        padding: 1rem;
+    }
+}
 
-    .flexContainer {
-        flex-direction: column;
-        gap: 15px;
+/* Focus and accessibility improvements */
+.form-input:focus-visible,
+.btn-cancel:focus-visible,
+.btn-submit:focus-visible,
+.file-input:focus-visible + .file-input-label {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Animation for form transitions */
+.form-group {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

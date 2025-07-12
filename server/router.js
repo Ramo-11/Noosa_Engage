@@ -8,12 +8,11 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const route = express.Router()
-const { sendEmail } = require("./mail")
-const { processAppointmentRequest, cancelAppointment } = require("./appointmentController")
+const { sendContactEmail } = require("./contactController")
+const { processInitialAppointmentRequest, processAppointmentRequest, cancelAppointment } = require("./appointmentController")
 const renderCoursePage = require("./courseController")
-const { getUserData, renderHomePage, updateUser } = require("./user/userController")
+const { getUserData, renderHomePage, updateUser, forgotPassword, resetPassword } = require("./user/userController")
 const { renderLandingPageIfNotAuthenticated, renderUserHomePageIfAuthenticated, isAuthenticated, logout, loginUser, signupUser, authenticateIsAdmin } = require("./session/sessionHandler")
-const { validateResetCode, renderUpdatePassword, resetPassword, updatePassword } = require("./passwordController")
 const { payInvoice, confirmInvoicePayment, processNewInvoiceRequest} = require("./invoiceController")
 const multer = require("./pictureHandlers/multer");
 
@@ -23,7 +22,7 @@ route.get("/schedule", isAuthenticated, (req, res) => res.render("schedule"));
 route.get("/staff", (req, res) => res.render("staff"))
 route.get("/prices", (req, res) => res.render("prices"))
 route.get("/contact", (req, res) => res.render("contact"))
-route.get("/profile", (req, res) => res.render("profile"))
+route.get("/profile", isAuthenticated, (req, res) => res.render("profile"))
 route.get('/courses/:courseName', renderCoursePage)
 route.get("/login", (req, res) => res.render("login"))
 route.get("/payment-success", (req, res) => res.render("payment-success"))
@@ -34,21 +33,20 @@ route.get("/home", renderLandingPageIfNotAuthenticated, getUserData, renderHomeP
 route.get("/signup", (req, res) => res.render("signup"))
 route.get('/logout', logout);
 route.get("/forgot-password", (req, res) => res.render("forgot-password"))
-route.get('/update-password', validateResetCode, renderUpdatePassword);
-route.get('/create-invoice', authenticateIsAdmin, (req, res) => res.render("create-invoice"))
+route.get("/privacy-policy", (req, res) => res.render("privacy-policy"))
+route.get("/terms-of-service", (req, res) => res.render("terms-of-service"))
 
 // *********** POST requests **********
-route.post("/api/send-email", sendEmail)
-route.post("/api/schedule-appointment", processAppointmentRequest)
+route.post("/api/send-email", sendContactEmail)
+route.post("/api/schedule-appointment", processInitialAppointmentRequest)
 route.post("/api/cancel-appointment", cancelAppointment)
 route.post("/api/login", loginUser)
 route.post("/api/signup", signupUser)
-route.post('/api/forgot-password', resetPassword)
-route.post('/api/update-password', updatePassword)
 route.post('/api/pay-invoice', payInvoice)
 route.post('/api/create-invoice', processNewInvoiceRequest)
 route.post('/api/confirm-invoice-payment', confirmInvoicePayment)
 route.post("/api/update-user-info", isAuthenticated, multer.single("picture"), updateUser)
-
+route.post("/api/forgot-password", forgotPassword)
+route.post("/api/reset-password", resetPassword)
 
 module.exports = route

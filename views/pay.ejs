@@ -1,58 +1,198 @@
-<html>
-    <head>
-        <title>Payment</title>
-        <link rel="stylesheet" href="/styles/general.css">
-        <link rel="stylesheet" href="/styles/pay.css">
-        <link rel="shortcut icon" href="/images/Logo-white.png">
-        <script src="https://js.stripe.com/v3/"></script>
-    </head>
-    <body>
-        <%- include("./partials/nav.ejs") %>
-        <div class="main-content">
-            <div class="title-div">
-                <h1>Make a Payment</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment - Noosa Engage</title>
+    <meta name="description" content="Complete your payment securely with Noosa Engage. Fast, safe, and encrypted payment processing for your tutoring services.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/nav.css">
+    <link rel="stylesheet" href="/styles/pay.css">
+    <link rel="stylesheet" href="/styles/footer.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+    
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="payment-hero">
+            <div class="payment-hero-content">
+                <h1 class="payment-hero-title">Secure Payment</h1>
+                <p class="payment-hero-subtitle">
+                    Complete your payment safely and securely. Your information is protected with bank-level encryption.
+                </p>
             </div>
-            <div class="payment-form">
-                <h1>Payment Details</h1>
-                <p class="submitFlag" id="submitFlag" hidden></p>
-                <div class="input-field">
-                    <label for="card-number">Card Number</label>
-                    <div id="card-number" class="input"></div>
-                </div>
-                <div class="input-field">
-                    <label for="card-expiry">Expiration Date</label>
-                    <div id="card-expiry" class="input"></div>
-                </div>
-                <div class="input-field">
-                    <label for="card-cvc">CVC</label>
-                    <div id="card-cvc" class="input"></div>
-                </div>
-                <div class="input-field">
-                    <label for="card-postal-code">ZIP Code</label>
-                    <div id="card-postal-code" class="input"></div>
-                </div>                
-                <button class="submitButton" id="submitButton" onclick="submitPayment()">Submit Payment</button>
-            </div>            
-        </div>
-        <%- include("./partials/footer.ejs") %>
+        </section>
 
-        <script>
-            const urlParams = new URLSearchParams(window.location.search)
-            const invoiceNumber = urlParams.get('invoice')
-            const stripe = Stripe("<%= stripePublicKey %>")
-            const elements = stripe.elements()
-            const cardNumber = elements.create('cardNumber');
-            const cardExpiry = elements.create('cardExpiry');
-            const cardCvc = elements.create('cardCvc');
-            const cardPostalCode = elements.create('postalCode');
-            cardNumber.mount('#card-number');
-            cardExpiry.mount('#card-expiry');
-            cardCvc.mount('#card-cvc');
-            cardPostalCode.mount('#card-postal-code');
+        <!-- Payment Section -->
+        <section class="payment-section">
+            <div class="payment-container">
+                <!-- Payment Form -->
+                <div class="payment-form-card">
+                    <div class="payment-header">
+                        <h2 class="payment-form-title">Payment Details</h2>
+                        <p class="payment-form-subtitle">
+                            Enter your payment information below to complete your transaction.
+                        </p>
+                    </div>
 
-            async function submitPayment() {
-                disableSubmitButton();
+                    <!-- Alert Message -->
+                    <div id="paymentAlert" class="payment-alert" style="display: none;">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="alertMessage"></span>
+                    </div>
 
+                    <!-- Payment Form -->
+                    <form class="payment-form" id="paymentForm">
+                        <!-- Card Number -->
+                        <div class="form-group">
+                            <label for="card-number" class="form-label">
+                                <i class="fas fa-credit-card"></i>
+                                Card Number
+                            </label>
+                            <div id="card-number" class="stripe-input"></div>
+                        </div>
+
+                        <!-- Card Details Row -->
+                        <div class="form-row">
+                            <!-- Expiry Date -->
+                            <div class="form-group">
+                                <label for="card-expiry" class="form-label">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Expiry Date
+                                </label>
+                                <div id="card-expiry" class="stripe-input"></div>
+                            </div>
+
+                            <!-- CVC -->
+                            <div class="form-group">
+                                <label for="card-cvc" class="form-label">
+                                    <i class="fas fa-lock"></i>
+                                    CVC
+                                </label>
+                                <div id="card-cvc" class="stripe-input"></div>
+                            </div>
+                        </div>
+
+                        <!-- ZIP Code -->
+                        <div class="form-group">
+                            <label for="card-postal-code" class="form-label">
+                                <i class="fas fa-map-marker-alt"></i>
+                                ZIP Code
+                            </label>
+                            <div id="card-postal-code" class="stripe-input"></div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="button" class="payment-submit" id="submitButton" onclick="submitPayment()">
+                            <span id="buttonText">
+                                <i class="fas fa-shield-alt"></i>
+                                Complete Secure Payment
+                            </span>
+                            <div class="spinner" id="buttonSpinner" style="display: none;"></div>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Payment Info -->
+                <div class="payment-info">
+                    <h2 class="payment-info-title">Secure & Protected</h2>
+                    <p class="payment-info-subtitle">
+                        Your payment information is safe with us. We use industry-standard security measures to protect your data.
+                    </p>
+
+                    <div class="security-features">
+                        <!-- SSL Encryption -->
+                        <div class="security-feature">
+                            <div class="security-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="security-content">
+                                <h3>SSL Encryption</h3>
+                                <p>Your data is encrypted with 256-bit SSL security</p>
+                            </div>
+                        </div>
+
+                        <!-- PCI Compliance -->
+                        <div class="security-feature">
+                            <div class="security-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="security-content">
+                                <h3>PCI Compliant</h3>
+                                <p>We meet the highest payment security standards</p>
+                            </div>
+                        </div>
+
+                        <!-- Secure Processing -->
+                        <div class="security-feature">
+                            <div class="security-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="security-content">
+                                <h3>Secure Processing</h3>
+                                <p>Powered by Stripe for safe transactions</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accepted Cards -->
+                    <div class="accepted-cards">
+                        <h3>Accepted Payment Methods</h3>
+                        <div class="card-icons">
+                            <i class="fab fa-cc-visa"></i>
+                            <i class="fab fa-cc-mastercard"></i>
+                            <i class="fab fa-cc-amex"></i>
+                            <i class="fab fa-cc-discover"></i>
+                            <i class="fab fa-cc-paypal"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <%- include("./partials/footer.ejs") %>
+
+    <!-- JavaScript -->
+    <script src="/js/navigation.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search)
+        const invoiceNumber = urlParams.get('invoice')
+        const stripe = Stripe("<%= stripePublicKey %>")
+        const elements = stripe.elements()
+        
+        // Create Stripe elements
+        const cardNumber = elements.create('cardNumber');
+        const cardExpiry = elements.create('cardExpiry');
+        const cardCvc = elements.create('cardCvc');
+        const cardPostalCode = elements.create('postalCode');
+        
+        // Mount elements
+        cardNumber.mount('#card-number');
+        cardExpiry.mount('#card-expiry');
+        cardCvc.mount('#card-cvc');
+        cardPostalCode.mount('#card-postal-code');
+
+        async function submitPayment() {
+            disableSubmitButton();
+            showAlert('info', 'Processing your payment...');
+
+            try {
                 const response = await fetch("/api/pay-invoice", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -61,10 +201,7 @@
 
                 const data = await response.json()
                 if (response.status !== 200) {
-                    document.getElementById("submitFlag").innerHTML = "Error paying invoice: " + data.message
-                    document.getElementById("submitFlag").style.color = "#D8000C"
-                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
-                    document.getElementById("submitFlag").style.display = "block"
+                    showAlert('error', "Error paying invoice: " + data.message);
                     enableSubmitButton()
                     return
                 }
@@ -80,8 +217,6 @@
                     }
                 })
 
-                document.getElementById("submitFlag").style.display = "block"
-
                 if (!error) {
                     const result = await fetch("/api/confirm-invoice-payment", {
                         method: "POST",
@@ -91,42 +226,68 @@
                     
                     const message = await result.json()
 
-                    document.getElementById("submitFlag").innerHTML = message["message"]
-
                     if (result.status === 200) {
-                        document.getElementById("submitFlag").style.color = "#0a3755"
-                        document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
-                        await sleep(3000);
-                        window.location.href = "/"
-                    }
-                    else {
-                        document.getElementById("submitFlag").style.color = "#D8000C"
-                        document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                        showAlert('success', message["message"]);
+                        setTimeout(() => {
+                            window.location.href = "/"
+                        }, 3000);
+                    } else {
+                        showAlert('error', message["message"]);
                         enableSubmitButton()
                     }
                 } else {
-                    document.getElementById("submitFlag").innerHTML = "Error: " + error.message
-                    document.getElementById("submitFlag").style.color = "#D8000C"
-                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                    showAlert('error', "Payment failed: " + error.message);
                     enableSubmitButton()
                 }
+            } catch (error) {
+                showAlert('error', 'An unexpected error occurred. Please try again.');
+                enableSubmitButton()
             }
+        }
 
-            function sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms))
+        function showAlert(type, message) {
+            const alert = document.getElementById('paymentAlert');
+            const alertMessage = document.getElementById('alertMessage');
+            const icon = alert?.querySelector('i');
+            
+            if (!alert || !alertMessage || !icon) return;
+            
+            alert.className = `payment-alert ${type}`;
+            alertMessage.textContent = message;
+            
+            // Update icon based on type
+            if (type === 'success') {
+                icon.className = 'fas fa-check-circle';
+            } else if (type === 'error') {
+                icon.className = 'fas fa-exclamation-circle';
+            } else {
+                icon.className = 'fas fa-info-circle';
             }
+            
+            alert.style.display = 'flex';
+        }
 
-            function disableSubmitButton() {
-                document.getElementById("submitButton").disabled = true
-                document.getElementById("submitButton").style.backgroundColor = "#b7dffa"
-                document.getElementById("submitButton").style.cursor = "default"
-            }
+        function disableSubmitButton() {
+            const submitButton = document.getElementById("submitButton")
+            const buttonText = document.getElementById('buttonText');
+            const buttonSpinner = document.getElementById('buttonSpinner');
+            
+            submitButton.disabled = true
+            submitButton.classList.add('loading');
+            buttonText.style.display = 'none';
+            buttonSpinner.style.display = 'block';
+        }
 
-            function enableSubmitButton() {
-                document.getElementById("submitButton").disabled = false
-                document.getElementById("submitButton").style.backgroundColor = "#0a3755"
-                document.getElementById("submitButton").style.cursor = "pointer"
-            }
-        </script>
-    </body>
+        function enableSubmitButton() {
+            const submitButton = document.getElementById("submitButton")
+            const buttonText = document.getElementById('buttonText');
+            const buttonSpinner = document.getElementById('buttonSpinner');
+            
+            submitButton.disabled = false
+            submitButton.classList.remove('loading');
+            buttonText.style.display = 'flex';
+            buttonSpinner.style.display = 'none';
+        }
+    </script>
+</body>
 </html>

@@ -1,241 +1,293 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="/styles/general.css" />
-        <link rel="stylesheet" href="/styles/schedule.css" />
-        <link rel="shortcut icon" href="/images/Logo-white.png" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
-        <title>Schedule</title>
-    </head>
-    <body>
-        <%- include("./partials/nav.ejs") %>
-        <div class="main-content">
-            <div class="title-div">
-                <h1>Schedule</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request a Session - Noosa Engage</title>
+    <meta name="description" content="Request your personalized tutoring session with our expert instructors. Tell us your subject and preferred times.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/nav.css">
+    <link rel="stylesheet" href="/styles/schedule.css">
+    <link rel="stylesheet" href="/styles/footer.css">
+    <link rel="shortcut icon" href="/images/Logo-white.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XEW6Y9S2YM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XEW6Y9S2YM');
+    </script>
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+    
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="schedule-hero">
+            <div class="schedule-hero-content">
+                <h1 class="schedule-hero-title">Request a Session</h1>
+                <p class="schedule-hero-subtitle">
+                    Tell us about your tutoring needs and preferred schedule. 
+                    We'll review your request and confirm your session within 24 hours.
+                </p>
             </div>
-            <div class="schedule-form">
-                <h1>Appointment Details</h1>
-                <p class="submitFlag" id="submitFlag" hidden></p>
-                <div class="submitter-course">
-                    <label for="course">Select a Course</label>
-                    <select id="course" class="input">
-                        <option value="" disabled selected></option>
-                        <option value="all">All</option>
-                        <option value="algebra">Algebra</option>
-                        <option value="arabic">Arabic</option>
-                        <option value="chemistry">Chemistry</option>
-                        <option value="data-structures-algorithms">Data Structures and Algorithms</option>
-                        <option value="databases">Databases</option>
-                        <option value="geometry">Geometry</option>
-                        <option value="introduction-to-programming">Programming</option>
-                        <option value="oop">Object-Oriented Programming</option>
-                        <option value="physics">Physics</option>
-                        <option value="pre-algebra">Pre-Algebra</option>
-                        <option value="pre-calculus">Pre-Calculus</option>
-                        <option value="quran">Quran</option>
-                        <option value="web-development">Web Development</option>
-                    </select>
+        </section>
+
+        <!-- Schedule Section -->
+        <section class="schedule-section">
+            <div class="schedule-container">
+                <div class="schedule-card">
+                    <!-- Header -->
+                    <div class="schedule-header">
+                        <div class="schedule-icon">
+                            <i class="fas fa-calendar-plus"></i>
+                        </div>
+                        <h2 class="schedule-title">Request Your Session</h2>
+                        <p class="schedule-subtitle">Fill out your preferences and we'll get back to you with available options</p>
+                    </div>
+
+                    <!-- Alert Message -->
+                    <div id="scheduleAlert" class="schedule-alert" style="display: none;">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="alertMessage"></span>
+                    </div>
+
+                    <!-- Schedule Form -->
+                    <form class="schedule-form" id="scheduleForm">
+                        <!-- Course Selection -->
+                        <div class="form-group">
+                            <label for="course" class="form-label">
+                                <i class="fas fa-book"></i>
+                                Select Subject *
+                            </label>
+                            <div class="form-input-container">
+                                <select id="course" name="course" class="form-select" required>
+                                    <option value="" disabled selected>Choose your subject...</option>
+                                    <option value="all">All Subjects</option>
+                                    <option value="algebra">Algebra</option>
+                                    <option value="arabic">Arabic</option>
+                                    <option value="chemistry">Chemistry</option>
+                                    <option value="data-structures-algorithms">Data Structures and Algorithms</option>
+                                    <option value="databases">Databases</option>
+                                    <option value="geometry">Geometry</option>
+                                    <option value="introduction-to-programming">Programming</option>
+                                    <option value="oop">Object-Oriented Programming</option>
+                                    <option value="physics">Physics</option>
+                                    <option value="pre-algebra">Pre-Algebra</option>
+                                    <option value="pre-calculus">Pre-Calculus</option>
+                                    <option value="quran">Quran</option>
+                                    <option value="web-development">Web Development</option>
+                                </select>
+                            </div>
+                            <div class="form-error" id="courseError" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <!-- Preferred Days -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-calendar-week"></i>
+                                Preferred Days *
+                            </label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="preferredDays" value="monday">
+                                    <span class="checkbox-label">Monday</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="preferredDays" value="tuesday">
+                                    <span class="checkbox-label">Tuesday</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="preferredDays" value="wednesday">
+                                    <span class="checkbox-label">Wednesday</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="preferredDays" value="thursday">
+                                    <span class="checkbox-label">Thursday</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="preferredDays" value="friday">
+                                    <span class="checkbox-label">Friday</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="preferredDays" value="saturday">
+                                    <span class="checkbox-label">Saturday</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="preferredDays" value="sunday">
+                                    <span class="checkbox-label">Sunday</span>
+                                </label>
+                            </div>
+                            <div class="form-error" id="preferredDaysError" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <!-- Preferred Time -->
+                        <div class="form-group">
+                            <label for="preferredTime" class="form-label">
+                                <i class="fas fa-clock"></i>
+                                Preferred Time *
+                            </label>
+                            <div class="form-input-container">
+                                <select id="preferredTime" name="preferredTime" class="form-select" required>
+                                    <option value="" disabled selected>Choose your preferred time...</option>
+                                    <option value="morning">Morning (8:00 AM - 12:00 PM)</option>
+                                    <option value="afternoon">Afternoon (12:00 PM - 5:00 PM)</option>
+                                    <option value="evening">Evening (5:00 PM - 9:00 PM)</option>
+                                    <option value="flexible">I'm flexible with timing</option>
+                                </select>
+                            </div>
+                            <div class="form-error" id="preferredTimeError" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <!-- Additional Notes -->
+                        <div class="form-group">
+                            <label for="notes" class="form-label">
+                                <i class="fas fa-comment"></i>
+                                Additional Notes (Optional)
+                            </label>
+                            <div class="form-input-container">
+                                <textarea 
+                                    id="notes" 
+                                    name="notes" 
+                                    class="form-textarea" 
+                                    placeholder="Tell us about your specific learning goals, current level, or any other preferences..."
+                                    rows="4"
+                                    maxlength="500"
+                                ></textarea>
+                            </div>
+                            <div class="character-count">
+                                <span id="notesCount">0</span>/500 characters
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="schedule-submit" id="submitButton">
+                            <span id="buttonText">
+                                <i class="fas fa-paper-plane"></i>
+                                Submit Request
+                            </span>
+                            <div class="spinner" id="buttonSpinner" style="display: none;"></div>
+                        </button>
+                    </form>
+
+                    <!-- Help Text -->
+                    <div class="schedule-help">
+                        <div class="help-item">
+                            <i class="fas fa-clock"></i>
+                            <span>We'll respond within 24 hours</span>
+                        </div>
+                        <div class="help-item">
+                            <i class="fas fa-video"></i>
+                            <span>All sessions are conducted online via video call</span>
+                        </div>
+                        <div class="help-item">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>Flexible scheduling to match your availability</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="submitter-date-time">
-                    <div class="submitter-date" id="dateContainer" style="display: none">
-                        <label for="date">Date</label>
-                        <input type="text" id="date" class="input" placeholder="Select a date"/>
+                <!-- Info Panel -->
+                <div class="schedule-info">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3 class="info-title">Expert Instructors</h3>
+                        <p class="info-description">
+                            Learn from experienced tutors with advanced degrees and real-world expertise in their fields.
+                        </p>
                     </div>
-                    <div class="submitter-time" id="timeContainer" style="display: none">
-                        <label for="time">Select Time</label>
-                        <select id="time" class="input">
-                            <option value="" disabled selected></option>
-                        </select>
+
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        <h3 class="info-title">Online Learning</h3>
+                        <p class="info-description">
+                            Convenient online sessions that you can join from anywhere with just a computer and internet connection.
+                        </p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="info-title">Personalized Approach</h3>
+                        <p class="info-description">
+                            Each session is tailored to your specific learning needs and academic goals.
+                        </p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3 class="info-title">24/7 Support</h3>
+                        <p class="info-description">
+                            Get help whenever you need it. Our support team is available around the clock.
+                        </p>
                     </div>
                 </div>
-
-                <button class="submitButton" id="submitButton" onclick="validateAndSubmitAppointment()">Submit</button>
             </div>
-        </div>
-        <%- include("./partials/footer.ejs") %>
+        </section>
 
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script>
-            function validateAndSubmitAppointment() {
-                const course = document.getElementById("course").value
-                const date = document.getElementById("date").value
-                const time = document.getElementById("time").value;
+        <!-- Next Steps Section -->
+        <section class="schedule-next-steps">
+            <div class="next-steps-content">
+                <h2 class="next-steps-title">What Happens Next?</h2>
+                <div class="steps-grid">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Review</h3>
+                        <p class="step-description">
+                            We'll review your request and check our tutors' availability for your preferred times.
+                        </p>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Confirmation</h3>
+                        <p class="step-description">
+                            You'll receive an email within 24 hours with confirmed session details and meeting link.
+                        </p>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Learning</h3>
+                        <p class="step-description">
+                            Join your session and start learning with your dedicated tutor.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-                if (!course || !date || !time) {
-                    const submitFlag = document.getElementById("submitFlag")
-                    submitFlag.innerHTML = "All fields are required"
-                    submitFlag.style.color = "#D8000C"
-                    submitFlag.style.backgroundColor = "#FFBABA"
-                    submitFlag.style.display = "block"
-                    return
-                }
+    <%- include("./partials/footer.ejs") %>
 
-                submitAppointment()
-            }
-            
-            async function submitAppointment() {
-                const course = document.getElementById("course").value
-                const date = document.getElementById("date").value
-                const time = document.getElementById("time").value
-
-                const result = await fetch("/api/schedule-appointment", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        course,
-                        date,
-                        time
-                    }),
-                })
-
-                const message = await result.json()
-    
-                document.getElementById("submitFlag").innerHTML = message["message"]
-                document.getElementById("submitFlag").style.display = "block"
-                
-                if (result.status === 200) {
-                    document.getElementById("submitFlag").style.color = "#0a3755"
-                    document.getElementById("submitFlag").style.backgroundColor = "#b7dffa"
-                    await sleep(3000)
-                    window.location.href = "/"
-                }
-                else {
-                    document.getElementById("submitFlag").style.color = "#D8000C"
-                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
-                    enableSubmitButton()
-                    await sleep(3000)
-                }
-    
-                function sleep(ms) {
-                    return new Promise(resolve => setTimeout(resolve, ms));
-                }
-    
-                function disableSubmitButton() {
-                    document.getElementById("submitButton").disabled = true
-                    document.getElementById("submitButton").style.backgroundColor = "#b7dffa"
-                    document.getElementById("submitButton").style.cursor = "default"
-                }
-
-                function enableSubmitButton() {
-                    document.getElementById("submitButton").disabled = false
-                    document.getElementById("submitButton").style.backgroundColor = "#0a3755"
-                    document.getElementById("submitButton").style.cursor = "pointer"
-                }
-            }
-        </script>
-        <script type="module">
-            let tutorTimes = {}
-            let classesTutors = {}
-            let datePicker
-
-            document.addEventListener("DOMContentLoaded", async function () {
-                tutorTimes = await fetchJson("/resources/tutorTimes.json")
-                classesTutors = await fetchJson("/resources/coursesTutors.json");
-
-                datePicker = flatpickr("#date", {
-                    enableTime: false, 
-                    dateFormat: "Y-m-d",
-                    disable: [],
-                    minDate: "today",
-                    onChange: function(selectedDates, dateStr) {
-                        updateTimes(dateStr)
-                        validateDate(dateStr)
-                    },
-                })
-
-                const courseSelect = document.getElementById("course")
-                courseSelect.addEventListener("change", onClassChange)
-            })
-
-            async function fetchJson(url) {
-                const response = await fetch(url)
-                return await response.json()
-            }
-
-            function onClassChange() {
-                const selectedClass = document.getElementById("course").value
-                const tutor = classesTutors[selectedClass]
-
-                const dateContainer = document.getElementById("dateContainer")
-                const timeContainer = document.getElementById("timeContainer")
-
-                dateContainer.style.display = tutor ? "block" : "none"
-                document.getElementById("date").value = ""
-                document.getElementById("time").innerHTML = '<option value="" disabled selected></option>'
-                timeContainer.style.display = "none"
-                document.getElementById("submitFlag").hidden = true
-
-                if (tutor) {
-                    const availableDates = Object.keys(tutorTimes[tutor] || {})
-                    updateDatePicker(availableDates)
-                }
-            }
-
-            function updateDatePicker(availableDates) {
-                const formattedDates = availableDates.map((date) =>
-                    date.toString()
-                )
-
-                if (datePicker) {
-                    datePicker.set("disable", [
-                        function (date) {
-                            const dateStr = date.toISOString().split("T")[0]
-                            return !formattedDates.includes(dateStr)
-                        },
-                    ]);
-                    datePicker.redraw()
-                }
-            }
-
-            function updateTimes(date) {
-                const timeSelect = document.getElementById("time")
-                timeSelect.innerHTML =
-                    '<option value="" disabled selected></option>'
-
-                const timeContainer = document.getElementById("timeContainer")
-                const selectedClass = document.getElementById("course").value
-                const tutor = classesTutors[selectedClass]
-                const submitFlag = document.getElementById("submitFlag")
-
-                if (tutor && date) {
-                    const availableTimesForDate =
-                        tutorTimes[tutor]?.[date] || []
-
-                    if (availableTimesForDate.length === 0) {
-                        timeContainer.style.display = "none"
-                    } else {
-                        submitFlag.style.display = "none"
-                        availableTimesForDate.forEach((time) => {
-                            const option = document.createElement("option")
-                            option.value = time
-                            option.textContent = time
-                            timeSelect.appendChild(option)
-                        });
-                        timeContainer.style.display = "block"
-                    }
-                } else {
-                    timeContainer.style.display = "none"
-                    submitFlag.style.display = "none"
-                }
-            }
-
-            function validateDate(date) {
-                const selectedClass = document.getElementById("course").value
-                const tutor = classesTutors[selectedClass]
-                const submitFlag = document.getElementById("submitFlag")
-                submitFlag.hidden = true
-
-                if (tutor && date) {
-                    const availableTimesForDate =
-                        tutorTimes[tutor]?.[date] || []
-                }
-            }
-        </script>
-    </body>
+    <!-- JavaScript -->
+    <script src="/js/navigation.js"></script>
+    <script src="/js/schedule.js"></script>
+</body>
 </html>

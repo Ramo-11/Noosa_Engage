@@ -1,63 +1,279 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Prices</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Plans - Noosa Engage</title>
+    <meta name="description" content="Affordable tutoring plans for all education levels. Flexible pricing options for elementary, high school, and college students.">
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/nav.css">
     <link rel="stylesheet" href="/styles/prices.css">
+    <link rel="stylesheet" href="/styles/footer.css">
     <link rel="shortcut icon" href="/images/Logo-white.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XEW6Y9S2YM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XEW6Y9S2YM');
+    </script>
 </head>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-XEW6Y9S2YM');
-</script>
 <body>
     <%- include("./partials/nav.ejs") %>
-    <div class="main-content">
-        <div class="title-div">
-            <h1>Prices</h1>
-        </div>
-        <div class="prices-divs">
-            <div class="elementary-middle-school">
-                <div class="picture_div">
-                    <img src="/images/elementary.png" alt="Photo of elementary school">
+    
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="pricing-hero">
+            <div class="pricing-hero-content">
+                <h1 class="pricing-hero-title">Education Level Pricing</h1>
+                <p class="pricing-hero-subtitle">
+                    Our pricing is tailored to each education level to provide the most appropriate 
+                    and effective tutoring experience for every student's academic needs.
+                </p>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section class="pricing-section">
+            <div class="pricing-container">
+                <!-- Pricing Table -->
+                <div class="pricing-table">
+                    <div class="pricing-table-header">
+                        <h2 class="pricing-table-title">Tutoring Rates by Education Level</h2>
+                        <p class="pricing-table-subtitle">All sessions are one-on-one with expert instructors</p>
+                    </div>
+                    <div class="pricing-table-body">
+                        <!-- Elementary & Middle School -->
+                        <div class="pricing-row">
+                            <div class="pricing-level">
+                                <img src="/images/elementary.png" alt="Elementary & Middle School" class="pricing-level-image" loading="lazy">
+                                <div class="pricing-level-info">
+                                    <h3>Elementary & Middle School</h3>
+                                    <p>Grades K-8 • Foundational subjects</p>
+                                </div>
+                            </div>
+                            <div class="pricing-option">
+                                <div class="pricing-sessions">1 Session/Week</div>
+                                <div class="pricing-duration">1 hour per session</div>
+                                <div class="pricing-price">
+                                    <span class="pricing-price-currency">$</span>30
+                                </div>
+                            </div>
+                            <div class="pricing-option">
+                                <div class="pricing-sessions">2 Sessions/Week</div>
+                                <div class="pricing-duration">1 hour per session</div>
+                                <div class="pricing-price">
+                                    <span class="pricing-price-currency">$</span>50
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- High School -->
+                        <div class="pricing-row">
+                            <div class="pricing-level">
+                                <img src="/images/highschool.png" alt="High School" class="pricing-level-image" loading="lazy">
+                                <div class="pricing-level-info">
+                                    <h3>High School</h3>
+                                    <p>Grades 9-12 • Advanced subjects & test prep</p>
+                                </div>
+                            </div>
+                            <div class="pricing-option">
+                                <div class="pricing-sessions">1 Session/Week</div>
+                                <div class="pricing-duration">1 hour per session</div>
+                                <div class="pricing-price">
+                                    <span class="pricing-price-currency">$</span>40
+                                </div>
+                            </div>
+                            <div class="pricing-option">
+                                <div class="pricing-sessions">2 Sessions/Week</div>
+                                <div class="pricing-duration">1 hour per session</div>
+                                <div class="pricing-price">
+                                    <span class="pricing-price-currency">$</span>70
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- College & Above -->
+                        <div class="pricing-row">
+                            <div class="pricing-level">
+                                <img src="/images/college.png" alt="College & Above" class="pricing-level-image" loading="lazy">
+                                <div class="pricing-level-info">
+                                    <h3>College & Above</h3>
+                                    <p>University & professional development</p>
+                                </div>
+                            </div>
+                            <div class="pricing-option">
+                                <div class="pricing-sessions">1 Session/Week</div>
+                                <div class="pricing-duration">1 hour per session</div>
+                                <div class="pricing-price">
+                                    <span class="pricing-price-currency">$</span>50
+                                </div>
+                            </div>
+                            <div class="pricing-option">
+                                <div class="pricing-sessions">2 Sessions/Week</div>
+                                <div class="pricing-duration">1 hour per session</div>
+                                <div class="pricing-price">
+                                    <span class="pricing-price-currency">$</span>80
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                </div>
+
+                <!-- Note Section -->
+                <div class="pricing-note">
+                    <div class="pricing-note-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="pricing-note-title">Flexible Budget Options Available</h3>
+                    <p class="pricing-note-text">
+                        We believe everyone deserves access to quality education. 
+                        Contact us to discuss flexible payment plans and budget-friendly options 
+                        tailored to your specific needs.
+                    </p>
                 </div>
-                <div class="description">
-                    <h2>Elementary & Middle School</h2>
-                    <h3>$30 (1 session/week)</h3>
-                    <h3>$50 (2 sessions/week)</h3>
-                    <h4>1 hour per session</h4>
+
+                <!-- CTA Button -->
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="/schedule" class="pricing-cta-button">
+                        <i class="fas fa-calendar-plus"></i>
+                        Schedule Your Session
+                    </a>
                 </div>
             </div>
-            <div class="high-school">
-                <div class="picture_div">
-                    <img src="/images/highschool.png" alt="Photo of high school">
-                </div>
-                <div class="description">
-                    <h2>High School</h2>
-                    <h3>$40 (1 session/week)</h3>
-                    <h3>$70 (2 sessions/week)</h3>
-                    <h4>1 hour per session</h4>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="pricing-faq">
+            <div class="pricing-container">
+                <h2 class="faq-title">Frequently Asked Questions</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            How do I know which pricing level applies to me?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Pricing is based on your current education level. Choose Elementary & Middle School for grades K-8, High School for grades 9-12, and College & Above for university students and professionals.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            How are sessions conducted?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                All sessions are conducted online through video conferencing platforms. You'll receive session links and materials via email. We use interactive whiteboards and screen sharing for an engaging learning experience.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            Can I reschedule sessions?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Yes! We understand that schedules can change. We require 24 hours notice for any changes to your scheduled sessions to avoid cancellation fees.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            What payment methods do you accept?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                We prefer you use Zelle for your payments, but we also accept credit and debit cards through our secure payment processor.
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="college-other-level">
-                <div class="picture_div">
-                    <img src="/images/college.png" alt="Photo of college">
-                </div>
-                <div class="description">
-                    <h2>College & Above</h2>
-                    <h3>$50 (1 session/week)</h3>
-                    <h3>$80 (2 sessions/week)</h3>
-                    <h4>1 hour per session</h4>
-                </div>
+        </section>
+
+        <!-- Single CTA Section -->
+        <section class="pricing-cta-section">
+            <div class="pricing-cta-content">
+                <h2 class="pricing-cta-title">Ready to Start Learning?</h2>
+                <p class="pricing-cta-subtitle">
+                    Schedule your first tutoring session today and take the next step in your educational journey.
+                </p>
+                <a href="/schedule" class="pricing-cta-button">
+                    <i class="fas fa-calendar-plus"></i>
+                    Schedule Your Session
+                </a>
             </div>
-        </div>
-        <div class="note">
-            <p>Flexible budgeting options are available on request. Contact us for more information.</p>
-        </div>
-        <button class="button_to_register"><a class="schedule" href="/schedule">Register Now</a></button>
-    </div>
+        </section>
+    </main>
+
     <%- include("./partials/footer.ejs") %>
+
+    <!-- JavaScript -->
+    <script src="/js/navigation.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        function toggleFAQ(button) {
+            const faqItem = button.parentElement;
+            const answer = faqItem.querySelector('.faq-answer');
+            const isActive = button.classList.contains('active');
+            
+            // Close all other FAQs
+            document.querySelectorAll('.faq-question.active').forEach(activeButton => {
+                if (activeButton !== button) {
+                    activeButton.classList.remove('active');
+                    activeButton.parentElement.querySelector('.faq-answer').classList.remove('active');
+                }
+            });
+            
+            // Toggle current FAQ
+            if (isActive) {
+                button.classList.remove('active');
+                answer.classList.remove('active');
+            } else {
+                button.classList.add('active');
+                answer.classList.add('active');
+            }
+        }
+
+        // Initialize pricing page animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add scroll animations to pricing cards
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.pricing-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
 </body>
 </html>
