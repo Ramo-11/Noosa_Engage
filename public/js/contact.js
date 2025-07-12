@@ -69,7 +69,7 @@ async function submitContact(fullName, email, subject, description) {
             document.getElementById('contactForm').reset();
             
             setTimeout(() => {
-                window.location.href = '/';
+                window.location.href = '/contact';
             }, 4000);
         } else {
             showAlert('error', result.message);

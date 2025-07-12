@@ -127,7 +127,7 @@ function showCodeInputForm(email) {
                     class="form-input" 
                     placeholder="Enter new password"
                     required
-                    minlength="8"
+                    minlength="6"
                     autocomplete="new-password"
                 >
             </div>
@@ -148,7 +148,7 @@ function showCodeInputForm(email) {
                     class="form-input" 
                     placeholder="Confirm new password"
                     required
-                    minlength="8"
+                    minlength="6"
                     autocomplete="new-password"
                 >
             </div>
@@ -221,7 +221,7 @@ function addPasswordResetValidation() {
     const newPasswordInput = document.getElementById('newPassword');
     if (newPasswordInput) {
         newPasswordInput.addEventListener('input', function() {
-            if (this.value.length >= 8) {
+            if (this.value.length >= 6) {
                 this.classList.remove('error');
                 const newPasswordError = document.getElementById('newPasswordError');
                 if (newPasswordError) newPasswordError.style.display = 'none';
@@ -388,7 +388,7 @@ function showAlert(type, message) {
     
     alert.style.display = 'flex';
     
-    // Auto-hide after 8 seconds for non-success messages
+    // Auto-hide after 6 seconds for non-success messages
     if (type !== 'success') {
         setTimeout(() => {
             if (alert.style.display !== 'none') {

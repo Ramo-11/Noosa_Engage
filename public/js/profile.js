@@ -40,11 +40,6 @@ document.getElementById('profileForm')?.addEventListener('submit', async functio
         hasErrors = true;
     }
     
-    if (!phoneNumber) {
-        showFieldError('phoneNumber', 'Please enter your phone number');
-        hasErrors = true;
-    }
-    
     // Only proceed to API call if validation passes
     if (hasErrors) {
         console.log('Validation failed, not submitting form');

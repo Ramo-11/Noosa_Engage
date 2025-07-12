@@ -8,7 +8,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const route = express.Router()
-const { sendEmail } = require("./mail")
+const { sendContactEmail } = require("./contactController")
 const { processInitialAppointmentRequest, processAppointmentRequest, cancelAppointment } = require("./appointmentController")
 const renderCoursePage = require("./courseController")
 const { getUserData, renderHomePage, updateUser, forgotPassword, resetPassword } = require("./user/userController")
@@ -35,7 +35,7 @@ route.get('/logout', logout);
 route.get("/forgot-password", (req, res) => res.render("forgot-password"))
 
 // *********** POST requests **********
-route.post("/api/send-email", sendEmail)
+route.post("/api/send-email", sendContactEmail)
 route.post("/api/schedule-appointment", processInitialAppointmentRequest)
 route.post("/api/cancel-appointment", cancelAppointment)
 route.post("/api/login", loginUser)

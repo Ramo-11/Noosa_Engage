@@ -100,13 +100,13 @@ async function updateUser(req, res) {
         return res.status(400).send({ message: "Unable to update user: email is invalid" });
     }
 
-    if (!phoneNumber) {
-        generalLogger.error("Unable to update user. phone number [" + phoneNumber + "] is not valid");
-        return res.status(400).send({ message: "Unable to update user: phone number cannot be empty" });
-    }
-
     try {
-        const updates = { fullName, email, phoneNumber };
+        if (phoneNumber == undefined || phoneNumber == "") {
+            generalLogger.debug("Phone number is not provided, setting it to undefined");
+            const updates = { fullName, email, phoneNumber: undefined };
+        } else {
+            const updates = { fullName, email, phoneNumber };
+        } 
 
         if (req.file != undefined) {
             const picture = req.file.path;

@@ -13,12 +13,12 @@
         "exampleTopics": ["Linear Equations", "Polynomials", "Quadratic Functions", "Systems of Equations"],
         "bestFor": "High school students and those preparing for standardized tests requiring strong algebra skills."
     },
-    "arabic": {
-        "className": "Arabic Language",
+    "languages": {
+        "className": "Language Learning",
         "courseImage": "Arabic.webp",
-        "classDescription": "Learn Arabic language skills from beginner to advanced levels with native speaker instructors.",
-        "exampleTopics": ["Arabic Alphabet", "Grammar & Syntax", "Conversation Practice", "Classical Arabic"],
-        "bestFor": "Anyone interested in learning Arabic for academic, professional, or personal enrichment."
+        "classDescription": "Master essential language skills in Arabic, English, Spanish, and French with native speaker instructors from beginner to advanced levels.",
+        "exampleTopics": ["Alphabet & Pronunciation", "Grammar & Syntax", "Conversation Practice", "Cultural Context"],
+        "bestFor": "Anyone looking to learn new languages for academic, professional, or personal growth."
     },
     "chemistry": {
         "className": "Chemistry",
@@ -87,7 +87,7 @@
         "className": "Quran Studies",
         "courseImage": "Quran.webp",
         "classDescription": "Study the Quran with proper recitation, understanding, and spiritual guidance from qualified instructors.",
-        "exampleTopics": ["Tajweed Rules", "Quranic Arabic", "Tafseer (Interpretation)", "Memorization (Hifz)"],
+        "exampleTopics": ["Tajweed Rules", "Quranic Arabic", "Memorization (Hifz)"],
         "bestFor": "Muslims of all ages seeking to deepen their understanding and connection with the Quran."
     },
     "web-development": {
