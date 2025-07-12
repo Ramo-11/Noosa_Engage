@@ -33,6 +33,8 @@ route.get("/home", renderLandingPageIfNotAuthenticated, getUserData, renderHomeP
 route.get("/signup", (req, res) => res.render("signup"))
 route.get('/logout', logout);
 route.get("/forgot-password", (req, res) => res.render("forgot-password"))
+route.get("/privacy-policy", (req, res) => res.render("privacy-policy"))
+route.get("/terms-of-service", (req, res) => res.render("terms-of-service"))
 
 // *********** POST requests **********
 route.post("/api/send-email", sendContactEmail)
