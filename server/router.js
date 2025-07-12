@@ -45,5 +45,6 @@ route.post('/api/create-invoice', processNewInvoiceRequest)
 route.post('/api/confirm-invoice-payment', confirmInvoicePayment)
 route.post("/api/update-user-info", isAuthenticated, multer.single("picture"), updateUser)
 route.post("/api/forgot-password", forgotPassword)
+route.post("/api/reset-password", resetPassword)
 
 module.exports = route

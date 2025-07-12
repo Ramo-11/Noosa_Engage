@@ -69,6 +69,7 @@ async function sendSignupEmail(user) {
 async function sendAppointmentConfirmationEmail(fullName, course, date, time, email, res) {
     let mailTransporter = nodemailer.createTransport({
         service: "gmail",
+        secure: false,
         auth: {
             user: "noosa@noosaengage.com",
             pass: process.env.EMAIL_PASSWORD

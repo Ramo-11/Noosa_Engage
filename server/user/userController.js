@@ -137,6 +137,7 @@ async function forgotPassword(req, res) {
     const { email } = req.body;
 
     let mailTransporter = nodemailer.createTransport({
+            name: "NoosaEngage",
             service: "gmail",
             auth: {
                 user: "noosa@noosaengage.com",
@@ -171,28 +172,71 @@ async function forgotPassword(req, res) {
             to: email,
             subject: "Password Reset - Noosa Engage",
             html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                    <h2 style="color: #0A3755;">Password Reset Request</h2>
-                    <p>Hello ${user.fullName},</p>
-                    <p>We received a request to reset your password for your Noosa Engage account.</p>
-                    <p>Your password reset code is:</p>
-                    <div style="background-color: #f4f4f4; padding: 20px; text-align: center; margin: 20px 0;">
-                        <h1 style="color: #0A3755; font-size: 36px; margin: 0; letter-spacing: 4px;">${resetToken}</h1>
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    <title>Password Reset</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #ffffff;
+                            color: #333333;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .container {
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                        }
+                        .code-box {
+                            background-color: #f4f4f4;
+                            padding: 20px;
+                            text-align: center;
+                            margin: 20px 0;
+                        }
+                        .code-box h1 {
+                            color: #0A3755;
+                            font-size: 36px;
+                            margin: 0;
+                            letter-spacing: 4px;
+                        }
+                        .footer {
+                            color: #666666;
+                            font-size: 14px;
+                            margin-top: 30px;
+                            border-top: 1px solid #eeeeee;
+                            padding-top: 20px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h2 style="color: #0A3755;">Password Reset Request</h2>
+                        <p>Hello ${user.fullName},</p>
+                        <p>We received a request to reset your password for your Noosa Engage account.</p>
+                        <p>Your password reset code is:</p>
+                        <div class="code-box">
+                            <h1>${resetToken}</h1>
+                        </div>
+                        <p>This code will expire in 15 minutes for security purposes.</p>
+                        <p>If you didn't request this password reset, please ignore this email or contact our support team.</p>
+                        <div class="footer">
+                            <p>
+                                Best regards,<br>
+                                The Noosa Engage Team
+                            </p>
+                        </div>
                     </div>
-                    <p>This code will expire in 15 minutes for security purposes.</p>
-                    <p>If you didn't request this password reset, please ignore this email or contact our support team.</p>
-                    <hr style="border: 1px solid #eee; margin: 30px 0;">
-                    <p style="color: #666; font-size: 14px;">
-                        Best regards,<br>
-                        The Noosa Engage Team
-                    </p>
-                </div>
+                </body>
+                </html>
             `
         };
 
-        // Debug: Log email details
-        generalLogger.info("Attempting to send email to: " + email);
-        generalLogger.info("Email subject: " + emailDetails.subject);
+
+        generalLogger.debug("Attempting to send forgot password email to: " + email);
 
         await new Promise((resolve, reject) => {
             mailTransporter.sendMail(emailDetails, (error, info) => {
@@ -202,8 +246,6 @@ async function forgotPassword(req, res) {
                     reject(error);
                 } else {
                     generalLogger.info("Password reset email sent successfully!");
-                    generalLogger.info("Email info: " + JSON.stringify(info));
-                    generalLogger.info("Message ID: " + info.messageId);
                     resolve(info);
                 }
             });
@@ -219,11 +261,62 @@ async function forgotPassword(req, res) {
     }
 }
 
+async function resetPassword(req, res) {
+    const { email, resetCode, newPassword } = req.body;
+
+    // Validate inputs
+    if (!email || typeof email !== "string" || !validateEmail(email)) {
+        generalLogger.error("Reset password failed: Invalid email [" + email + "]");
+        return res.status(400).send({ message: "Invalid email address" });
+    }
+
+    if (!resetCode || typeof resetCode !== "string" || resetCode.length !== 6 || !/^\d{6}$/.test(resetCode)) {
+        generalLogger.error("Reset password failed: Invalid reset code [" + resetCode + "]");
+        return res.status(400).send({ message: "Invalid reset code. Please enter a 6-digit code" });
+    }
+
+    if (!newPassword || typeof newPassword !== "string" || newPassword.length < 6) {
+        generalLogger.error("Reset password failed: Invalid password length");
+        return res.status(400).send({ message: "Password must be at least 6 characters long" });
+    }
+
+    try {
+        // Find user with matching email and reset token
+        const user = await User.findOne({ 
+            email,
+            passwordResetToken: resetCode,
+            passwordResetExpires: { $gt: Date.now() } // Check if token hasn't expired
+        });
+
+        if (!user) {
+            generalLogger.error("Reset password failed: Invalid or expired reset code for email [" + email + "]");
+            return res.status(400).send({ message: "Invalid or expired reset code. Please request a new password reset" });
+        }
+
+        // Update user password and clear reset token fields
+        await User.findByIdAndUpdate(user._id, {
+            password: newPassword, // Assuming your User model has password hashing middleware
+            passwordResetToken: undefined,
+            passwordResetExpires: undefined
+        });
+
+        generalLogger.info("Password reset successful for email: " + email);
+        return res.status(200).send({ 
+            message: "Password reset successful! You can now log in with your new password" 
+        });
+
+    } catch (error) {
+        generalLogger.error("Error in reset password: " + error);
+        return res.status(500).send({ message: "Internal server error" });
+    }
+}
+
 module.exports = {
     getProfile,
     getUser,
     getUserData,
     renderHomePage,
     updateUser,
-    forgotPassword
+    forgotPassword,
+    resetPassword
 }
