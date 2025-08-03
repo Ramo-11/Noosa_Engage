@@ -7,7 +7,6 @@ const originalValues = {
 
 // Form validation and submission
 document.getElementById('profileForm')?.addEventListener('submit', async function(e) {
-    console.log('Profile form submitted');
     e.preventDefault();
     
     const formData = new FormData();
@@ -42,7 +41,6 @@ document.getElementById('profileForm')?.addEventListener('submit', async functio
     
     // Only proceed to API call if validation passes
     if (hasErrors) {
-        console.log('Validation failed, not submitting form');
         return;
     }
     
@@ -51,16 +49,13 @@ document.getElementById('profileForm')?.addEventListener('submit', async functio
 });
 
 async function submitProfile(formData) {
-    console.log('Submitting profile update...');
     const submitButton = document.getElementById('submitButton');
     
     // Store original button content for proper reset
     const originalButtonHTML = submitButton.innerHTML;
     
-    console.log("blabla")
     // Show loading state
     setButtonLoading(true);
-    console.log("blabla2")
     
     try {
         const response = await fetch('/api/update-user-info', {
@@ -82,6 +77,9 @@ async function submitProfile(formData) {
             fileInput.value = '';
             
             exitEditMode();
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
         } else {
             showAlert('error', result.message);
         }
@@ -95,7 +93,6 @@ async function submitProfile(formData) {
 }
 
 function setButtonLoading(isLoading) {
-    console.log('Setting button loading state:', isLoading);
     const submitButton = document.getElementById('submitButton');
     
     if (isLoading) {

@@ -101,14 +101,20 @@ async function updateUser(req, res) {
     }
 
     try {
-        if (phoneNumber == undefined || phoneNumber == "") {
-            generalLogger.debug("Phone number is not provided, setting it to undefined");
-            const updates = { fullName, email, phoneNumber: undefined };
-        } else {
-            const updates = { fullName, email, phoneNumber };
-        } 
+        let phoneValue = phoneNumber;
 
-        if (req.file != undefined) {
+        if (phoneNumber === undefined) {
+            generalLogger.debug("Phone number is not provided, setting it to undefined");
+            phoneValue = undefined;
+        }
+
+        let updates = {
+            fullName,
+            email,
+            phoneNumber: phoneValue
+        };
+
+        if (req.file !== undefined) {
             const picture = req.file.path;
             const user_ = await User.findById(userId);
             const result = await cloudinary.uploader.upload(picture, { folder: user_.name });
@@ -123,7 +129,7 @@ async function updateUser(req, res) {
         generalLogger.debug("Updated user details: " + JSON.stringify(updates));
         return res.status(200).send({ message: "Success: user was updated successfully" });
     } catch (error) {
-        if (error.codeName == "DuplicateKey") {
+        if (error.codeName === "DuplicateKey") {
             generalLogger.error("Unable to update user. Email [" + email + "] is already being used");
             return res.status(400).send({ message: "Unable to update user: email is already being used" });
         } else {
