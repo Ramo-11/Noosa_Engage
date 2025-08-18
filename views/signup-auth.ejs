@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Verify your account - Noosa Engage</title>
+    <meta name="description" content="Verify Your Email. Please enter the 6-digit code sent to your email to complete your registration. If you don’t see the email, check your spam folder or request a new code." />
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/styles/general.css" />
+    <link rel="stylesheet" href="/styles/nav.css" />
+    <link rel="stylesheet" href="/styles/signup-auth.css" />
+    <link rel="stylesheet" href="/styles/footer.css" />
+    <link rel="shortcut icon" href="/images/Logo-white.png" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XEW6Y9S2YM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XEW6Y9S2YM');
+    </script>
+</head>
+<body>
+    <%- include("./partials/nav.ejs") %>
+    
+    <main class="main-content">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-logo">
+                        <img src="/images/logo.png" alt="Noosa Engage Logo" />
+                    </div>
+                    <h1 class="auth-title">Verify Your Email</h1>
+                    <p class="auth-subtitle">Enter the 6-digit code sent to your email to verify your account.</p>
+                </div>
+
+                <div id="authAlert" class="auth-alert" style="display: none;">
+                    <i class="fas fa-info-circle"></i>
+                    <span id="alertMessage"></span>
+                </div>
+
+                <form class="auth-form" id="signupAuthForm" novalidate>
+                    <div class="form-group">
+                        <label for="verificationCode" class="form-label">Verification Code</label>
+                        <div class="form-input-container">
+                            <input 
+                                type="text"
+                                id="verificationCode"
+                                name="verificationCode"
+                                class="form-input"
+                                placeholder="Enter 6-digit code"
+                                required
+                                maxlength="6"
+                                pattern="\d{6}"
+                                inputmode="numeric"
+                                autocomplete="one-time-code"
+                            />
+                        </div>
+                        <div class="form-error" id="verificationCodeError" style="display: none;">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span></span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="auth-button" id="submitButton">
+                        <span id="buttonText">Send 6-Digit Code</span>
+                        <div class="spinner" id="buttonSpinner" style="display: none;"></div>
+                    </button>
+                </form>
+
+                <div class="help-text">
+                    <div class="help-item">
+                        <i class="fas fa-clock"></i>
+                        <span>6-digit code will be sent shortly</span>
+                    </div>
+                    <div class="help-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Check your spam folder if you don't see the email</span>
+                    </div>
+                    <div class="help-item">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Still need help? <a href="/contact">Contact support</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <%- include("./partials/footer.ejs") %>
+
+    <!-- JavaScript -->
+    <script src="/js/navigation.js"></script>
+    <script src="/js/signup-auth.js"></script>
+</body>
+</html>

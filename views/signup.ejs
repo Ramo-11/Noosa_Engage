@@ -235,14 +235,15 @@
                 const result = await response.json();
                 
                 if (response.ok) {
-                    showAlert('success', result.message);
-                    setTimeout(() => {
-                        window.location.href = '/login';
-                    }, 1500);
-                } else {
-                    showAlert('error', result.message);
-                    resetButton(originalButtonHTML);
-                }
+                showAlert('success', result.message);
+                setTimeout(() => {
+                    window.location.href = '/signup-auth';
+                }, 1000);
+            } else {
+                showAlert('error', result.message);
+                resetButton(originalButtonHTML);
+            }
+
             } catch (error) {
                 console.error('Signup error:', error);
                 showAlert('error', 'An error occurred. Please try again.');

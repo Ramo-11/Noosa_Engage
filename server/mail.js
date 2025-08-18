@@ -94,5 +94,41 @@ async function sendNewInvoiceConfirmationEmail(fullName, invoiceNumber, hours, p
     })
 
 }
+async function sendSignupVerificationCodeEmail({email, fullName, code}) {
 
-module.exports = { sendSignupEmail, sendNewInvoiceConfirmationEmail }
+    const mailTransporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "noosa@noosaengage.com",
+            pass: process.env.EMAIL_PASSWORD
+        }
+    });
+
+    const htmlContent = `
+        <p>Hi ${fullName},</p>
+        <p>Thank you for signing up to Noosa Engage!</p>
+        <p>Please use the code below to verify your email address and complete your registration:</p>
+        <h2 style="letter-spacing: 3px;">${code}</h2>
+        <p>If you didn’t request this, please ignore this email.</p>
+        <p>Thanks,<br>The Noosa Engage Team</p>
+    `;
+    
+    const mailOptions = {
+        from: "noosa@noosaengage.com",
+        to: email,
+        subject: "Verify your email - Noosa Engage",
+        html: htmlContent
+    };
+
+    mailTransporter.sendMail(mailOptions, (error) => {
+        if (error) {
+            generalLogger.error("Failed to send signup verification email");
+            generalLogger.debug(error);
+        } else {
+            generalLogger.info(`Signup verification email sent to ${email}`);
+        }
+    });
+}
+
+
+module.exports = { sendSignupEmail, sendNewInvoiceConfirmationEmail, sendSignupVerificationCodeEmail }

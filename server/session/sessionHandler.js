@@ -1,13 +1,21 @@
 const User = require("../../models/User")
+const PendingUser = require("../../models/PendingUser");
 const bcrypt = require("bcrypt")
 const { generalLogger } = require("../utils/generalLogger")
-const { sendSignupEmail } = require("../mail")
+const { sendSignupEmail, sendSignupVerificationCodeEmail } = require("../mail")
 
 function isAuthenticated(req, res, next) {
     if (req.session.userLoggedIn) {
         return next()
     }
     res.redirect("/login")
+}
+
+function renderSignUpPageIfNotFilled(req, res, next) {
+    if (req.session.pendingSignup) {
+        return next()
+    }
+    res.redirect("/signup")
 }
 
 function authenticateIsAdmin(req, res, next) {
@@ -82,7 +90,7 @@ async function loginUser(req, res) {
 async function signupUser(req, res) {
     const {fullName, email, password, confirmedPassword } = req.body
 
-    if (!fullName || !email || !password || !confirmedPassword) {
+    if (!fullName || !email || !password || !confirmedPassword) {        
         generalLogger.error("Sign-up failed: Missing required fields")
         return res.status(400).send({ message: "Error: All fields are required" })
     }
@@ -93,26 +101,40 @@ async function signupUser(req, res) {
     }
 
     try {
-        const existingUser = await User.findOne({ email })
-        if (existingUser) {
-            generalLogger.error("Sign-up failed: Email already in use")
-            return res.status(400).send({ message: "Email already in use" })
+        const existingUser = await User.findOne({ email });
+        const existingPending = await PendingUser.findOne({ email });
+
+        if (existingUser || existingPending) {
+            return res.status(400).send({ message: "Email already in use" });
         }
 
-        const newUser = new User({
+        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+        const verificationExpires = new Date(Date.now() + 1 * 60 * 1000); // 5 minutes
+        
+        const pendingUser = new PendingUser({
             fullName,
             email,
-            password: password
-        })
+            password,
+            verificationCode,
+            verificationExpires
+        });
 
-        await newUser.save()
+        await pendingUser.save();
 
-        generalLogger.info(`New user registered: ${email}`)
-        sendSignupEmail(newUser)
-        return res.status(200).send({ message: "Signup successful" })
+        await sendSignupVerificationCodeEmail({ email, fullName, code: verificationCode });
+
+        req.session.pendingSignup = {
+            fullName,
+            email,
+            password,
+            verificationCode
+            };
+
+        return res.status(200).json({ message: "Verification code sent to your email" });
+
     } catch (error) {
-        generalLogger.error("Error registering user:", error)
-        return res.status(500).send({ message: "Internal server error" })
+        generalLogger.error("Signup error", error);
+        return res.status(500).json({ message: "Internal server error" });
     }
 }
 
@@ -123,5 +145,6 @@ module.exports = {
     isAuthenticated,
     authenticateIsAdmin,
     renderUserHomePageIfAuthenticated,
-    renderLandingPageIfNotAuthenticated
+    renderLandingPageIfNotAuthenticated,
+    renderSignUpPageIfNotFilled
 }
