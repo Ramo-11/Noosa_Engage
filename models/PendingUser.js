@@ -10,7 +10,13 @@ const pendingUserSchema = new mongoose.Schema({
         default: "https://res.cloudinary.com/dqtle5upc/image/upload/v1655088388/default_user_icon_vr0gng.jpg" 
     },
     verificationCode: { type: String, required: true },
-    verificationExpires: { type: Date, required: true }
+    verificationExpires: { type: Date, required: true },
+
+    expiresAt: {
+    type: Date,
+    default: () => new Date(Date.now() + 30 * 60 * 1000),
+    expires: 0
+  }
 }, { timestamps: true });
 
 // Hash password before saving (like in User)
