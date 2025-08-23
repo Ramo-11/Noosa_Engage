@@ -21,6 +21,7 @@ app.use(express.static("public"))
 app.use(cookieParser())
 app.use(sessionMiddleware);
 app.use(userMiddleware);
+app.set('trust proxy', 1);
 // ********** End Initialization **********
 
 app.use("/", router)
