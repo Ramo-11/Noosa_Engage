@@ -215,7 +215,8 @@
             const submitButton = document.getElementById('submitButton');
             const buttonText = document.getElementById('buttonText');
             const buttonSpinner = document.getElementById('buttonSpinner');
-            
+            const honeypot = document.getElementById('honeypot')?.value || '';
+
             // Store original button content for proper reset
             const originalButtonHTML = submitButton.innerHTML;
             
@@ -231,7 +232,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ fullName, email, password, confirmedPassword })
+                    body: JSON.stringify({ fullName, email, password, confirmedPassword, honeypot })
                 });
                 
                 const result = await response.json();
