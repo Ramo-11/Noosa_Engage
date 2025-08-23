@@ -1,10 +1,14 @@
 const User = require("../../models/User");
 const Appointment = require("../../models/Appointment");
 const Invoice = require("../../models/Invoice");
+const PendingUser = require("../../models/PendingUser");
 const { generalLogger } = require("../utils/generalLogger")
 const validateEmail = require('../utils/emailValidator')
+const { sendSignupEmail } = require("../mail");
 const cloudinary = require("../pictureHandlers/cloudinary")
 const nodemailer = require("nodemailer");
+const bcrypt = require("bcrypt")
+
 
 const getProfile = async (req, res) => {
     if (!req.session || !req.session.userId) {
@@ -316,6 +320,60 @@ async function resetPassword(req, res) {
         return res.status(500).send({ message: "Internal server error" });
     }
 }
+async function verifySignupCode(req, res) {
+    const { code } = req.body;
+    const sessionData = req.session.pendingSignup;
+
+    if (!sessionData) {
+        return res.status(400).send({ message: "No pending signup found" });
+    }
+
+    if (!code) {
+        return res.status(400).send({ message: "Verification code is required" });
+    }
+
+    if (code !== sessionData.verificationCode) {
+        return res.status(400).send({ message: "Invalid verification code" });
+    }
+
+    try {
+        const existingUser = await User.findOne({ email: sessionData.email });
+        if (existingUser) {
+            return res.status(400).send({ message: "Email already registered" });
+        }
+
+        const newUser = new User({
+            fullName: sessionData.fullName,
+            email: sessionData.email,
+            password: sessionData.password
+        });
+
+        await newUser.save();
+
+        delete req.session.pendingSignup;
+
+        try {
+            const deleteResult = await PendingUser.deleteOne({ email: sessionData.email });
+            if (deleteResult.deletedCount > 0) {
+                generalLogger.info(`PendingUser entry deleted for: ${sessionData.email}`);
+            } else {
+                generalLogger.warn(`No PendingUser entry found to delete for: ${sessionData.email}`);
+            }
+        } catch (err) {
+            generalLogger.error(`Failed to delete PendingUser entry for: ${sessionData.email}`);
+            generalLogger.debug(err);
+        }
+        sendSignupEmail(newUser);
+
+        generalLogger.info(`User verified and created: ${newUser.email}`);
+
+        return res.status(200).send({ message: "Verification successful, account created" });
+    } catch (error) {
+        generalLogger.error("Error verifying signup code:", error);
+        return res.status(500).send({ message: "Internal server error" });
+    }
+}
+
 
 module.exports = {
     getProfile,
@@ -324,5 +382,6 @@ module.exports = {
     renderHomePage,
     updateUser,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    verifySignupCode
 }
