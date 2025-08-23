@@ -92,8 +92,7 @@ async function signupUser(req, res) {
 
     const formTime = parseInt(ts);
     const now = Date.now();
-    if (!formTime || now - formTime < 3000) {
-        generalLogger.warn("Signup bot detected via fast submission");
+    if (!formTime || now - formTime < 5000) {
         return res.status(200).send({ message: "Verification code sent to your email" });
     }
 
