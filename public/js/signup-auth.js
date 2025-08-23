@@ -23,6 +23,13 @@ function initializeSignupAuthPage() {
 
 async function handleCodeSubmit(e) {
     e.preventDefault();
+    
+    // Honeypot check
+    const honeypot = document.getElementById('honeypot');
+    if (honeypot && honeypot.value) {
+        return; // bot detected, silently fail
+    }
+
     const code = document.getElementById('verificationCode').value.trim();
     clearErrors();
     

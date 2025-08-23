@@ -88,7 +88,12 @@ async function loginUser(req, res) {
 }
 
 async function signupUser(req, res) {
-    const {fullName, email, password, confirmedPassword } = req.body
+    const {fullName, email, password, confirmedPassword, honeypot } = req.body
+
+    if (honeypot) {
+        generalLogger.warn("Signup bot detected via honeypot");
+        return res.status(200).send({ message: "Verification code sent to your email" }); // fake OK
+    }
 
     if (!fullName || !email || !password || !confirmedPassword) {        
         generalLogger.error("Sign-up failed: Missing required fields")

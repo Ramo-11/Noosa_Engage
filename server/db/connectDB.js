@@ -11,7 +11,7 @@ const connectDB = async() => {
     try {
         generalLogger.debug(`Attempting to connect to database with url: ${process.env.MONGODB_URI}`)
         const con = await mongoose.connect(process.env.MONGODB_URI)
-        generalLogger.info(`MongoDB connected successfully: ${con.connection.host}`)
+        generalLogger.info(`MongoDB connected successfully`)
     } catch(error) {
         generalLogger.error("unable to connect to database: are you sure the IP address is whitelisted in the database?\n")
         generalLogger.debug(error)

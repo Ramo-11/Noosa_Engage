@@ -1,6 +1,8 @@
 const express = require("express")
 require('dotenv').config()
 const { generalLogger } = require("./utils/generalLogger")
+const rateLimit = require('express-rate-limit');
+
 if (process.env.NODE_ENV !== "production") {
     process.env.STRIPE_PUBLIC_KEY = process.env.STRIPE_PUBLIC_KEY_TEST
 } else {
@@ -42,7 +44,14 @@ route.post("/api/send-email", sendContactEmail)
 route.post("/api/schedule-appointment", processInitialAppointmentRequest)
 route.post("/api/cancel-appointment", cancelAppointment)
 route.post("/api/login", loginUser)
-route.post("/api/signup", signupUser)
+
+const signupLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 3, // max 3 attempts per minute
+  message: { message: "Too many signup attempts. Please try again later." }
+});
+
+route.post("/api/signup", signupLimiter, signupUser)
 route.post('/api/pay-invoice', payInvoice)
 route.post('/api/create-invoice', processNewInvoiceRequest)
 route.post('/api/confirm-invoice-payment', confirmInvoicePayment)

@@ -2,16 +2,17 @@ const nodemailer = require("nodemailer")
 const { generalLogger } = require("./utils/generalLogger")
 require('dotenv').config()
 
+
+const mailTransporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: "noosa@noosaengage.com",
+        pass: process.env.EMAIL_PASSWORD,
+    },
+});
+
 async function sendSignupEmail(user) {
     const { email, fullName } = user
-
-    let mailTransporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: "noosa@noosaengage.com",
-            pass: process.env.EMAIL_PASSWORD
-        }
-    });
 
     let details = {
         from: "noosa@noosaengage.com",
@@ -31,14 +32,6 @@ async function sendSignupEmail(user) {
 }
 
 async function sendNewInvoiceConfirmationEmail(fullName, invoiceNumber, hours, price, total, email, res) {
-    let mailTransporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: "noosa@noosaengage.com",
-            pass: process.env.EMAIL_PASSWORD
-        }
-    })
-
     let clientEmail = `
         <p>Dear ${fullName},</p>
         <p>A new invoice has been posted for you</p>
@@ -95,15 +88,6 @@ async function sendNewInvoiceConfirmationEmail(fullName, invoiceNumber, hours, p
 
 }
 async function sendSignupVerificationCodeEmail({email, fullName, code}) {
-
-    const mailTransporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: "noosa@noosaengage.com",
-            pass: process.env.EMAIL_PASSWORD
-        }
-    });
-
     const htmlContent = `
         <p>Hi ${fullName},</p>
         <p>Thank you for signing up to Noosa Engage!</p>
