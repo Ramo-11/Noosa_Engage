@@ -139,7 +139,9 @@ async function signupUser(req, res) {
             email,
             password,
             verificationCode
-            };
+        };
+
+        generalLogger.info("Pending signup created", { email, fullName });
 
         return res.status(200).json({ message: "Verification code sent to your email" });
 
