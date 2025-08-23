@@ -88,7 +88,14 @@ async function loginUser(req, res) {
 }
 
 async function signupUser(req, res) {
-    const {fullName, email, password, confirmedPassword, honeypot } = req.body
+    const {fullName, email, password, confirmedPassword, honeypot, ts } = req.body
+
+    const formTime = parseInt(ts);
+    const now = Date.now();
+    if (!formTime || now - formTime < 3000) {
+        generalLogger.warn("Signup bot detected via fast submission");
+        return res.status(200).send({ message: "Verification code sent to your email" });
+    }
 
     if (honeypot) {
         generalLogger.warn("Signup bot detected via honeypot");

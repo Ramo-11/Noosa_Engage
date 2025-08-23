@@ -53,8 +53,14 @@
 
                 <!-- Signup Form -->
                 <form class="auth-form" id="signupForm">
-                    <input type="text" id="honeypot" name="honeypot" style="display:none">
-                    
+                    <div class="form-group">
+                        <input type="text" name="honeypot" id="honeypot" style="display:none" tabindex="-1" autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" name="ts" value="<%= Date.now() %>">
+                    </div>
+
                     <!-- Full Name Field -->
                     <div class="form-group">
                         <label for="fullName" class="form-label">Full Name</label>
@@ -172,13 +178,15 @@
     <script>
         // Form validation and submission
         document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            console.log("Got submit button")
             e.preventDefault();
             
             const fullName = document.getElementById('fullName').value.trim();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
             const confirmPassword = document.getElementById('confirmPassword').value.trim();
-            
+            const honeypot = document.getElementById('honeypot').value.trim();
+
             // Clear previous errors
             clearErrors();
             
@@ -208,14 +216,14 @@
             if (hasErrors) return;
             
             // Submit form
-            await submitSignup(fullName, email, password, confirmPassword);
+            await submitSignup(fullName, email, password, confirmPassword, honeypot);
         });
 
-        async function submitSignup(fullName, email, password, confirmedPassword) {
+        async function submitSignup(fullName, email, password, confirmedPassword, honeypot) {
             const submitButton = document.getElementById('submitButton');
             const buttonText = document.getElementById('buttonText');
             const buttonSpinner = document.getElementById('buttonSpinner');
-            const honeypot = document.getElementById('honeypot')?.value || '';
+            const ts = document.querySelector('input[name="ts"]')?.value || '';
 
             // Store original button content for proper reset
             const originalButtonHTML = submitButton.innerHTML;
@@ -232,7 +240,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ fullName, email, password, confirmedPassword, honeypot })
+                    body: JSON.stringify({ fullName, email, password, confirmedPassword, honeypot, ts })
                 });
                 
                 const result = await response.json();

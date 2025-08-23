@@ -22,9 +22,11 @@
     "cloudinary": "^2.7.0",
     "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.7",
+    "cross-env": "^7.0.3",
     "dotenv": "^17.2.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
     "express-session": "^1.18.1",
     "flatpickr": "^4.6.13",
     "mongodb": "^6.17.0",
@@ -33,10 +35,6 @@
     "nodemailer": "^7.0.5",
     "stripe": "^18.3.0",
     "winston": "^3.17.0",
-    "cross-env": "^7.0.3",
-    "express-rate-limit": "^8.0.1"
-  },
-  "devDependencies": {
     "nodemon": "^3.1.10"
   }
 }
