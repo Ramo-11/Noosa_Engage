@@ -12,6 +12,8 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
     const email = document.getElementById('email').value.trim();
     const subject = document.getElementById('subject').value.trim();
     const description = document.getElementById('description').value.trim();
+    const honeypot = document.getElementById('honeypot').value.trim();
+    const ts = document.getElementsByName('ts')[0].value;
     
     if (!fullName || fullName.length < 2) {
         showFieldError('fullName', 'Please enter your full name');
@@ -36,10 +38,10 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
     if (hasErrors) return;
     
     // Submit form
-    await submitContact(fullName, email, subject, description);
+    await submitContact(fullName, email, subject, description, honeypot, ts);
 });
 
-async function submitContact(fullName, email, subject, description) {
+async function submitContact(fullName, email, subject, description, honeypot, ts) {
     const submitButton = document.getElementById('submitButton');
     const buttonText = document.getElementById('buttonText');
     const buttonSpinner = document.getElementById('buttonSpinner');
@@ -59,7 +61,7 @@ async function submitContact(fullName, email, subject, description) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ fullName, email, subject, description })
+            body: JSON.stringify({ fullName, email, subject, description, honeypot, ts })
         });
         
         const result = await response.json();

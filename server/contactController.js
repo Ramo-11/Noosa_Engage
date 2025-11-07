@@ -3,8 +3,22 @@ const { generalLogger } = require("./utils/generalLogger")
 require('dotenv').config()
 const validateEmail = require("./utils/emailValidator")
 
+function basicBotChecks(honeypot, ts) {
+  if (honeypot && String(honeypot).trim() !== "") {
+    throw new Error('Spam detected (honeypot)');
+  }
+
+  const submittedAt = Number(ts);
+  const now = Date.now();
+  if (!submittedAt || Number.isNaN(submittedAt) || now - submittedAt < 3000) {
+    throw new Error('Spam detected (too fast)');
+  }
+}
+
 async function sendContactEmail(req, res) {
-    const { fullName, email, subject, description } = req.body
+    const { fullName, email, subject, description, honeypot, ts } = req.body
+
+    basicBotChecks(honeypot, ts);
 
     let mailTransporter = nodemailer.createTransport({
         name: "NoosaEngage",
@@ -269,14 +283,14 @@ async function sendContactEmail(req, res) {
         })
 
         generalLogger.info("Contact form submission processed successfully from: " + email)
-        return res.status(200).send({ 
-            message: "Thank you for your message! We've received your inquiry and will respond within 24 hours." 
+        return res.status(200).send({
+            message: "Thank you for your message! We've received your inquiry and will respond within 24 hours."
         })
 
     } catch (error) {
         generalLogger.error("Error sending contact emails: " + error)
-        return res.status(500).send({ 
-            message: "Thank you for your message! We've received it and will get back to you soon." 
+        return res.status(500).send({
+            message: "Thank you for your message! We've received it and will get back to you soon."
         })
     }
 }
