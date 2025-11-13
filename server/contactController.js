@@ -34,6 +34,11 @@ async function sendContactEmail(req, res) {
         generalLogger.debug("one or more field is missing")
         return res.status(400).send({ message: "Error: All fields must be completed" })
     }
+    
+    if (!description || description.trim().split(/\s+/).length < 2) {
+        generalLogger.error("Spam detected (description too short)");
+        return res.status(400).send({ message: "Error: Message seems invalid or incomplete." });
+    }
 
     if (!validateEmail(email)) {
         generalLogger.error("Invalid email address: " + email)
